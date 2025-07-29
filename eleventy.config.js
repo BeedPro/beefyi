@@ -6,6 +6,7 @@ import {
 import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
+import mathjaxPlugin from "eleventy-plugin-mathjax";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 
 import pluginFilters from "./_config/filters.js";
@@ -52,6 +53,7 @@ export default async function (eleventyConfig) {
 		bundleHtmlContentFromSelector: "script",
 	});
 
+	eleventyConfig.addPlugin(mathjaxPlugin);
 	// Official plugins
 	eleventyConfig.addPlugin(pluginSyntaxHighlight, {
 		preAttributes: { tabindex: 0 },
