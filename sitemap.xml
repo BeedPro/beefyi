@@ -2,26 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 	
 	<url>
-		<loc>https://beedpro.github.io/beefyi/posts/firstpost/</loc>
-		<lastmod>2018-05-01</lastmod>
-	</url>
-	
-	<url>
-		<loc>https://beedpro.github.io/beefyi/posts/secondpost/</loc>
-		<lastmod>2018-07-04</lastmod>
-	</url>
-	
-	<url>
-		<loc>https://beedpro.github.io/beefyi/posts/thirdpost/</loc>
-		<lastmod>2018-08-24</lastmod>
-	</url>
-	
-	<url>
-		<loc>https://beedpro.github.io/beefyi/posts/fourthpost/</loc>
-		<lastmod>2018-09-30</lastmod>
-	</url>
-	
-	<url>
 		<loc>https://beedpro.github.io/beefyi/about/</loc>
 		<lastmod>2025-07-29</lastmod>
 	</url>
@@ -44,5 +24,10 @@
 	<url>
 		<loc>https://beedpro.github.io/beefyi/feed/feed.xml</loc>
 		<lastmod>2025-07-29</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://beedpro.github.io/beefyi/posts/my-little-space-online/</loc>
+		<lastmod>2025-07-30</lastmod>
 	</url>
 </urlset>
