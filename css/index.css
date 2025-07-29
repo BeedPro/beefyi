@@ -262,8 +262,9 @@ header {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	text-transform: capitalize;
+	text-transform: lower;
 	font-style: italic;
+	text-decoration: none;
 }
 .postlist-item > .post-tag {
 	align-self: center;
@@ -279,5 +280,5 @@ header {
 	margin: 0;
 }
 .post-metadata time {
-	margin-right: 1em;
+	margin-left: auto;
 }
