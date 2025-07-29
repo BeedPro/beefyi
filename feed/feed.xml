@@ -15,8 +15,162 @@
     <link href="https://example.com/beefyi/posts/my-little-space-online/" />
     <updated>2025-07-30T00:00:00Z</updated>
     <id>https://example.com/beefyi/posts/my-little-space-online/</id>
-    <content type="html">&lt;h1 id=&quot;hello-world&quot;&gt;Hello World!&lt;/h1&gt;
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;style id=&quot;MJX-SVG-styles&quot;&gt;
+mjx-container[jax=&quot;SVG&quot;] {
+  direction: ltr;
+}
+
+mjx-container[jax=&quot;SVG&quot;] &gt; svg {
+  overflow: visible;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+mjx-container[jax=&quot;SVG&quot;] &gt; svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display=&quot;block&quot;] {
+  width: 100% !important;
+}
+
+mjx-container[jax=&quot;SVG&quot;][display=&quot;true&quot;] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax=&quot;SVG&quot;][display=&quot;true&quot;][width=&quot;full&quot;] {
+  display: flex;
+}
+
+mjx-container[jax=&quot;SVG&quot;][justify=&quot;left&quot;] {
+  text-align: left;
+}
+
+mjx-container[jax=&quot;SVG&quot;][justify=&quot;right&quot;] {
+  text-align: right;
+}
+
+g[data-mml-node=&quot;merror&quot;] &gt; g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node=&quot;merror&quot;] &gt; rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; line[data-line], svg[data-table] &gt; g &gt; line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; rect[data-frame], svg[data-table] &gt; g &gt; rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; .mjx-dashed, svg[data-table] &gt; g &gt; .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; .mjx-dotted, svg[data-table] &gt; g &gt; .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; g &gt; svg {
+  overflow: visible;
+}
+
+[jax=&quot;SVG&quot;] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax=&quot;SVG&quot;] mjx-tool &gt; mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool &gt; mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node=&quot;maction&quot;][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container[jax=&quot;SVG&quot;] path[data-c], mjx-container[jax=&quot;SVG&quot;] use[data-c] {
+  stroke-width: 3;
+}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;hello-world&quot;&gt;Hello World!&lt;/h1&gt;
 &lt;p&gt;Hi Internet! This is beed here with my first post. Well its under construction right now but I hope this may be a interesting read for all!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Testing out the stuff&lt;/p&gt;
+&lt;p&gt;This is a &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.488ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;4.672ex&quot; height=&quot;2.033ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -683 2065 898.5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D447&quot; xlink:href=&quot;#MJX-TEX-I-1D447&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mspace&quot; transform=&quot;translate(704,0)&quot;&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mpadded&quot; transform=&quot;translate(564,0)&quot;&gt;&lt;g transform=&quot;translate(0,-215.5)&quot;&gt;&lt;g data-mml-node=&quot;TeXAtom&quot; data-mjx-texclass=&quot;ORD&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D438&quot; xlink:href=&quot;#MJX-TEX-I-1D438&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mspace&quot; transform=&quot;translate(1328,0)&quot;&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(1213,0)&quot;&gt;&lt;use data-c=&quot;1D44B&quot; xlink:href=&quot;#MJX-TEX-I-1D44B&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;T&lt;/mi&gt;&lt;mspace width=&quot;-.14em&quot;&gt;&lt;/mspace&gt;&lt;mpadded height=&quot;-.5ex&quot; depth=&quot;+.5ex&quot; voffset=&quot;-.5ex&quot;&gt;&lt;mrow data-mjx-texclass=&quot;ORD&quot;&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;/mrow&gt;&lt;/mpadded&gt;&lt;mspace width=&quot;-.115em&quot;&gt;&lt;/mspace&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; example.&lt;/p&gt;
+&lt;p&gt;&lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; display=&quot;true&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.186ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;9.176ex&quot; height=&quot;1.692ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -666 4056 748&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mn&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(722.2,0)&quot;&gt;&lt;use data-c=&quot;2B&quot; xlink:href=&quot;#MJX-TEX-N-2B&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(1722.4,0)&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(2500.2,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(3556,0)&quot;&gt;&lt;use data-c=&quot;32&quot; xlink:href=&quot;#MJX-TEX-N-32&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;block&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;&lt;/p&gt;
+&lt;p&gt;Equivalent to:&lt;/p&gt;
+&lt;p&gt;This is a &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.488ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;4.672ex&quot; height=&quot;2.033ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -683 2065 898.5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D447&quot; xlink:href=&quot;#MJX-TEX-I-1D447&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mspace&quot; transform=&quot;translate(704,0)&quot;&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mpadded&quot; transform=&quot;translate(564,0)&quot;&gt;&lt;g transform=&quot;translate(0,-215.5)&quot;&gt;&lt;g data-mml-node=&quot;TeXAtom&quot; data-mjx-texclass=&quot;ORD&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D438&quot; xlink:href=&quot;#MJX-TEX-I-1D438&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mspace&quot; transform=&quot;translate(1328,0)&quot;&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(1213,0)&quot;&gt;&lt;use data-c=&quot;1D44B&quot; xlink:href=&quot;#MJX-TEX-I-1D44B&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;T&lt;/mi&gt;&lt;mspace width=&quot;-.14em&quot;&gt;&lt;/mspace&gt;&lt;mpadded height=&quot;-.5ex&quot; depth=&quot;+.5ex&quot; voffset=&quot;-.5ex&quot;&gt;&lt;mrow data-mjx-texclass=&quot;ORD&quot;&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;/mrow&gt;&lt;/mpadded&gt;&lt;mspace width=&quot;-.115em&quot;&gt;&lt;/mspace&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; example.
+&lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; display=&quot;true&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.186ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;9.176ex&quot; height=&quot;1.692ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -666 4056 748&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mn&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(722.2,0)&quot;&gt;&lt;use data-c=&quot;2B&quot; xlink:href=&quot;#MJX-TEX-N-2B&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(1722.4,0)&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(2500.2,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(3556,0)&quot;&gt;&lt;use data-c=&quot;32&quot; xlink:href=&quot;#MJX-TEX-N-32&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;block&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, write&lt;/p&gt;
+&lt;p&gt;
+This is a &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.488ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;4.672ex&quot; height=&quot;2.033ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -683 2065 898.5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D447&quot; xlink:href=&quot;#MJX-TEX-I-1D447&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mspace&quot; transform=&quot;translate(704,0)&quot;&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mpadded&quot; transform=&quot;translate(564,0)&quot;&gt;&lt;g transform=&quot;translate(0,-215.5)&quot;&gt;&lt;g data-mml-node=&quot;TeXAtom&quot; data-mjx-texclass=&quot;ORD&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D438&quot; xlink:href=&quot;#MJX-TEX-I-1D438&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mspace&quot; transform=&quot;translate(1328,0)&quot;&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(1213,0)&quot;&gt;&lt;use data-c=&quot;1D44B&quot; xlink:href=&quot;#MJX-TEX-I-1D44B&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;T&lt;/mi&gt;&lt;mspace width=&quot;-.14em&quot;&gt;&lt;/mspace&gt;&lt;mpadded height=&quot;-.5ex&quot; depth=&quot;+.5ex&quot; voffset=&quot;-.5ex&quot;&gt;&lt;mrow data-mjx-texclass=&quot;ORD&quot;&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;/mrow&gt;&lt;/mpadded&gt;&lt;mspace width=&quot;-.115em&quot;&gt;&lt;/mspace&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; example.
+&lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; display=&quot;true&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.186ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;9.176ex&quot; height=&quot;1.692ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -666 4056 748&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mn&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(722.2,0)&quot;&gt;&lt;use data-c=&quot;2B&quot; xlink:href=&quot;#MJX-TEX-N-2B&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(1722.4,0)&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(2500.2,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(3556,0)&quot;&gt;&lt;use data-c=&quot;32&quot; xlink:href=&quot;#MJX-TEX-N-32&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;block&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;
+&lt;/p&gt;
+&lt;p&gt;This is a dollar sign &lt;span&gt;$&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;This is also a dollar sign &lt;span&gt;$&lt;/span&gt;.&lt;/p&gt;
+&lt;svg style=&quot;display: none;&quot; id=&quot;MJX-SVG-global-cache&quot;&gt;&lt;defs&gt;&lt;path id=&quot;MJX-TEX-I-1D447&quot; d=&quot;M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D438&quot; d=&quot;M492 213Q472 213 472 226Q472 230 477 250T482 285Q482 316 461 323T364 330H312Q311 328 277 192T243 52Q243 48 254 48T334 46Q428 46 458 48T518 61Q567 77 599 117T670 248Q680 270 683 272Q690 274 698 274Q718 274 718 261Q613 7 608 2Q605 0 322 0H133Q31 0 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q146 66 215 342T285 622Q285 629 281 629Q273 632 228 634H197Q191 640 191 642T193 659Q197 676 203 680H757Q764 676 764 669Q764 664 751 557T737 447Q735 440 717 440H705Q698 445 698 453L701 476Q704 500 704 528Q704 558 697 578T678 609T643 625T596 632T532 634H485Q397 633 392 631Q388 629 386 622Q385 619 355 499T324 377Q347 376 372 376H398Q464 376 489 391T534 472Q538 488 540 490T557 493Q562 493 565 493T570 492T572 491T574 487T577 483L544 351Q511 218 508 216Q505 213 492 213Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D44B&quot; d=&quot;M42 0H40Q26 0 26 11Q26 15 29 27Q33 41 36 43T55 46Q141 49 190 98Q200 108 306 224T411 342Q302 620 297 625Q288 636 234 637H206Q200 643 200 645T202 664Q206 677 212 683H226Q260 681 347 681Q380 681 408 681T453 682T473 682Q490 682 490 671Q490 670 488 658Q484 643 481 640T465 637Q434 634 411 620L488 426L541 485Q646 598 646 610Q646 628 622 635Q617 635 609 637Q594 637 594 648Q594 650 596 664Q600 677 606 683H618Q619 683 643 683T697 681T738 680Q828 680 837 683H845Q852 676 852 672Q850 647 840 637H824Q790 636 763 628T722 611T698 593L687 584Q687 585 592 480L505 384Q505 383 536 304T601 142T638 56Q648 47 699 46Q734 46 734 37Q734 35 732 23Q728 7 725 4T711 1Q708 1 678 1T589 2Q528 2 496 2T461 1Q444 1 444 10Q444 11 446 25Q448 35 450 39T455 44T464 46T480 47T506 54Q523 62 523 64Q522 64 476 181L429 299Q241 95 236 84Q232 76 232 72Q232 53 261 47Q262 47 267 47T273 46Q276 46 277 46T280 45T283 42T284 35Q284 26 282 19Q279 6 276 4T261 1Q258 1 243 1T201 2T142 2Q64 2 42 0Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-31&quot; d=&quot;M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-2B&quot; d=&quot;M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-3D&quot; d=&quot;M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-32&quot; d=&quot;M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z&quot;&gt;&lt;/path&gt;&lt;/defs&gt;&lt;/svg&gt;&lt;/body&gt;&lt;/html&gt;
 </content>
   </entry>
 </feed>
