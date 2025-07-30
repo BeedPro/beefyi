@@ -1,34 +1,12 @@
 ---
-title: My little space online
-description: This is a post on my first blog called beefyi (Beed For Your Info).
+title: Hello World!
+description: A space for updates, reflections, and snippets from beed. This is beefyi — Beed For Your Info.
 date: 2025-07-30
-tags: ["updates"]
+tags: ["updates", "draft"]
 ---
 
-# Hello World!
+Hi Internet! I'm Beed, and welcome to beefyi - short for Beed For Your Info. This little corner of the web is still under construction, but I'm glad you’ve found your way here.
 
-Hi Internet! This is beed here with my first post. Well its under construction right now but I hope this may be a interesting read for all!
+Think of this blog as a space where I'll share thoughts, updates, and whatever else catches my interest. It's a bit of a work-in-progress, but I hope its worth the read regardless.
 
----
-
-Testing out the stuff
-
-This is a $\TeX$ example.
-
-$$ 1 + 1 = 2 $$
-
-Equivalent to:
-
-This is a \\\( \TeX \\\) example.
-\\\[ 1 + 1 = 2 \\\]
-
-Alternatively, write
-
-<p>
-This is a \( \TeX \) example.
-\[ 1 + 1 = 2 \]
-</p>
-
-This is a dollar sign \\$.
-
-<p>This is also a dollar sign \$.</p>
+Thanks for stopping by!
