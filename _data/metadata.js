@@ -2,10 +2,10 @@ export default {
 	title: "beefyi",
 	url: "https://beedpro.github.io/beefyi",
 	language: "en",
-	description: "I am writing about my experiences as a naval navel-gazer.",
+	description: "A place to store for all things beed.",
 	author: {
-		name: "Your Name Here",
-		email: "youremailaddress@example.com",
-		url: "https://example.com/about-me/",
+		name: "Beed",
+		email: "beed.epistle@protonmail.com",
+		url: "https://beedpro.github.io/",
 	},
 };
