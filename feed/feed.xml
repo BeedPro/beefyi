@@ -12,13 +12,11 @@
   </author>
   <entry>
     <title>Hello World!</title>
-    <link href="https://beedpro.github.io/beefyi/posts/my-little-space-online/" />
+    <link href="https://beedpro.github.io/beefyi/posts/hello-world/" />
     <updated>2025-07-30T00:00:00Z</updated>
-    <id>https://beedpro.github.io/beefyi/posts/my-little-space-online/</id>
+    <id>https://beedpro.github.io/beefyi/posts/hello-world/</id>
     <content type="html">
-&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Hi Internet! I&#39;m Beed, and welcome to beefyi - short for Beed For Your Info. This little corner of the web is still under construction, but I&#39;m glad you’ve found your way here.&lt;/p&gt;
-&lt;p&gt;Think of this blog as a space where I&#39;ll share thoughts, updates, and whatever else catches my interest. It&#39;s a bit of a work-in-progress, but I hope its worth the read regardless.&lt;/p&gt;
-&lt;p&gt;Thanks for stopping by!&lt;/p&gt;
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Welcome to my blog! This is my first post, so there&#39;s not a whole lot here just yet - but hopefully that&#39;ll change soon. Feel free to check out the &lt;a href=&quot;https://beedpro.github.io/beefyi/about/&quot;&gt;about&lt;/a&gt; page to find out a bit more about me and what this blog&#39;s all about.&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;
 </content>
   </entry>
