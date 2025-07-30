@@ -51,6 +51,7 @@
 		"zod-validation-error": "^3.5.2"
 	},
 	"dependencies": {
-		"@zachleat/heading-anchors": "^1.0.3"
+		"@zachleat/heading-anchors": "^1.0.3",
+		"eleventy-plugin-embed-everything": "^1.21.0"
 	}
 }
