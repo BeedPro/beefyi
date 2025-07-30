@@ -5,6 +5,6 @@ const eleventyNavigation = {
 };
 ---
 
-# About
+# Welcome!
 
 I am a person that writes stuff.
