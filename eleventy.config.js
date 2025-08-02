@@ -8,6 +8,8 @@ import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import pluginNavigation from "@11ty/eleventy-navigation";
 import mathjaxPlugin from "eleventy-plugin-mathjax";
 import embeds from "eleventy-plugin-embed-everything";
+import markdownIt from "markdown-it";
+import markdownItGitHubAlerts from "markdown-it-github-alerts";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 
 import pluginFilters from "./_config/filters.js";
@@ -123,6 +125,38 @@ export default async function (eleventyConfig) {
 		return new Date().toISOString();
 	});
 
+	const mdOptions = {
+		html: true,
+		breaks: true,
+		linkify: true,
+	};
+
+	const md = markdownIt(mdOptions).use(markdownItGitHubAlerts, {
+		markers: ["TIP", "NOTE", "IMPORTANT", "WARNING", "CAUTION"],
+
+		matchCaseSensitive: false,
+
+		icons: {
+			note: "",
+			tip: "",
+			important: "",
+			warning: "",
+			caution: "",
+		},
+
+		titles: {
+			note: "Note",
+			tip: "Tip",
+			important: "Important",
+			warning: "Warning",
+			caution: "Caution",
+		},
+
+		// ✅ Class prefix for styling
+		classPrefix: "markdown-alert",
+	});
+
+	eleventyConfig.setLibrary("md", md);
 	// Features to make your build faster (when you need them)
 
 	// If your passthrough copy gets heavy and cumbersome, add this line

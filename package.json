@@ -52,6 +52,8 @@
 	},
 	"dependencies": {
 		"@zachleat/heading-anchors": "^1.0.3",
-		"eleventy-plugin-embed-everything": "^1.21.0"
+		"eleventy-plugin-embed-everything": "^1.21.0",
+		"markdown-it": "^14.1.0",
+		"markdown-it-github-alerts": "^1.0.0"
 	}
 }
