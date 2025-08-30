@@ -167,6 +167,10 @@ pre,
 code {
 	font-family: var(--font-family-monospace);
 }
+pre {
+	border: 4px solid var(--text-color-link-active);
+	padding: 16px;
+}
 pre:not([class*="language-"]) {
 	margin: 0.5em 0;
 	line-height: 1.375; /* 22px /16 */
