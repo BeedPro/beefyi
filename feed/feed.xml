@@ -5,11 +5,44 @@
   <subtitle>A place to store for all things beed</subtitle>
   <link href="https://beedpro.github.io/beefyi/feed/feed.xml" rel="self" />
   <link href="https://beedpro.github.io/beefyi/beefyi" />
-  <updated>2025-08-18T00:00:00Z</updated>
+  <updated>2025-08-30T00:00:00Z</updated>
   <id>https://beedpro.github.io/beefyi/beefyi</id>
   <author>
     <name>Beed</name>
   </author>
+  <entry>
+    <title>picoCTF - Web SSTI1</title>
+    <link href="https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/" />
+    <updated>2025-08-30T00:00:00Z</updated>
+    <id>https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;markdown-alert markdown-alert-note&quot;&gt;&lt;p class=&quot;markdown-alert-title&quot;&gt;Problem - SST1&lt;/p&gt;&lt;p&gt;I made a cool website where you can announce whatever you want!&lt;br&gt;
+Try it out! I heard templating is a cool and modular way to build web apps!&lt;br&gt;
+Check out my website &lt;a href=&quot;http://rescued-float.picoctf.net:61957/&quot;&gt;here&lt;/a&gt; !&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;I recently just wanted to get back into CTFs, not that I was an expert in the matter, but I had some free time today and thought I&#39;d try out a few challenges set by my University&#39;s Cyber Security Society. They&#39;re using &lt;a href=&quot;https://www.picoctf.org/&quot;&gt;picoCTF&lt;/a&gt; as the platform for these problems, they have alot of other challenges that you can check out as well and is not affiliated with my University.&lt;/p&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;So I becan working on the first problem: &lt;a href=&quot;https://play.picoctf.org/practice/challenge/492?category=1&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;Web | SSTI1&lt;/a&gt;, and right away it looked like there was some kind of injection was needed. My first thought was SQL injection, since that&#39;s the type of injection I was most familiar with. But pretty quickly it became obvious that wasn&#39;t the exploit here. So, I went back to the challenge description to see if I&#39;d missed anything, and the line &quot;I heard templating is cool&quot; immediately made me think of server-side templates you usually see in full stack frameworks such as Django or &lt;a href=&quot;http://ASP.NET&quot;&gt;ASP.NET&lt;/a&gt; core.&lt;/p&gt;
+&lt;p&gt;A quick Google search led me to SSTI, Sever-side Template Injection, funny how the challenge title was giving away the exploit needed. Using the following &lt;a href=&quot;https://github.com/ogtirth/SSTI&quot;&gt;SSTI/Payload Cheatsheet&lt;/a&gt;, I tested to see if the site was actually vulnerable and to figure out which templating engine it was running. Turns out, it was running on a Python server using Jinja2 and was indeed vulnerable to SSTI - inputting &lt;code&gt;{{7*7}}&lt;/code&gt; into the field renders the result of &lt;code&gt;49&lt;/code&gt; &#39;n &#39;he site.&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.png&quot; alt=&quot;The picture of entering seven times sevens into the input field of the site&quot; width=&quot;1366&quot; height=&quot;640&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/wYreil4eho-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/wYreil4eho-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/wYreil4eho-1366.png&quot; alt=&quot;The picture of the seven times sevens being executed in the backend and rendered to the user&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;Naturally, I started looking up Jinja2 SSTI payloads since the ones from the cheatsheet weren&#39;t working for me. That search led me to this &lt;a href=&quot;https://onsecurity.io/article/server-side-template-injection-with-jinja2/&quot;&gt;article&lt;/a&gt;, which walked through a vulnerable Python Flask app. It included the following payload:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;id&#39;).read()}} 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When I dropped that into the site, it worked - returning the user&#39;s ID along with their groups, confirming the exploit.&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.avif 2048w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.webp 2048w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.png&quot; alt=&quot;The picture of id and group of the user running the website&quot; width=&quot;2048&quot; height=&quot;309&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;The payload uses Python&#39;s &lt;a href=&quot;https://rszalski.github.io/magicmethods/&quot;&gt;magic methods&lt;/a&gt; in order to access the &lt;code&gt;os&lt;/code&gt; module and execute commands on the host. We can then list out the files in the server via:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls&#39;).read()}} 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/bvmpe7aQan-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/bvmpe7aQan-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/bvmpe7aQan-1366.png&quot; alt=&quot;The picture of result of ls showing __pychace__ directory, app.py and flag requirements.txt files&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;Great! we found the flag, its named &quot;flag&quot;, all we need to do now is output the contents of the file. We use the &lt;code&gt;cat&lt;/code&gt; command in our next request:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;cat flag&#39;).read()}} 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Giving us our flag!&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/9laP8m5hGm-1585.avif 1585w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/9laP8m5hGm-1585.webp 1585w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/9laP8m5hGm-1585.png&quot; alt=&quot; picoCTF{s4rv3r_s1d3_t3mp14t3_1nj3ct10n5_4r3_c001_bdc95c1a}&quot; width=&quot;1585&quot; height=&quot;84&quot;&gt;&lt;/picture&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
   <entry>
     <title>Distro Confusion? The Only 3 Linux Distros That Matter</title>
     <link href="https://beedpro.github.io/beefyi/posts/distro-confusion/" />
