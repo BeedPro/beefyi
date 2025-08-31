@@ -5,13 +5,190 @@
   <subtitle>A place to store for all things beed</subtitle>
   <link href="https://beedpro.github.io/beefyi/feed/feed.xml" rel="self" />
   <link href="https://beedpro.github.io/beefyi/beefyi" />
-  <updated>2025-08-30T00:00:00Z</updated>
+  <updated>2025-08-31T00:00:00Z</updated>
   <id>https://beedpro.github.io/beefyi/beefyi</id>
   <author>
     <name>Beed</name>
   </author>
   <entry>
-    <title>picoCTF - Web SSTI1</title>
+    <title>picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</title>
+    <link href="https://beedpro.github.io/beefyi/posts/picoctf-cryptography-even-rsa-can-be-broken/" />
+    <updated>2025-08-31T00:00:00Z</updated>
+    <id>https://beedpro.github.io/beefyi/posts/picoctf-cryptography-even-rsa-can-be-broken/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;style id=&quot;MJX-SVG-styles&quot;&gt;
+mjx-container[jax=&quot;SVG&quot;] {
+  direction: ltr;
+}
+
+mjx-container[jax=&quot;SVG&quot;] &gt; svg {
+  overflow: visible;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+mjx-container[jax=&quot;SVG&quot;] &gt; svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display=&quot;block&quot;] {
+  width: 100% !important;
+}
+
+mjx-container[jax=&quot;SVG&quot;][display=&quot;true&quot;] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax=&quot;SVG&quot;][display=&quot;true&quot;][width=&quot;full&quot;] {
+  display: flex;
+}
+
+mjx-container[jax=&quot;SVG&quot;][justify=&quot;left&quot;] {
+  text-align: left;
+}
+
+mjx-container[jax=&quot;SVG&quot;][justify=&quot;right&quot;] {
+  text-align: right;
+}
+
+g[data-mml-node=&quot;merror&quot;] &gt; g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node=&quot;merror&quot;] &gt; rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; line[data-line], svg[data-table] &gt; g &gt; line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; rect[data-frame], svg[data-table] &gt; g &gt; rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; .mjx-dashed, svg[data-table] &gt; g &gt; .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; .mjx-dotted, svg[data-table] &gt; g &gt; .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; g &gt; svg {
+  overflow: visible;
+}
+
+[jax=&quot;SVG&quot;] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax=&quot;SVG&quot;] mjx-tool &gt; mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool &gt; mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node=&quot;maction&quot;][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container[jax=&quot;SVG&quot;] path[data-c], mjx-container[jax=&quot;SVG&quot;] use[data-c] {
+  stroke-width: 3;
+}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Picking up from the last blog, I had a go at the &lt;a href=&quot;https://play.picoctf.org/practice/challenge/470?category=2&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;EVEN RSA CAN BE BROKEN??&lt;/a&gt; cryptography challenge. To be honest, it felt more like an exercise in RSA than a proper puzzle, but it&#39;s a good way to dip your toes into crypto. Think of RSA as the &quot;hello world&quot; of cryptography - simple, classic, and a solid starting point. The challenge kicks off by asking us to connect via netcat, where we&#39;re handed an encrypted message &lt;code&gt;c&lt;/code&gt;, and its public key &lt;code&gt;(N, e)&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;nc&lt;/span&gt; verbal-sleep.picoctf.net &lt;span class=&quot;token number&quot;&gt;56957&lt;/span&gt;
+
+N: &lt;span class=&quot;token number&quot;&gt;22715301090244944555782064618276252525023771968883364484388038636123683358976283740304327683722247637952999616864052130853477842537404917091331688687558122&lt;/span&gt;
+e: &lt;span class=&quot;token number&quot;&gt;65537&lt;/span&gt;
+cyphertext: &lt;span class=&quot;token number&quot;&gt;14293253600340155854054831280856936574632994961947887972916917485609072959383679102282010013872401143755895229136463678205587523830693631363813380495455347&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I won&#39;t go into how RSA works here - that&#39;s left to some &lt;a href=&quot;https://en.wikipedia.org/wiki/RSA_cryptosystem&quot;&gt;further reading&lt;/a&gt;. But the short version (TL;DR) is this: RSA relies on a pair of keys - one public and one private. Together, they&#39;re what let us encrypt and decrypt ciphertext (term for encrypted text). As you can see we only got the public key, and so this challenge is to find the private key and then decrypt the message.&lt;/p&gt;
+&lt;p&gt;The catch that allows us to find the private key is to notice that &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: 0;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;2.009ex&quot; height=&quot;1.545ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -683 888 683&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D441&quot; xlink:href=&quot;#MJX-TEX-I-1D441&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; is &lt;em&gt;even&lt;/em&gt;. Typically &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: 0;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;2.009ex&quot; height=&quot;1.545ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -683 888 683&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D441&quot; xlink:href=&quot;#MJX-TEX-I-1D441&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; is the product of two &lt;strong&gt;large primes&lt;/strong&gt; - but it is always a product of primes. If it&#39;s even, that means one of those primes must be &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: 0;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.131ex&quot; height=&quot;1.507ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -666 500 666&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mn&quot;&gt;&lt;use data-c=&quot;32&quot; xlink:href=&quot;#MJX-TEX-N-32&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;.&lt;/p&gt;
+&lt;p&gt;So we set &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.439ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;5.286ex&quot; height=&quot;1.946ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -666 2336.6 860&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D45D&quot; xlink:href=&quot;#MJX-TEX-I-1D45D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(780.8,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(1836.6,0)&quot;&gt;&lt;use data-c=&quot;32&quot; xlink:href=&quot;#MJX-TEX-N-32&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;, and then grab the other prime by dividing: &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.566ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;8.336ex&quot; height=&quot;2.262ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -750 3684.6 1000&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D45E&quot; xlink:href=&quot;#MJX-TEX-I-1D45E&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(737.8,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(1793.6,0)&quot;&gt;&lt;use data-c=&quot;1D441&quot; xlink:href=&quot;#MJX-TEX-I-1D441&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;TeXAtom&quot; data-mjx-texclass=&quot;ORD&quot; transform=&quot;translate(2681.6,0)&quot;&gt;&lt;g data-mml-node=&quot;mo&quot;&gt;&lt;use data-c=&quot;2F&quot; xlink:href=&quot;#MJX-TEX-N-2F&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(3181.6,0)&quot;&gt;&lt;use data-c=&quot;1D45D&quot; xlink:href=&quot;#MJX-TEX-I-1D45D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;mrow data-mjx-texclass=&quot;ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;. From there, we calculate Euler’s totient, &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.566ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;17.858ex&quot; height=&quot;2.262ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -750 7893.4 1000&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D719&quot; xlink:href=&quot;#MJX-TEX-I-1D719&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(873.8,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(1929.6,0)&quot;&gt;&lt;use data-c=&quot;28&quot; xlink:href=&quot;#MJX-TEX-N-28&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(2318.6,0)&quot;&gt;&lt;use data-c=&quot;1D45D&quot; xlink:href=&quot;#MJX-TEX-I-1D45D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(3043.8,0)&quot;&gt;&lt;use data-c=&quot;2212&quot; xlink:href=&quot;#MJX-TEX-N-2212&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(4044,0)&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(4544,0)&quot;&gt;&lt;use data-c=&quot;29&quot; xlink:href=&quot;#MJX-TEX-N-29&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(4933,0)&quot;&gt;&lt;use data-c=&quot;28&quot; xlink:href=&quot;#MJX-TEX-N-28&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(5322,0)&quot;&gt;&lt;use data-c=&quot;1D45E&quot; xlink:href=&quot;#MJX-TEX-I-1D45E&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(6004.2,0)&quot;&gt;&lt;use data-c=&quot;2212&quot; xlink:href=&quot;#MJX-TEX-N-2212&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(7004.4,0)&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(7504.4,0)&quot;&gt;&lt;use data-c=&quot;29&quot; xlink:href=&quot;#MJX-TEX-N-29&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;ϕ&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;.&lt;/p&gt;
+&lt;p&gt;Next step: finding the private key exponent &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.023ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.176ex&quot; height=&quot;1.593ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -694 520 704&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D451&quot; xlink:href=&quot;#MJX-TEX-I-1D451&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;. This is just the modular inverse of &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.025ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.054ex&quot; height=&quot;1.025ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -442 466 453&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D452&quot; xlink:href=&quot;#MJX-TEX-I-1D452&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; with respect to &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.464ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.348ex&quot; height=&quot;2.034ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -694 596 899&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D719&quot; xlink:href=&quot;#MJX-TEX-I-1D719&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;ϕ&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;. We can calculate this using Python&#39;s &lt;code&gt;pow(e, -1, phi)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;With &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.023ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.176ex&quot; height=&quot;1.593ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -694 520 704&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D451&quot; xlink:href=&quot;#MJX-TEX-I-1D451&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; in hand, we can finally decrypt: &lt;code&gt;m = pow(c, d, N)&lt;/code&gt;. That gives us the message, but in integer form. To make sense of it, we work out how many bytes long it should be, convert it with &lt;code&gt;to_bytes&lt;/code&gt;, and then decode to ASCII.&lt;/p&gt;
+&lt;p&gt;And that&#39;s really all there is to it. Merging all the steps together, the full script looks like this:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;N &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;22715301090244944555782064618276252525023771968883364484388038636123683358976283740304327683722247637952999616864052130853477842537404917091331688687558122&lt;/span&gt;
+e &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;65537&lt;/span&gt;
+c &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;14293253600340155854054831280856936574632994961947887972916917485609072959383679102282010013872401143755895229136463678205587523830693631363813380495455347&lt;/span&gt;
+p &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;
+q &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; N &lt;span class=&quot;token operator&quot;&gt;//&lt;/span&gt; p
+phi &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;p &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;q &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+d &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;e&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; phi&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+m &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; d&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; N&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+byte_len &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;m&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;bit_length&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;8&lt;/span&gt;
+pt_bytes &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; m&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;to_bytes&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;byte_len&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;big&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;d =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; d&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;m (int) =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; m&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;m (hex) =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; pt_bytes&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;m (ascii) =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; pt_bytes&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;decode&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Giving us the decrypted message:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;picoCTF{tw0_1$_pr!m3df98b648}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;svg style=&quot;display: none;&quot; id=&quot;MJX-SVG-global-cache&quot;&gt;&lt;defs&gt;&lt;path id=&quot;MJX-TEX-I-1D441&quot; d=&quot;M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-32&quot; d=&quot;M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D45D&quot; d=&quot;M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-3D&quot; d=&quot;M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D45E&quot; d=&quot;M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-2F&quot; d=&quot;M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D719&quot; d=&quot;M409 688Q413 694 421 694H429H442Q448 688 448 686Q448 679 418 563Q411 535 404 504T392 458L388 442Q388 441 397 441T429 435T477 418Q521 397 550 357T579 260T548 151T471 65T374 11T279 -10H275L251 -105Q245 -128 238 -160Q230 -192 227 -198T215 -205H209Q189 -205 189 -198Q189 -193 211 -103L234 -11Q234 -10 226 -10Q221 -10 206 -8T161 6T107 36T62 89T43 171Q43 231 76 284T157 370T254 422T342 441Q347 441 348 445L378 567Q409 686 409 688ZM122 150Q122 116 134 91T167 53T203 35T237 27H244L337 404Q333 404 326 403T297 395T255 379T211 350T170 304Q152 276 137 237Q122 191 122 150ZM500 282Q500 320 484 347T444 385T405 400T381 404H378L332 217L284 29Q284 27 285 27Q293 27 317 33T357 47Q400 66 431 100T475 170T494 234T500 282Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-28&quot; d=&quot;M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-2212&quot; d=&quot;M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-31&quot; d=&quot;M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-29&quot; d=&quot;M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D451&quot; d=&quot;M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D452&quot; d=&quot;M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z&quot;&gt;&lt;/path&gt;&lt;/defs&gt;&lt;/svg&gt;&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
+    <title>picoCTF - Web | SSTI1</title>
     <link href="https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/" />
     <updated>2025-08-30T00:00:00Z</updated>
     <id>https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/</id>
