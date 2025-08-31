@@ -11,6 +11,188 @@
     <name>Beed</name>
   </author>
   <entry>
+    <title>picoCTF - Reeverse Engineering | Flag Hunters</title>
+    <link href="https://beedpro.github.io/beefyi/posts/picoctf-reverse-engineering-flag-hunters/" />
+    <updated>2025-08-31T00:00:00Z</updated>
+    <id>https://beedpro.github.io/beefyi/posts/picoctf-reverse-engineering-flag-hunters/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://play.picoctf.org/practice/challenge/472?category=3&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;Flag Hunters&lt;/a&gt; is a reverse engineering challenge. The idea with these is straightforward: figure out what the program is doing, then twist that to your advantage. In this case, though, we&#39;re given the source code – so it feels less like breaking into a black box and more like an coding dry-run exercise. The code&#39;s written in Python, and our mission is to print out the flag that the program does not show us.&lt;/p&gt;
+&lt;h2 id=&quot;source-code&quot;&gt;Source code&lt;/h2&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; re
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; time
+
+
+&lt;span class=&quot;token comment&quot;&gt;# Read in flag from file&lt;/span&gt;
+flag &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;flag.txt&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;r&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;read&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+secret_intro &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &#92;
+&lt;span class=&quot;token triple-quoted-string string&quot;&gt;&#39;&#39;&#39;Pico warriors rising, puzzles laid bare,
+Solving each challenge with precision and flair.
+With unity and skill, flags we deliver,
+The ether’s ours to conquer, &#39;&#39;&#39;&lt;/span&gt;&#92;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; flag &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;&#92;n&#39;&lt;/span&gt;
+
+
+song_flag_hunters &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; secret_intro &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&#92;
+&lt;span class=&quot;token triple-quoted-string string&quot;&gt;&#39;&#39;&#39;
+
+[REFRAIN]
+We’re flag hunters in the ether, lighting up the grid,
+No puzzle too dark, no challenge too hid.
+With every exploit we trigger, every byte we decrypt,
+We’re chasing that victory, and we’ll never quit.
+CROWD (Singalong here!);
+RETURN
+
+[VERSE1]
+Command line wizards, we’re starting it right,
+Spawning shells in the terminal, hacking all night.
+Scripts and searches, grep through the void,
+Every keystroke, we&#39;re a cypher&#39;s envoy.
+Brute force the lock or craft that regex,
+Flag on the horizon, what challenge is next?
+
+REFRAIN;
+
+Echoes in memory, packets in trace,
+Digging through the remnants to uncover with haste.
+Hex and headers, carving out clues,
+Resurrect the hidden, it&#39;s forensics we choose.
+Disk dumps and packet dumps, follow the trail,
+Buried deep in the noise, but we will prevail.
+
+REFRAIN;
+
+Binary sorcerers, let’s tear it apart,
+Disassemble the code to reveal the dark heart.
+From opcode to logic, tracing each line,
+Emulate and break it, this key will be mine.
+Debugging the maze, and I see through the deceit,
+Patch it up right, and watch the lock release.
+
+REFRAIN;
+
+Ciphertext tumbling, breaking the spin,
+Feistel or AES, we’re destined to win.
+Frequency, padding, primes on the run,
+Vigenère, RSA, cracking them for fun.
+Shift the letters, matrices fall,
+Decrypt that flag and hear the ether call.
+
+REFRAIN;
+
+SQL injection, XSS flow,
+Map the backend out, let the database show.
+Inspecting each cookie, fiddler in the fight,
+Capturing requests, push the payload just right.
+HTML&#39;s secrets, backdoors unlocked,
+In the world wide labyrinth, we’re never lost.
+
+REFRAIN;
+
+Stack&#39;s overflowing, breaking the chain,
+ROP gadget wizardry, ride it to fame.
+Heap spray in silence, memory&#39;s plight,
+Race the condition, crash it just right.
+Shellcode ready, smashing the frame,
+Control the instruction, flags call my name.
+
+REFRAIN;
+
+END;
+&#39;&#39;&#39;&lt;/span&gt;
+
+MAX_LINES &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;100&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;reader&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;song&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; startLabel&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  start &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  refrain &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  refrain_return &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  finished &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;False&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;# Get list of lyric lines&lt;/span&gt;
+  song_lines &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; song&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;splitlines&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;# Find startLabel, refrain and refrain return&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;song_lines&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; startLabel&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      start &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;[REFRAIN]&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      refrain &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;RETURN&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      refrain_return &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i
+
+  &lt;span class=&quot;token comment&quot;&gt;# Print lyrics&lt;/span&gt;
+  line_count &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; start
+  &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;not&lt;/span&gt; finished &lt;span class=&quot;token keyword&quot;&gt;and&lt;/span&gt; line_count &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; MAX_LINES&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    line_count &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; line &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;;&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; line &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;&#39;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;and&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;continue&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; line &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;REFRAIN&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;refrain_return&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;RETURN &#39;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;lip &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; refrain
+      &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;CROWD.*&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        crowd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; crowd
+        lip &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;RETURN [0-9]+&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;line&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; line &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;END&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        finished &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;line&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; flush&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        time&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sleep&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        lip &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+
+
+
+reader&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;song_flag_hunters&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;[VERSE1]&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Looking through the code, it&#39;s clear that the &lt;code&gt;secret_intro&lt;/code&gt; is hiding the flag right at the start of the song. The catch? The lyric reader doesn’t begin there – it starts off at &lt;code&gt;[VERSE1]&lt;/code&gt;. That means we never actually see the intro unless we mess with the program flow. The program moves between sections using the keywords &lt;code&gt;[REFRAIN]&lt;/code&gt; and &lt;code&gt;RETURN&lt;/code&gt;, so the trick is to sneak one of those into the lyrics and force the reader to jump back up to the very first line. There are 3 key areas of the code that allow us to inject our own code and make it read out the start of the song.&lt;/p&gt;
+&lt;p&gt;First up, the splitting:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; line &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;;&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This means every line is chopped up at &lt;code&gt;;&lt;/code&gt;, so you can sneak in multiple &#39;mini-lines&#39; by separating them with semicolons.&lt;/p&gt;
+&lt;p&gt;Then, the user input with no checks:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;CROWD.*&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    crowd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; crowd
+    lip &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;See the problem? Whatever you type into &lt;code&gt;Crowd:&lt;/code&gt; gets dumped straight back into the song. No filtering, no sanitisation – just raw text being executed by the program. Perfert to inject into.&lt;/p&gt;
+&lt;p&gt;And finally, the &lt;code&gt;RETURN&lt;/code&gt; command:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;RETURN [0-9]+&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;line&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the program sees &lt;code&gt;RETURN &amp;lt;number&amp;gt;&lt;/code&gt;, it jumps directly to that line number in the song. Combine this with the input above, and we can plant something like &lt;code&gt;RETURN 0&lt;/code&gt; into the lyrics and force the program to loop back to the start – right where the flag is sitting in &lt;code&gt;secret_intro&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;The solution is to use the &lt;code&gt;Crowd:&lt;/code&gt; input as our injection point. If we start our input with a &lt;code&gt;;&lt;/code&gt;, the program treats everything after it as a brand-new line. That means we can slip in our own &lt;code&gt;RETURN&lt;/code&gt; statement.&lt;/p&gt;
+&lt;p&gt;So, something like this works perfectly:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;RETURN 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;What happens is neat: after the jump, the program sees an empty &lt;code&gt;Crowd:&lt;/code&gt; field (so nothing breaks), and then sees &lt;code&gt;RETURN 0&lt;/code&gt; due to the split and immediately loops back to the top of the song. And since the &lt;code&gt;secret_intro&lt;/code&gt; is sitting right there, it starts reading out the flag for us!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Crowd: ;RETURN 0
+
+Echoes in memory, packets in trace,
+Digging through the remnants to uncover with haste.
+Hex and headers, carving out clues,
+Resurrect the hidden, it&#39;s forensics we choose.
+Disk dumps and packet dumps, follow the trail,
+Buried deep in the noise, but we will prevail.
+
+We’re flag hunters in the ether, lighting up the grid,
+No puzzle too dark, no challenge too hid.
+With every exploit we trigger, every byte we decrypt,
+We’re chasing that victory, and we’ll never quit.
+Crowd:
+Pico warriors rising, puzzles laid bare,
+Solving each challenge with precision and flair.
+With unity and skill, flags we deliver,
+The ether’s ours to conquer, picoCTF{70637h3r_f0r3v3r_c373964d}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
     <title>picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</title>
     <link href="https://beedpro.github.io/beefyi/posts/picoctf-cryptography-even-rsa-can-be-broken/" />
     <updated>2025-08-31T00:00:00Z</updated>
