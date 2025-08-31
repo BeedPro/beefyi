@@ -1,5 +1,5 @@
 ---
-title: picoCTF - Reeverse Engineering | Flag Hunters
+title: picoCTF - Reverse Engineering | Flag Hunters
 description: A writeup of picoCTF's Reeverse Engineering Flag Hunters Challenge
 date: 2025-08-31
 tags: ["ctf", "writeup", "reverse-engineering"]
