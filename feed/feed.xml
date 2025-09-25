@@ -3,18 +3,18 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <title>beefyi</title>
   <subtitle>A place to store for all things beed</subtitle>
-  <link href="https://beedpro.github.io/beefyi/feed/feed.xml" rel="self" />
-  <link href="https://beedpro.github.io/beefyi/beefyi" />
+  <link href="https://blog.beed.org.uk/feed/feed.xml" rel="self" />
+  <link href="https://blog.beed.org.uk/" />
   <updated>2025-08-31T00:00:00Z</updated>
-  <id>https://beedpro.github.io/beefyi/beefyi</id>
+  <id>https://blog.beed.org.uk/</id>
   <author>
     <name>Beed</name>
   </author>
   <entry>
     <title>picoCTF - Reverse Engineering | Flag Hunters</title>
-    <link href="https://beedpro.github.io/beefyi/posts/picoctf-reverse-engineering-flag-hunters/" />
+    <link href="https://blog.beed.org.uk/posts/picoctf-reverse-engineering-flag-hunters/" />
     <updated>2025-08-31T00:00:00Z</updated>
-    <id>https://beedpro.github.io/beefyi/posts/picoctf-reverse-engineering-flag-hunters/</id>
+    <id>https://blog.beed.org.uk/posts/picoctf-reverse-engineering-flag-hunters/</id>
     <content type="html">
 &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://play.picoctf.org/practice/challenge/472?category=3&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;Flag Hunters&lt;/a&gt; is a reverse engineering challenge. The idea with these is straightforward: figure out what the program is doing, then twist that to your advantage. In this case, though, we&#39;re given the source code – so it feels less like breaking into a black box and more like an coding dry-run exercise. The code&#39;s written in Python, and our mission is to print out the flag that the program does not show us.&lt;/p&gt;
 &lt;h2 id=&quot;source-code&quot;&gt;Source code&lt;/h2&gt;
@@ -194,9 +194,9 @@ The ether’s ours to conquer, picoCTF{70637h3r_f0r3v3r_c373964d}
   </entry>
   <entry>
     <title>picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</title>
-    <link href="https://beedpro.github.io/beefyi/posts/picoctf-cryptography-even-rsa-can-be-broken/" />
+    <link href="https://blog.beed.org.uk/posts/picoctf-cryptography-even-rsa-can-be-broken/" />
     <updated>2025-08-31T00:00:00Z</updated>
-    <id>https://beedpro.github.io/beefyi/posts/picoctf-cryptography-even-rsa-can-be-broken/</id>
+    <id>https://blog.beed.org.uk/posts/picoctf-cryptography-even-rsa-can-be-broken/</id>
     <content type="html">
 &lt;html&gt;&lt;head&gt;&lt;style id=&quot;MJX-SVG-styles&quot;&gt;
 mjx-container[jax=&quot;SVG&quot;] {
@@ -371,9 +371,9 @@ pt_bytes &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; m&lt;span c
   </entry>
   <entry>
     <title>picoCTF - Web | SSTI1</title>
-    <link href="https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/" />
+    <link href="https://blog.beed.org.uk/posts/picoctf-web-ssti1/" />
     <updated>2025-08-30T00:00:00Z</updated>
-    <id>https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/</id>
+    <id>https://blog.beed.org.uk/posts/picoctf-web-ssti1/</id>
     <content type="html">
 &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;markdown-alert markdown-alert-note&quot;&gt;&lt;p class=&quot;markdown-alert-title&quot;&gt;Problem - SST1&lt;/p&gt;&lt;p&gt;I made a cool website where you can announce whatever you want!&lt;br&gt;
 Try it out! I heard templating is a cool and modular way to build web apps!&lt;br&gt;
@@ -383,30 +383,30 @@ Check out my website &lt;a href=&quot;http://rescued-float.picoctf.net:61957/&qu
 &lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
 &lt;p&gt;So I began working on the first problem: &lt;a href=&quot;https://play.picoctf.org/practice/challenge/492?category=1&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;Web | SSTI1&lt;/a&gt;, and right away it looked like there was some kind of injection needed. My first thought was SQL injection, since that&#39;s the type of injection I was most familiar with. But pretty quickly it became obvious that wasn&#39;t the exploit here. So, I went back to the challenge description to see if I&#39;d missed anything, and the line &quot;I heard templating is cool&quot; immediately made me think of server-side templates you usually see in full stack frameworks such as Django or &lt;a href=&quot;http://ASP.NET&quot;&gt;ASP.NET&lt;/a&gt; core.&lt;/p&gt;
 &lt;p&gt;A quick Google search led me to SSTI, Sever-side Template Injection, funny how the challenge title was giving away the exploit needed. Using the following &lt;a href=&quot;https://github.com/ogtirth/SSTI&quot;&gt;SSTI/Payload Cheatsheet&lt;/a&gt;, I tested to see if the site was actually vulnerable and to figure out which templating engine it was running. Turns out, it was running on a Python server using Jinja2 and was indeed vulnerable to SSTI - inputting &lt;code&gt;{{7*7}}&lt;/code&gt; into the field renders the result of &lt;code&gt;49&lt;/code&gt;.&lt;/p&gt;
-&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.png&quot; alt=&quot;The picture of entering seven times sevens into the input field of the site&quot; width=&quot;1366&quot; height=&quot;640&quot;&gt;&lt;/picture&gt;
-&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/wYreil4eho-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/wYreil4eho-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/wYreil4eho-1366.png&quot; alt=&quot;The picture of the seven times sevens being executed in the backend and rendered to the user&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.png&quot; alt=&quot;The picture of entering seven times sevens into the input field of the site&quot; width=&quot;1366&quot; height=&quot;640&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/wYreil4eho-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/wYreil4eho-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/wYreil4eho-1366.png&quot; alt=&quot;The picture of the seven times sevens being executed in the backend and rendered to the user&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
 &lt;p&gt;Naturally, I started looking up Jinja2 SSTI payloads since the ones from the cheatsheet weren&#39;t working for me. That search led me to this &lt;a href=&quot;https://onsecurity.io/article/server-side-template-injection-with-jinja2/&quot;&gt;article&lt;/a&gt;, which walked through a vulnerable Python Flask app. It included the following payload:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;id&#39;).read()}} 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;When I dropped that into the site, it worked - returning the user&#39;s ID along with their groups, confirming the exploit.&lt;/p&gt;
-&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.avif 2048w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.webp 2048w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.png&quot; alt=&quot;The picture of id and group of the user running the website&quot; width=&quot;2048&quot; height=&quot;309&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.avif 2048w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.webp 2048w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.png&quot; alt=&quot;The picture of id and group of the user running the website&quot; width=&quot;2048&quot; height=&quot;309&quot;&gt;&lt;/picture&gt;
 &lt;p&gt;The payload uses Python&#39;s &lt;a href=&quot;https://rszalski.github.io/magicmethods/&quot;&gt;magic methods&lt;/a&gt; in order to access the &lt;code&gt;os&lt;/code&gt; module and execute commands on the host. We can then list out the files in the server via:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls&#39;).read()}} 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/bvmpe7aQan-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/bvmpe7aQan-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/bvmpe7aQan-1366.png&quot; alt=&quot;The picture of result of ls showing __pychace__ directory, app.py and flag requirements.txt files&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/bvmpe7aQan-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/bvmpe7aQan-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/bvmpe7aQan-1366.png&quot; alt=&quot;The picture of result of ls showing __pychace__ directory, app.py and flag requirements.txt files&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
 &lt;p&gt;Great! we found the flag, its named &quot;flag&quot;, all we need to do now is output the contents of the file. We use the &lt;code&gt;cat&lt;/code&gt; command in our next request:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;cat flag&#39;).read()}} 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Giving us our flag!&lt;/p&gt;
-&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/9laP8m5hGm-1585.avif 1585w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/9laP8m5hGm-1585.webp 1585w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/picoctf-web-ssti1/9laP8m5hGm-1585.png&quot; alt=&quot; picoCTF{s4rv3r_s1d3_t3mp14t3_1nj3ct10n5_4r3_c001_bdc95c1a}&quot; width=&quot;1585&quot; height=&quot;84&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/9laP8m5hGm-1585.avif 1585w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/9laP8m5hGm-1585.webp 1585w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/9laP8m5hGm-1585.png&quot; alt=&quot; picoCTF{s4rv3r_s1d3_t3mp14t3_1nj3ct10n5_4r3_c001_bdc95c1a}&quot; width=&quot;1585&quot; height=&quot;84&quot;&gt;&lt;/picture&gt;
 &lt;/body&gt;&lt;/html&gt;
 </content>
   </entry>
   <entry>
     <title>Distro Confusion? The Only 3 Linux Distros That Matter</title>
-    <link href="https://beedpro.github.io/beefyi/posts/distro-confusion/" />
+    <link href="https://blog.beed.org.uk/posts/distro-confusion/" />
     <updated>2025-08-18T00:00:00Z</updated>
-    <id>https://beedpro.github.io/beefyi/posts/distro-confusion/</id>
+    <id>https://blog.beed.org.uk/posts/distro-confusion/</id>
     <content type="html">
 &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Linux comes in countless flavours, known as distributions (or distros for short). At its core, Linux is just the kernel - the low-level program that manages hardware and system resources. What most people call &quot;Linux&quot; is technically GNU/Linux: the kernel combined with the GNU project&#39;s free software tools that make it a complete operating system. In everyday conversation though, we simply call it Linux.&lt;/p&gt;
 &lt;p&gt;As you probably quickly find out, Linux comes in many different distros. But what does a distro get you? A distro is essentially a premade bundle built around the Linux kernel, but it doesn&#39;t stop there. It also includes the software that makes your computer actually usable: essential tools and libraries that let programmes run, a package manager, a desktop environment that gives your system its look and feel, are pre-installed to get you started. On top of that, each distro comes with its own community and support network to help in the event of something going wrong, and yes something &lt;strong&gt;will&lt;/strong&gt; go wrong. In short, a distro is the complete operating system you can install, run, and enjoy.&lt;/p&gt;
@@ -425,12 +425,12 @@ Check out my website &lt;a href=&quot;http://rescued-float.picoctf.net:61957/&qu
 &lt;p&gt;Debian is one of the oldest and most influential Linux distributions. It prides itself to stability, long-term support, and commitment to free software. Many distros trace their roots back to Debian, making it one of the pillars of the Linux ecosystem.&lt;/p&gt;
 &lt;p&gt;Debian is a good choice if you value reliability over bleeding-edge features. It&#39;s often used on servers where stability is critical, but it also works well on desktops for users who want a system that &quot;just works&quot; without frequent major changes. It&#39;s not the best option if you always want the latest software, but for those who prefer a dependable system, Debian is hard to beat.&lt;/p&gt;
 &lt;p&gt;Some of the most popular and widely used Linux distros are Debian derivatives. Ubuntu is the most famous example, which itself has spawned many other distros like Linux Mint, Pop!_OS, and elementary OS. This huge family tree shows just how central Debian is to the wider Linux world.&lt;/p&gt;
-&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/distro-confusion/-_XLLXK3mL-1920.avif 1920w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/distro-confusion/-_XLLXK3mL-1920.webp 1920w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/distro-confusion/-_XLLXK3mL-1920.png&quot; alt=&quot;A family tree of Debian and all the derivative distros from it, there are many children&quot; width=&quot;1920&quot; height=&quot;3138&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/-_XLLXK3mL-1920.avif 1920w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/-_XLLXK3mL-1920.webp 1920w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/distro-confusion/-_XLLXK3mL-1920.png&quot; alt=&quot;A family tree of Debian and all the derivative distros from it, there are many children&quot; width=&quot;1920&quot; height=&quot;3138&quot;&gt;&lt;/picture&gt;
 &lt;p&gt;This is my current distro as of writing. I&#39;ve had little to no issues with it, apart from the occasional problem with Nvidia drivers, since Debian&#39;s versions are often a bit outdated. I don&#39;t rely on the newest software, and my setup is clean and minimal, so this hasn&#39;t been a problem for me. It might also just be that I&#39;m most familiar with Debian and haven&#39;t felt the need to switch after landing on Debian. If you&#39;re new to Linux, I recommend starting with Debian. It has a huge support community, so help is easy to find if something goes wrong. The installation process has also improved a lot in recent years, making it much more beginner-friendly. During setup, you can choose from a variety of desktop environments such as GNOME, KDE Plasma, XFCE, or Cinnamon, allowing you to mimic the look and feel of many other popular distros.&lt;/p&gt;
 &lt;h2 id=&quot;fedora&quot;&gt;Fedora&lt;/h2&gt;
 &lt;p&gt;Fedora is known for being on the cutting edge while still maintaining a focus on stability. It&#39;s the upstream testing ground for Red Hat Enterprise Linux (RHEL), which means new technologies often land in Fedora first before being adopted into the enterprise world. This makes it an important distro for innovation in the Linux ecosystem. RHEL has picked up a bit of a bad reputation recently, which I won&#39;t go into here as that&#39;s a topic for another post, despite this I still think Fedora is a fantastic distro. That said, because of its connection to RHEL, I personally no longer use Fedora.&lt;/p&gt;
 &lt;p&gt;You may have already seen its children distros, the most popular being Nobara and Bazzite, both of which aim to provide an opinionated experience on top of Fedora&#39;s solid base to create a Linux gaming setup.&lt;/p&gt;
-&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/distro-confusion/BFs8RWZ0Qi-1024.avif 1024w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://beedpro.github.io/beefyi/posts/distro-confusion/BFs8RWZ0Qi-1024.webp 1024w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://beedpro.github.io/beefyi/posts/distro-confusion/BFs8RWZ0Qi-1024.png&quot; alt=&quot;A family tree of Redhat and all distros from made by them along with child distros based on them&quot; width=&quot;1024&quot; height=&quot;1207&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/BFs8RWZ0Qi-1024.avif 1024w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/BFs8RWZ0Qi-1024.webp 1024w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/distro-confusion/BFs8RWZ0Qi-1024.png&quot; alt=&quot;A family tree of Redhat and all distros from made by them along with child distros based on them&quot; width=&quot;1024&quot; height=&quot;1207&quot;&gt;&lt;/picture&gt;
 &lt;p&gt;Fedora benefits users who want fairly up-to-date software without going fully into rolling release territory. Developers in particular appreciate Fedora because it provides access to newer programming tools, libraries, and kernels while still remaining relatively stable for daily use. It&#39;s also a good fit for those interested in seeing where enterprise Linux is headed, since it shapes the direction of RHEL.&lt;/p&gt;
 &lt;p&gt;It&#39;s also a favourite among those who prefer the GNOME desktop in its pure form, since Fedora Workstation ships GNOME with very few modifications.&lt;/p&gt;
 &lt;p&gt;I like to think of Fedora as the new Ubuntu: a clean environment without Snap packages or heavy customisation. It gives users a pure Linux experience without third-party defaults getting in the way. Sitting somewhere between a rolling and a stable release, Fedora is an excellent final destination for distro hoppers or more technical users who need newer packages.&lt;/p&gt;
@@ -447,11 +447,11 @@ Check out my website &lt;a href=&quot;http://rescued-float.picoctf.net:61957/&qu
   </entry>
   <entry>
     <title>Hello World!</title>
-    <link href="https://beedpro.github.io/beefyi/posts/hello-world/" />
+    <link href="https://blog.beed.org.uk/posts/hello-world/" />
     <updated>2025-07-30T00:00:00Z</updated>
-    <id>https://beedpro.github.io/beefyi/posts/hello-world/</id>
+    <id>https://blog.beed.org.uk/posts/hello-world/</id>
     <content type="html">
-&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Welcome to my blog! This is my first post, so there&#39;s not a whole lot here just yet - but hopefully that&#39;ll change soon. Feel free to check out the &lt;a href=&quot;https://beedpro.github.io/beefyi/about/&quot;&gt;about&lt;/a&gt; page to find out a bit more about me and what this blog&#39;s all about.&lt;/p&gt;
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Welcome to my blog! This is my first post, so there&#39;s not a whole lot here just yet - but hopefully that&#39;ll change soon. Feel free to check out the &lt;a href=&quot;https://blog.beed.org.uk/about/&quot;&gt;about&lt;/a&gt; page to find out a bit more about me and what this blog&#39;s all about.&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;
 </content>
   </entry>
