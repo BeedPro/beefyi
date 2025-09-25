@@ -1,6 +1,6 @@
 export default {
 	title: "beefyi",
-	url: "https://beedpro.github.io/beefyi",
+	url: "https://blog.beed.org.uk",
 	language: "en",
 	description: "A place to store for all things beed",
 	author: {

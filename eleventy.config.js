@@ -84,7 +84,7 @@ export default async function (eleventyConfig) {
 			language: "en",
 			title: "beefyi",
 			subtitle: "A place to store for all things beed",
-			base: "https://beedpro.github.io/beefyi",
+			base: "https://blog.beed.org.uk",
 			author: {
 				name: "Beed",
 			},
