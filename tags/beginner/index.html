@@ -376,6 +376,68 @@ header {
 
 .markdown-alert-caution .markdown-alert-title {
 	color: var(--ctp-caution);
+}
+
+/* Catppuccin Mocha table styling */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: var(--ctp-surface);
+	color: var(--text-color);
+	border: 1px solid var(--color-gray-20);
+}
+
+/* Table header cells (th in thead) */
+thead th {
+	background-color: #181825;
+	color: var(--text-color);
+	text-align: left;
+	padding: 0.6rem 0.8rem;
+	border-bottom: 2px solid var(--color-gray-20);
+}
+
+/* Body header cells (th in tbody) */
+tbody tr th {
+	background-color: #181825;
+	color: var(--text-color);
+	font-weight: 500;
+	padding: 0.6rem 0.8rem;
+	border: 1px solid var(--color-gray-20);
+	border-right: 2px solid var(--color-gray-20);
+}
+
+/* Standard body cells */
+tbody td {
+	padding: 0.6rem 0.8rem;
+	border: 1px solid var(--color-gray-20);
+}
+
+/* Row separators */
+tbody tr + tr th,
+tbody tr + tr td {
+	border-top: 1px solid var(--color-gray-20);
+}
+
+/* Subtle row hover state */
+tbody tr:hover {
+	background-color: #2a2a3b;
+}
+
+/* Optional: colour-accented category headers in tbody */
+tbody tr th[data-type="note"] {
+	border-left: 3px solid var(--ctp-note);
+}
+tbody tr th[data-type="tip"] {
+	border-left: 3px solid var(--ctp-tip);
+}
+tbody tr th[data-type="important"] {
+	border-left: 3px solid var(--ctp-important);
+}
+tbody tr th[data-type="warning"] {
+	border-left: 3px solid var(--ctp-warning);
+}
+tbody tr th[data-type="caution"] {
+	border-left: 3px solid var(--ctp-caution);
 }</style>
 		
 	</head>
@@ -421,7 +483,7 @@ header {
 			</p>
 		</footer>
 
-		<!-- This page `/tags/beginner/` was built on 2025-09-25T15:25:06.892Z -->
+		<!-- This page `/tags/beginner/` was built on 2025-10-23T12:00:47.371Z -->
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 	</body>
 </html>

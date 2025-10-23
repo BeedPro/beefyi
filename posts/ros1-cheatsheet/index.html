@@ -1,0 +1,831 @@
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>ROS1 Cheatsheet</title>
+		<meta name="description" content="A space for updates, reflections, and snippets from beed. This is beefyi — Beed For Your Info.">
+		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="beefyi">
+		<link rel="icon" href="/favicon/favicon.ico" sizes="any">
+		
+		
+		
+		<style>/* This is an arbitrary CSS string added to the bundle */
+/* Defaults */
+:root {
+	--font-family: -apple-system, system-ui, sans-serif;
+	--font-family-monospace:
+		Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console,
+		Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono,
+		Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+}
+
+/* Theme colors */
+:root {
+	--color-gray-20: #bac2de;
+	--color-gray-90: #cdd6f4;
+
+	--background-color: #11111b;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #b4befe;
+	--text-color-link-active: #89b4fa;
+	--text-color-link-visited: #cba6f7;
+
+	--syntax-tab-size: 2;
+}
+
+:root {
+	--ctp-surface: #1e1e2e;
+
+	--ctp-note: #89b4fa; /* Blue */
+	--ctp-tip: #a6e3a1; /* Green */
+	--ctp-important: #f38ba8; /* Red */
+	--ctp-warning: #f9e2af; /* Yellow */
+	--ctp-caution: #fab387; /* Peach */
+}
+
+/* Global stylesheet */
+* {
+	box-sizing: border-box;
+}
+
+@view-transition {
+	navigation: auto;
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0 auto;
+	font-family: var(--font-family);
+	color: var(--text-color);
+	background-color: var(--background-color);
+}
+html {
+	overflow-y: scroll;
+}
+body {
+	max-width: 40em;
+}
+
+/* https://www.a11yproject.com/posts/how-to-hide-content/ */
+.visually-hidden:not(:focus):not(:active) {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/* Fluid images via https://www.zachleat.com/web/fluid-images/ */
+img {
+	max-width: 100%;
+}
+img[width][height] {
+	height: auto;
+}
+img[src$=".svg"] {
+	width: 100%;
+	height: auto;
+	max-width: none;
+}
+video,
+iframe {
+	width: 100%;
+	height: auto;
+}
+iframe {
+	aspect-ratio: 16/9;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+p {
+	line-height: 1.5;
+}
+
+li {
+	line-height: 1.5;
+}
+
+a[href] {
+	color: var(--text-color-link);
+}
+a[href]:visited {
+	color: var(--text-color-link-visited);
+}
+a[href]:hover,
+a[href]:active {
+	color: var(--text-color-link-active);
+}
+
+main,
+footer {
+	padding: 1rem;
+}
+main :first-child {
+	margin-top: 0;
+}
+
+header {
+	border-bottom: 1px solid var(--color-gray-20);
+}
+
+#skip-link {
+	text-decoration: none;
+	background: var(--background-color);
+	color: var(--text-color);
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--color-gray-90);
+	border-radius: 2px;
+}
+
+/* Prevent visually-hidden skip link fom pushing content around when focused */
+#skip-link.visually-hidden:focus {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	/* Ensure it is positioned on top of everything else when it is shown */
+	z-index: 999;
+}
+
+.links-nextprev {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5em 1em;
+	list-style: "";
+	border-top: 1px solid var(--color-gray-20);
+	padding: 1em 0;
+}
+.links-nextprev > * {
+	flex-grow: 1;
+}
+.links-nextprev-next {
+	text-align: right;
+}
+
+table {
+	margin: 1em 0;
+}
+table td,
+table th {
+	padding-right: 1em;
+}
+
+pre,
+code {
+	font-family: var(--font-family-monospace);
+}
+pre {
+	border: 4px solid var(--text-color-link-active);
+	padding: 16px;
+}
+pre:not([class*="language-"]) {
+	margin: 0.5em 0;
+	line-height: 1.375; /* 22px /16 */
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	overflow-x: auto;
+}
+code {
+	word-break: break-all;
+}
+
+/* Header */
+header {
+	display: flex;
+	gap: 1em;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1em;
+}
+.home-link {
+	flex-grow: 1;
+	font-size: 1em; /* 16px /16 */
+	font-weight: 700;
+}
+.home-link:link:not(:hover) {
+	text-decoration: none;
+}
+
+/* Nav */
+.nav {
+	display: flex;
+	gap: 0.5em 1em;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.nav-item {
+	display: inline-block;
+}
+.nav-item a[href]:not(:hover) {
+	text-decoration: none;
+}
+.nav a[href][aria-current="page"] {
+	text-decoration: underline;
+}
+
+/* Posts list */
+.postlist {
+	counter-reset: start-from var(--postlist-index);
+	list-style: none;
+	padding: 0;
+	padding-left: 1.5rem;
+}
+.postlist-item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	counter-increment: start-from -1;
+	margin-bottom: 1em;
+}
+.postlist-item:before {
+	display: inline-block;
+	pointer-events: none;
+	content: "" counter(start-from, decimal-leading-zero) ". ";
+	line-height: 100%;
+	text-align: right;
+	margin-left: -1.5rem;
+}
+.postlist-date,
+.postlist-item:before {
+	font-size: 0.8125em; /* 13px /16 */
+	color: var(--color-gray-90);
+}
+.postlist-date {
+	word-spacing: -0.5px;
+}
+.postlist-link {
+	font-size: 1.1875em; /* 19px /16 */
+	font-weight: 700;
+	flex-basis: calc(100% - 1.5rem);
+	padding-left: 0.25em;
+	padding-right: 0.5em;
+	text-underline-position: from-font;
+	text-underline-offset: 0;
+	text-decoration-thickness: 1px;
+}
+.postlist-item-active .postlist-link {
+	font-weight: bold;
+}
+
+/* Tags */
+.post-tag {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: lower;
+	font-style: italic;
+	text-decoration: none;
+}
+.postlist-item > .post-tag {
+	align-self: center;
+}
+
+/* Tags list */
+.post-metadata {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.post-metadata time {
+	margin-left: auto;
+}
+
+/* Base Alert Style */
+.markdown-alert {
+	padding: 1rem;
+	margin: 1.5rem 0;
+	border-left: 4px solid;
+	border-radius: 6px;
+	background-color: var(--ctp-surface);
+	color: var(--text-color);
+	font-size: 0.95rem;
+	line-height: 1.5;
+}
+
+.markdown-alert p {
+	margin: 0;
+}
+
+/* Title styling */
+.markdown-alert-title {
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+	color: inherit;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+/* Variants using Catppuccin variables */
+
+.markdown-alert-note {
+	border-left-color: var(--ctp-note);
+}
+
+.markdown-alert-tip {
+	border-left-color: var(--ctp-tip);
+}
+
+.markdown-alert-important {
+	border-left-color: var(--ctp-important);
+}
+
+.markdown-alert-warning {
+	border-left-color: var(--ctp-warning);
+}
+
+.markdown-alert-caution {
+	border-left-color: var(--ctp-caution);
+}
+
+/* Colour-specific titles matching the border */
+.markdown-alert-note .markdown-alert-title {
+	color: var(--ctp-note);
+}
+
+.markdown-alert-tip .markdown-alert-title {
+	color: var(--ctp-tip);
+}
+
+.markdown-alert-important .markdown-alert-title {
+	color: var(--ctp-important);
+}
+
+.markdown-alert-warning .markdown-alert-title {
+	color: var(--ctp-warning);
+}
+
+.markdown-alert-caution .markdown-alert-title {
+	color: var(--ctp-caution);
+}
+
+/* Catppuccin Mocha table styling */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: var(--ctp-surface);
+	color: var(--text-color);
+	border: 1px solid var(--color-gray-20);
+}
+
+/* Table header cells (th in thead) */
+thead th {
+	background-color: #181825;
+	color: var(--text-color);
+	text-align: left;
+	padding: 0.6rem 0.8rem;
+	border-bottom: 2px solid var(--color-gray-20);
+}
+
+/* Body header cells (th in tbody) */
+tbody tr th {
+	background-color: #181825;
+	color: var(--text-color);
+	font-weight: 500;
+	padding: 0.6rem 0.8rem;
+	border: 1px solid var(--color-gray-20);
+	border-right: 2px solid var(--color-gray-20);
+}
+
+/* Standard body cells */
+tbody td {
+	padding: 0.6rem 0.8rem;
+	border: 1px solid var(--color-gray-20);
+}
+
+/* Row separators */
+tbody tr + tr th,
+tbody tr + tr td {
+	border-top: 1px solid var(--color-gray-20);
+}
+
+/* Subtle row hover state */
+tbody tr:hover {
+	background-color: #2a2a3b;
+}
+
+/* Optional: colour-accented category headers in tbody */
+tbody tr th[data-type="note"] {
+	border-left: 3px solid var(--ctp-note);
+}
+tbody tr th[data-type="tip"] {
+	border-left: 3px solid var(--ctp-tip);
+}
+tbody tr th[data-type="important"] {
+	border-left: 3px solid var(--ctp-important);
+}
+tbody tr th[data-type="warning"] {
+	border-left: 3px solid var(--ctp-warning);
+}
+tbody tr th[data-type="caution"] {
+	border-left: 3px solid var(--ctp-caution);
+}
+/**
+ * okaidia theme for JavaScript, CSS and HTML
+ * Loosely based on Monokai textmate theme by http://www.monokai.nl/
+ * @author ocodia
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #f8f8f2;
+	background: none;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border-radius: 0.3em;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #272822;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #8292a2;
+}
+
+.token.punctuation {
+	color: #f8f8f2;
+}
+
+.token.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #f92672;
+}
+
+.token.boolean,
+.token.number {
+	color: #ae81ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #a6e22e;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+	color: #f8f8f2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+	color: #e6db74;
+}
+
+.token.keyword {
+	color: #66d9ef;
+}
+
+.token.regex,
+.token.important {
+	color: #fd971f;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+/*
+ * New diff- syntax
+ */
+
+pre[class*="language-diff-"] {
+	--eleventy-code-padding: 1.25em;
+	padding-left: var(--eleventy-code-padding);
+	padding-right: var(--eleventy-code-padding);
+}
+.token.deleted {
+	background-color: hsl(0, 51%, 37%);
+	color: inherit;
+}
+.token.inserted {
+	background-color: hsl(126, 31%, 39%);
+	color: inherit;
+}
+
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+	-webkit-user-select: none;
+	user-select: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+.token.prefix.inserted,
+.token.prefix.deleted {
+	width: var(--eleventy-code-padding);
+	background-color: rgba(0,0,0,.2);
+}
+
+/* Optional: full-width background color */
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+	display: block;
+	margin-left: calc(-1 * var(--eleventy-code-padding));
+	margin-right: calc(-1 * var(--eleventy-code-padding));
+	text-decoration: none; /* override del, ins, mark defaults */
+	color: inherit; /* override del, ins, mark defaults */
+}</style>
+		
+	</head>
+	<body>
+		<a href="#main" id="skip-link" class="visually-hidden">Skip to main content</a>
+
+		<header>
+			<a href="/" class="home-link">beefyi</a>
+			<nav>
+				<h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+				<ul class="nav">
+					<li class="nav-item"><a href="/posts/">Posts</a></li>
+					<li class="nav-item"><a href="/tags/">Tags</a></li>
+					<li class="nav-item"><a href="/about/">About</a></li>
+					<li class="nav-item"><a href="/feed/feed.xml">Feed</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<main id="main">
+			<heading-anchors>
+				
+
+
+<link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet">
+<h1 id="ros1-cheatsheet">ROS1 Cheatsheet</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2025-10-23">23 October 2025</time></li>
+	<li><a href="/tags/cheatsheet/" class="post-tag">cheatsheet</a>, </li>
+	<li><a href="/tags/draft/" class="post-tag">draft</a></li>
+</ul>
+
+<h1 id="ros-noetic">ROS Noetic</h1>
+<p><strong>ROS Noetic</strong> (Robot Operating System) is the final and most stable release of ROS 1, a framework for building and connecting robot software. It’s designed for Ubuntu 20.04 with Python 3 support and comes packed with tools, libraries, and community packages. However as of writing it has gone out of support from the ROS community and you should start using/migrating to ROS2. All code samples will be written in Python.</p>
+<p><strong>Useful resources:</strong><br>
+• <a href="http://wiki.ros.org">ROS Wiki</a><br>
+• <a href="https://docs.ros.org">ROS Documentation</a><br>
+• <a href="https://answers.ros.org">ROS Answers (Community Q&amp;A)</a><br>
+• <a href="https://github.com/ros">ROS GitHub</a></p>
+<h2 id="using-apptainer">Using apptainer</h2>
+<p>As I'm learning ROS, it was recommended to use containerisation software to run all the ROS tools in an isolated environment. For my setup, I'll be using <a href="https://apptainer.org/">Apptainer</a> to manage and run everything inside a container:</p>
+<pre><code>apptainer run -B /run/user/$UID /&lt;path_to_container.sif&gt;
+</code></pre>
+<p>Anything in wrapped with "&lt;&gt;" are templates and should not be copied into the command but replaced accordingly to the context the command. For example in the above command "&lt;path_to_container&gt;" should be replaced with the actual path of the <code>.sif</code> file.</p>
+<p>Assume that any command shown in this post is run within this container, code can be written in any IDE of your choice but the commands need to be run in the container.</p>
+<h2 id="ros-environment-setup">ROS Environment Setup</h2>
+<p>In ROS, a workspace (ws) is a directory where you build, modify, and organise your ROS packages and projects. We will be running our custom nodes and everything in the packages here.</p>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Create and source your workspace</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> ~/catkin_ws/src
+<span class="token builtin class-name">cd</span> ~/catkin_ws
+catkin_make
+<span class="token builtin class-name">source</span> devel/setup.bash</code></pre>
+<h2 id="package-creation">Package Creation</h2>
+<p><strong>Packages</strong> are the core building blocks that contain your code, nodes, launch files, and configuration, essentially everything needed for a specific function or feature in a robot system.</p>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/catkin_ws/src
+catkin_create_pkg <span class="token operator">&lt;</span>pkg_name<span class="token operator">&gt;</span> rospy <span class="token operator">&lt;</span>dep<span class="token operator"><span class="token file-descriptor important">1</span>&gt;</span> <span class="token operator">&lt;</span><span class="token punctuation">..</span>.<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>depn<span class="token operator">&gt;</span></code></pre>
+<p>Where <code>&lt;dep1&gt; &lt;...&gt; &lt;depn&gt;</code> is all the packages needed for the package. Note I leave rospy there since we will be using Python and do not worry you can go back to this and add more dependencies in the <code>packages.xml</code> file that is created after running this command.</p>
+<h2 id="full-package-structure">Full Package structure</h2>
+<pre><code>my_package/
+├── CMakeLists.txt
+├── package.xml
+├── src/
+│   └── my_node.py
+└── scripts/
+    └── talker.py
+</code></pre>
+<h2 id="writing-a-python-node">Writing a Python Node</h2>
+<p><strong>Example: <code>talker.py</code></strong></p>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> std_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> String
+
+<span class="token keyword">def</span> <span class="token function">talker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    pub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Publisher<span class="token punctuation">(</span><span class="token string">'chatter'</span><span class="token punctuation">,</span> String<span class="token punctuation">,</span> queue_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'talker'</span><span class="token punctuation">,</span> anonymous<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>  <span class="token comment"># 10Hz</span>
+    <span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        msg <span class="token operator">=</span> <span class="token string">"Hello ROS Noetic! %s"</span> <span class="token operator">%</span> rospy<span class="token punctuation">.</span>get_time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span>msg<span class="token punctuation">)</span>
+        pub<span class="token punctuation">.</span>publish<span class="token punctuation">(</span>msg<span class="token punctuation">)</span>
+        rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        talker<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> rospy<span class="token punctuation">.</span>ROSInterruptException<span class="token punctuation">:</span>
+        <span class="token keyword">pass</span></code></pre>
+<h2 id="subscribing-to-topics">Subscribing to Topics</h2>
+<p><strong>Example: <code>listener.py</code></strong></p>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> std_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> String
+
+<span class="token keyword">def</span> <span class="token function">callback</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"I heard %s"</span><span class="token punctuation">,</span> data<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">listener</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'listener'</span><span class="token punctuation">,</span> anonymous<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>Subscriber<span class="token punctuation">(</span><span class="token string">"chatter"</span><span class="token punctuation">,</span> String<span class="token punctuation">,</span> callback<span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    listener<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h2 id="running-nodes">Running Nodes</h2>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Make executable</span>
+<span class="token function">chmod</span> +x scripts/<span class="token operator">&lt;</span>name<span class="token operator">&gt;</span>.py
+
+<span class="token comment"># Build the workspace</span>
+<span class="token builtin class-name">cd</span> ~/catkin_ws
+catkin_make
+
+<span class="token comment"># Source the workspace</span>
+<span class="token builtin class-name">source</span> devel/setup.bash
+
+<span class="token comment"># Run roscore</span>
+roscore
+
+<span class="token comment"># In a new terminal</span>
+rosrun <span class="token operator">&lt;</span>pkg<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span>.py</code></pre>
+<h2 id="node-commands">Node Commands</h2>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Check node info</span>
+rosnode info /talker
+
+<span class="token comment"># List active nodes</span>
+rosnode list
+
+<span class="token comment"># Kill a node</span>
+rosnode <span class="token function">kill</span> <span class="token operator">&lt;</span>node_name<span class="token operator">&gt;</span>
+
+<span class="token comment"># Kill all nodes</span>
+rosnode <span class="token function">kill</span> <span class="token parameter variable">-a</span></code></pre>
+<h2 id="topic-commands">Topic commands</h2>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># List topics</span>
+rostopic list
+
+<span class="token comment"># Echo topic messages</span>
+rostopic <span class="token builtin class-name">echo</span> /chatter
+
+<span class="token comment"># Info about a topic</span>
+rostopic info /chatter</code></pre>
+<h2 id="useful-ros-commands">Useful ROS Commands</h2>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Running Stage simulator Rviz</span>
+rosrun rviz rviz <span class="token parameter variable">-d</span> <span class="token variable"><span class="token variable">`</span>rospack <span class="token function">find</span> rosplan_stage_demo<span class="token variable">`</span></span>/config/rosplan_stage_demo.rviz <span class="token operator">&amp;</span>
+
+<span class="token comment"># Running Stage Simulator</span>
+roslaunch rosplan_stage_demo empty_stage_single_robot.launch <span class="token operator">&amp;</span></code></pre>
+<h2 id="launch-files">Launch Files</h2>
+<p><strong>Example: <code>launch/talker_listener.launch</code></strong></p>
+<pre class="language-xml" tabindex="0"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>launch</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my_package<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>talker.py<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>talker<span class="token punctuation">"</span></span> <span class="token attr-name">output</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>screen<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my_package<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>listener.py<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>listener<span class="token punctuation">"</span></span> <span class="token attr-name">output</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>screen<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>launch</span><span class="token punctuation">&gt;</span></span></code></pre>
+<p><strong>Run it</strong></p>
+<pre class="language-bash" tabindex="0"><code class="language-bash">roslaunch my_package talker_listener.launch</code></pre>
+<h2 id="common-message-types">Common Message Types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Import</th>
+<th>Example Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std_msgs/String</code></td>
+<td><code>from std_msgs.msg import String</code></td>
+<td>Chat or text data</td>
+</tr>
+<tr>
+<td><code>geometry_msgs/Twist</code></td>
+<td><code>from geometry_msgs.msg import Twist</code></td>
+<td>Velocity commands</td>
+</tr>
+<tr>
+<td><code>sensor_msgs/Image</code></td>
+<td><code>from sensor_msgs.msg import Image</code></td>
+<td>Camera data</td>
+</tr>
+<tr>
+<td><code>nav_msgs/Odometry</code></td>
+<td><code>from nav_msgs.msg import Odometry</code></td>
+<td>Robot position data</td>
+</tr>
+</tbody>
+</table>
+<h2 id="workspace-maintenance">Workspace Maintenance</h2>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Clean workspace</span>
+catkin_make clean
+
+<span class="token comment"># Rebuild everything</span>
+catkin_make <span class="token parameter variable">-DCMAKE_BUILD_TYPE</span><span class="token operator">=</span>Release
+
+<span class="token comment"># Re-source environment</span>
+<span class="token builtin class-name">source</span> devel/setup.bash</code></pre>
+<h2 id="debugging-tips">Debugging Tips</h2>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Check log files</span>
+roscd log
+<span class="token function">less</span> latest/rosout.log
+
+<span class="token comment"># Print debug messages</span>
+rospy.logdebug<span class="token punctuation">(</span><span class="token string">"Debug message"</span><span class="token punctuation">)</span>
+rospy.loginfo<span class="token punctuation">(</span><span class="token string">"Info message"</span><span class="token punctuation">)</span>
+rospy.logwarn<span class="token punctuation">(</span><span class="token string">"Warning message"</span><span class="token punctuation">)</span>
+rospy.logerr<span class="token punctuation">(</span><span class="token string">"Error message"</span><span class="token punctuation">)</span></code></pre>
+
+<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/posts/picoctf-reverse-engineering-flag-hunters/">picoCTF - Reverse Engineering | Flag Hunters</a></li>
+</ul>
+
+			</heading-anchors>
+		</main>
+
+		<footer>
+			<p>
+				<em>Built with <a href="https://www.11ty.dev/">Eleventy v3.1.2</a></em>
+			</p>
+		</footer>
+
+		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-23T12:00:47.087Z -->
+		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
+	</body>
+</html>
