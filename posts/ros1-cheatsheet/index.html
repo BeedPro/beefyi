@@ -659,12 +659,12 @@ pre[class*="language-diff-"] {
 <span class="token builtin class-name">cd</span> ~/catkin_ws
 catkin_make
 <span class="token builtin class-name">source</span> devel/setup.bash</code></pre>
-<h2 id="package-creation">Package Creation</h2>
+<h3 id="package-creation">Package Creation</h3>
 <p><strong>Packages</strong> are the core building blocks that contain your code, nodes, launch files, and configuration, essentially everything needed for a specific function or feature in a robot system.</p>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/catkin_ws/src
 catkin_create_pkg <span class="token operator">&lt;</span>pkg_name<span class="token operator">&gt;</span> rospy <span class="token operator">&lt;</span>dep<span class="token operator"><span class="token file-descriptor important">1</span>&gt;</span> <span class="token operator">&lt;</span><span class="token punctuation">..</span>.<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>depn<span class="token operator">&gt;</span></code></pre>
 <p>Where <code>&lt;dep1&gt; &lt;...&gt; &lt;depn&gt;</code> is all the packages needed for the package. Note I leave rospy there since we will be using Python and do not worry you can go back to this and add more dependencies in the <code>packages.xml</code> file that is created after running this command.</p>
-<h2 id="full-package-structure">Full Package structure</h2>
+<h3 id="full-package-structure">Full Package structure</h3>
 <pre><code>my_package/
 ├── CMakeLists.txt
 ├── package.xml
@@ -694,7 +694,7 @@ catkin_create_pkg <span class="token operator">&lt;</span>pkg_name<span class="t
         talker<span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token keyword">except</span> rospy<span class="token punctuation">.</span>ROSInterruptException<span class="token punctuation">:</span>
         <span class="token keyword">pass</span></code></pre>
-<h2 id="subscribing-to-topics">Subscribing to Topics</h2>
+<h3 id="subscribing-to-topics">Subscribing to Topics</h3>
 <p><strong>Example: <code>listener.py</code></strong></p>
 <pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
 <span class="token keyword">import</span> rospy
@@ -710,7 +710,7 @@ catkin_create_pkg <span class="token operator">&lt;</span>pkg_name<span class="t
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
     listener<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-<h2 id="running-nodes">Running Nodes</h2>
+<h3 id="running-nodes">Running Nodes</h3>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Make executable</span>
 <span class="token function">chmod</span> +x scripts/<span class="token operator">&lt;</span>name<span class="token operator">&gt;</span>.py
 
@@ -726,7 +726,7 @@ roscore
 
 <span class="token comment"># In a new terminal</span>
 rosrun <span class="token operator">&lt;</span>pkg<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span>.py</code></pre>
-<h2 id="node-commands">Node Commands</h2>
+<h3 id="node-commands">Node Commands</h3>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Check node info</span>
 rosnode info /talker
 
@@ -738,7 +738,7 @@ rosnode <span class="token function">kill</span> <span class="token operator">&l
 
 <span class="token comment"># Kill all nodes</span>
 rosnode <span class="token function">kill</span> <span class="token parameter variable">-a</span></code></pre>
-<h2 id="topic-commands">Topic commands</h2>
+<h3 id="topic-commands">Topic commands</h3>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># List topics</span>
 rostopic list
 
@@ -747,20 +747,35 @@ rostopic <span class="token builtin class-name">echo</span> /chatter
 
 <span class="token comment"># Info about a topic</span>
 rostopic info /chatter</code></pre>
+<h2 id="ros-launch">ROS Launch</h2>
+<p><strong>Example of a launch file:</strong></p>
+<pre class="language-xml" tabindex="0"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>launch</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>include</span> <span class="token attr-name">file</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$(find &lt;pkg&gt;)/launch/&lt;file.launch&gt;<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>&lt;pkg&gt;<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>&lt;node&gt;<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>&lt;name&gt;<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>remap</span> <span class="token attr-name">from</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>&lt;from_topic&gt;<span class="token punctuation">"</span></span> <span class="token attr-name">to</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>&lt;to_topic&gt;<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>node</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>launch</span><span class="token punctuation">&gt;</span></span></code></pre>
+<p><strong>Run it</strong></p>
+<pre class="language-bash" tabindex="0"><code class="language-bash">roslaunch <span class="token operator">&lt;</span>pkg<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>file.launch<span class="token operator">&gt;</span></code></pre>
+<h2 id="rosbag">Rosbag</h2>
+<p>To record logs from a topic and then can replay it for debugging purposes</p>
+<pre class="language-bash" tabindex="0"><code class="language-bash">rosbag record /<span class="token operator">&lt;</span>topic<span class="token operator">&gt;</span></code></pre>
+<pre class="language-bash" tabindex="0"><code class="language-bash">rosbag play <span class="token operator">&lt;</span>file.bag<span class="token operator">&gt;</span></code></pre>
+<h3 id="ros-plot">ROS Plot</h3>
+<p>We can use <code>rqt_plot</code> to visualise the messages of the topic:</p>
+<pre class="language-bash" tabindex="0"><code class="language-bash">rosrun rqt_plot rqt_plot</code></pre>
+<p>Use <code>rosmsg</code> to see what lines you can add to the plot and visualise.</p>
+<pre class="language-bash" tabindex="0"><code class="language-bash">rosmsg info /<span class="token operator">&lt;</span>topic<span class="token operator">&gt;</span></code></pre>
+<h2 id="ros-actions">ROS Actions</h2>
+<p>TODO: Complete</p>
+<h2 id="ros-services">ROS Services</h2>
+<p>TODO: Complete</p>
 <h2 id="useful-ros-commands">Useful ROS Commands</h2>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Running Stage simulator Rviz</span>
 rosrun rviz rviz <span class="token parameter variable">-d</span> <span class="token variable"><span class="token variable">`</span>rospack <span class="token function">find</span> rosplan_stage_demo<span class="token variable">`</span></span>/config/rosplan_stage_demo.rviz <span class="token operator">&amp;</span>
 
 <span class="token comment"># Running Stage Simulator</span>
 roslaunch rosplan_stage_demo empty_stage_single_robot.launch <span class="token operator">&amp;</span></code></pre>
-<h2 id="launch-files">Launch Files</h2>
-<p><strong>Example: <code>launch/talker_listener.launch</code></strong></p>
-<pre class="language-xml" tabindex="0"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>launch</span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my_package<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>talker.py<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>talker<span class="token punctuation">"</span></span> <span class="token attr-name">output</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>screen<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my_package<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>listener.py<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>listener<span class="token punctuation">"</span></span> <span class="token attr-name">output</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>screen<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>launch</span><span class="token punctuation">&gt;</span></span></code></pre>
-<p><strong>Run it</strong></p>
-<pre class="language-bash" tabindex="0"><code class="language-bash">roslaunch my_package talker_listener.launch</code></pre>
 <h2 id="common-message-types">Common Message Types</h2>
 <table>
 <thead>
@@ -825,7 +840,7 @@ rospy.logerr<span class="token punctuation">(</span><span class="token string">"
 			</p>
 		</footer>
 
-		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-26T15:49:54.635Z -->
+		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-26T16:06:47.583Z -->
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 	</body>
 </html>

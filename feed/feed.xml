@@ -36,12 +36,12 @@
 &lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ~/catkin_ws
 catkin_make
 &lt;span class=&quot;token builtin class-name&quot;&gt;source&lt;/span&gt; devel/setup.bash&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;package-creation&quot;&gt;Package Creation&lt;/h2&gt;
+&lt;h3 id=&quot;package-creation&quot;&gt;Package Creation&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Packages&lt;/strong&gt; are the core building blocks that contain your code, nodes, launch files, and configuration, essentially everything needed for a specific function or feature in a robot system.&lt;/p&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ~/catkin_ws/src
 catkin_create_pkg &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;pkg_name&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; rospy &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;dep&lt;span class=&quot;token operator&quot;&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;1&lt;/span&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;depn&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Where &lt;code&gt;&amp;lt;dep1&amp;gt; &amp;lt;...&amp;gt; &amp;lt;depn&amp;gt;&lt;/code&gt; is all the packages needed for the package. Note I leave rospy there since we will be using Python and do not worry you can go back to this and add more dependencies in the &lt;code&gt;packages.xml&lt;/code&gt; file that is created after running this command.&lt;/p&gt;
-&lt;h2 id=&quot;full-package-structure&quot;&gt;Full Package structure&lt;/h2&gt;
+&lt;h3 id=&quot;full-package-structure&quot;&gt;Full Package structure&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;my_package/
 ├── CMakeLists.txt
 ├── package.xml
@@ -71,7 +71,7 @@ catkin_create_pkg &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span
         talker&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;token keyword&quot;&gt;except&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ROSInterruptException&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;token keyword&quot;&gt;pass&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;subscribing-to-topics&quot;&gt;Subscribing to Topics&lt;/h2&gt;
+&lt;h3 id=&quot;subscribing-to-topics&quot;&gt;Subscribing to Topics&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Example: &lt;code&gt;listener.py&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
@@ -87,7 +87,7 @@ catkin_create_pkg &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span
 
 &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; __name__ &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;__main__&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
     listener&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;running-nodes&quot;&gt;Running Nodes&lt;/h2&gt;
+&lt;h3 id=&quot;running-nodes&quot;&gt;Running Nodes&lt;/h3&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Make executable&lt;/span&gt;
 &lt;span class=&quot;token function&quot;&gt;chmod&lt;/span&gt; +x scripts/&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;.py
 
@@ -103,7 +103,7 @@ roscore
 
 &lt;span class=&quot;token comment&quot;&gt;# In a new terminal&lt;/span&gt;
 rosrun &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;pkg&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;.py&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;node-commands&quot;&gt;Node Commands&lt;/h2&gt;
+&lt;h3 id=&quot;node-commands&quot;&gt;Node Commands&lt;/h3&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Check node info&lt;/span&gt;
 rosnode info /talker
 
@@ -115,7 +115,7 @@ rosnode &lt;span class=&quot;token function&quot;&gt;kill&lt;/span&gt; &lt;span 
 
 &lt;span class=&quot;token comment&quot;&gt;# Kill all nodes&lt;/span&gt;
 rosnode &lt;span class=&quot;token function&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-a&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;topic-commands&quot;&gt;Topic commands&lt;/h2&gt;
+&lt;h3 id=&quot;topic-commands&quot;&gt;Topic commands&lt;/h3&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# List topics&lt;/span&gt;
 rostopic list
 
@@ -124,20 +124,35 @@ rostopic &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt
 
 &lt;span class=&quot;token comment&quot;&gt;# Info about a topic&lt;/span&gt;
 rostopic info /chatter&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;ros-launch&quot;&gt;ROS Launch&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Example of a launch file:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-xml&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-xml&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;launch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+	&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;include&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;$(find &amp;lt;pkg&amp;gt;)/launch/&amp;lt;file.launch&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;
+	&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;node&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;pkg&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;node&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;name&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+		&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;remap&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;from_topic&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;to_topic&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;
+	&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;node&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;launch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Run it&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;roslaunch &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;pkg&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;file.launch&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;rosbag&quot;&gt;Rosbag&lt;/h2&gt;
+&lt;p&gt;To record logs from a topic and then can replay it for debugging purposes&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosbag record /&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;topic&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosbag play &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;file.bag&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;ros-plot&quot;&gt;ROS Plot&lt;/h3&gt;
+&lt;p&gt;We can use &lt;code&gt;rqt_plot&lt;/code&gt; to visualise the messages of the topic:&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosrun rqt_plot rqt_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Use &lt;code&gt;rosmsg&lt;/code&gt; to see what lines you can add to the plot and visualise.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosmsg info /&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;topic&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;ros-actions&quot;&gt;ROS Actions&lt;/h2&gt;
+&lt;p&gt;TODO: Complete&lt;/p&gt;
+&lt;h2 id=&quot;ros-services&quot;&gt;ROS Services&lt;/h2&gt;
+&lt;p&gt;TODO: Complete&lt;/p&gt;
 &lt;h2 id=&quot;useful-ros-commands&quot;&gt;Useful ROS Commands&lt;/h2&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Running Stage simulator Rviz&lt;/span&gt;
 rosrun rviz rviz &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;rospack &lt;span class=&quot;token function&quot;&gt;find&lt;/span&gt; rosplan_stage_demo&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;&lt;/span&gt;/config/rosplan_stage_demo.rviz &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;
 
 &lt;span class=&quot;token comment&quot;&gt;# Running Stage Simulator&lt;/span&gt;
 roslaunch rosplan_stage_demo empty_stage_single_robot.launch &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;launch-files&quot;&gt;Launch Files&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Example: &lt;code&gt;launch/talker_listener.launch&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;pre class=&quot;language-xml&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-xml&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;launch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;node&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;my_package&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;talker.py&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;talker&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;screen&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;
-  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;node&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;my_package&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;listener.py&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;listener&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;screen&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;launch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;Run it&lt;/strong&gt;&lt;/p&gt;
-&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;roslaunch my_package talker_listener.launch&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&quot;common-message-types&quot;&gt;Common Message Types&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
