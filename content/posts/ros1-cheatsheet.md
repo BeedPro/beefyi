@@ -62,6 +62,30 @@ my_package/
     └── talker.py
 ```
 
+## Configure CMakeLists.txt
+
+For custom messages, services, actions please refer to the `CMakeLists.txt` that is automatically generated with `catkin_create_pkg`.
+
+Quickish places to add:
+
+```cmake
+find_package(catkin REQUIRED COMPONENTS rospy std_msgs message_generation)
+
+add_<messages/services/actions>_files(
+  FILES
+  <file.srv>
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS message_runtime
+)
+```
+
 ## Writing a Python Node
 
 **Example: `talker.py`**
@@ -203,13 +227,175 @@ Use `rosmsg` to see what lines you can add to the plot and visualise.
 rosmsg info /<topic>
 ```
 
-## ROS Actions
-
-TODO: Complete
-
 ## ROS Services
 
-TODO: Complete
+Services are synchronous (request/response) communication between nodes.
+
+### Create a Service Definition
+
+Example File: `srv/AddTwoInts.srv`
+
+```srv
+int64 a
+int64 b
+---
+int64 sum
+```
+
+Place inside:
+`<pkg>/srv/<file.srv>`
+
+### Service Server Example
+
+```python
+#!/usr/bin/env python
+
+from your_package.srv import AddTwoInts, AddTwoIntsResponse
+import rospy
+
+def handle_add_two_ints(req):
+    rospy.loginfo(f"Adding {req.a} + {req.b}")
+    return AddTwoIntsResponse(req.a + req.b)
+
+rospy.init_node('add_two_ints_server')
+service = rospy.Service('add_two_ints', AddTwoInts, handle_add_two_ints)
+rospy.loginfo("Ready to add two ints.")
+rospy.spin()
+```
+
+### Service Client Server
+
+```python
+#!/usr/bin/env python
+
+import rospy
+from your_package.srv import AddTwoInts
+
+rospy.init_node('add_two_ints_client')
+rospy.wait_for_service('add_two_ints')
+
+try:
+    add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts)
+    resp = add_two_ints(3, 5)
+    rospy.loginfo(f"Sum = {resp.sum}")
+except rospy.ServiceException as e:
+    rospy.logerr(f"Service call failed: {e}")
+```
+
+### Command-line Tools
+
+```bash
+rosservice list
+rosservice info /add_two_ints
+rosservice call /add_two_ints "a: 2 b: 3"
+rossrv show your_package/AddTwoInts
+```
+
+## ROS Actions
+
+Actions are asynchronous, providing feedback and allowing preemption.
+
+### Create an Action Definition
+
+Example File: `action/Fibonacci.action`
+
+```action
+int32 order
+---
+int32[] sequence
+---
+int32[] feedback_sequence
+```
+
+Place inside:
+`<pkg>/action/<file.action>`
+
+### 💻 **3. Python Action Server**
+
+```python
+#!/usr/bin/env python
+
+import rospy
+import actionlib
+from your_package.msg import FibonacciAction, FibonacciFeedback, FibonacciResult
+
+class FibonacciActionServer:
+    def __init__(self):
+        self.server = actionlib.SimpleActionServer('fibonacci', FibonacciAction, self.execute, False)
+        self.server.start()
+
+    def execute(self, goal):
+        feedback = FibonacciFeedback()
+        result = FibonacciResult()
+
+        feedback.sequence = [0, 1]
+
+        for i in range(2, goal.order):
+            if self.server.is_preempt_requested():
+                rospy.loginfo("Goal preempted")
+                self.server.set_preempted()
+                return
+
+            feedback.sequence.append(feedback.sequence[-1] + feedback.sequence[-2])
+            self.server.publish_feedback(feedback)
+            rospy.sleep(1.0)
+
+        result.sequence = feedback.sequence
+        self.server.set_succeeded(result)
+
+rospy.init_node('fibonacci_server')
+server = FibonacciActionServer()
+rospy.spin()
+```
+
+---
+
+### Action Client
+
+```python
+#!/usr/bin/env python
+
+import rospy
+import actionlib
+from your_package.msg import FibonacciAction, FibonacciGoal
+
+def feedback_cb(feedback):
+    rospy.loginfo(f"Feedback: {feedback.sequence}")
+
+rospy.init_node('fibonacci_client')
+client = actionlib.SimpleActionClient('fibonacci', FibonacciAction)
+client.wait_for_server()
+
+goal = FibonacciGoal(order=5)
+client.send_goal(goal, feedback_cb=feedback_cb)
+client.wait_for_result()
+
+result = client.get_result()
+rospy.loginfo(f"Result: {result.sequence}")
+```
+
+### Command-line Tools
+
+```bash
+rosaction list
+rosaction info fibonacci
+rosaction show your_package/Fibonacci
+
+# Using the action client tool (rqt or actionlib_tools)
+rostopic pub /fibonacci/goal your_package/FibonacciActionGoal "{goal: {order: 5}}"
+rostopic echo /fibonacci/feedback
+rostopic echo /fibonacci/result
+```
+
+## Service vs Action Summary
+
+| Feature             | Service                | Action                      |
+| ------------------- | ---------------------- | --------------------------- |
+| Communication Style | Synchronous (blocking) | Asynchronous (non-blocking) |
+| Use Case            | Quick request/response | Long-running task           |
+| Feedback            | None                   | Periodic feedback available |
+| Preemption          | Not possible           | Possible                    |
+| Tools               | `rosservice`           | `actionlib`, `rostopic`     |
 
 ## Useful ROS Commands
 
