@@ -397,7 +397,7 @@ rostopic echo /fibonacci/result
 | Preemption          | Not possible           | Possible                    |
 | Tools               | `rosservice`           | `actionlib`, `rostopic`     |
 
-## Useful ROS Commands
+## Rviz Commands
 
 ```bash
 # Running Stage simulator Rviz
