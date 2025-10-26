@@ -317,7 +317,7 @@ rostopic &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&quot;useful-ros-commands&quot;&gt;Useful ROS Commands&lt;/h2&gt;
+&lt;h2 id=&quot;rviz-commands&quot;&gt;Rviz Commands&lt;/h2&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Running Stage simulator Rviz&lt;/span&gt;
 rosrun rviz rviz &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;rospack &lt;span class=&quot;token function&quot;&gt;find&lt;/span&gt; rosplan_stage_demo&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;&lt;/span&gt;/config/rosplan_stage_demo.rviz &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;
 
