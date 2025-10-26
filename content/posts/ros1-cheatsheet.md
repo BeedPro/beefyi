@@ -39,7 +39,7 @@ catkin_make
 source devel/setup.bash
 ```
 
-## Package Creation
+### Package Creation
 
 **Packages** are the core building blocks that contain your code, nodes, launch files, and configuration, essentially everything needed for a specific function or feature in a robot system.
 
@@ -50,7 +50,7 @@ catkin_create_pkg <pkg_name> rospy <dep1> <...> <depn>
 
 Where `<dep1> <...> <depn>` is all the packages needed for the package. Note I leave rospy there since we will be using Python and do not worry you can go back to this and add more dependencies in the `packages.xml` file that is created after running this command.
 
-## Full Package structure
+### Full Package structure
 
 ```
 my_package/
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         pass
 ```
 
-## Subscribing to Topics
+### Subscribing to Topics
 
 **Example: `listener.py`**
 
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     listener()
 ```
 
-## Running Nodes
+### Running Nodes
 
 ```bash
 # Make executable
@@ -129,7 +129,7 @@ roscore
 rosrun <pkg> <name>.py
 ```
 
-## Node Commands
+### Node Commands
 
 ```bash
 # Check node info
@@ -145,7 +145,7 @@ rosnode kill <node_name>
 rosnode kill -a
 ```
 
-## Topic commands
+### Topic commands
 
 ```bash
 # List topics
@@ -158,6 +158,59 @@ rostopic echo /chatter
 rostopic info /chatter
 ```
 
+## ROS Launch
+
+**Example of a launch file:**
+
+```xml
+<launch>
+	<include file="$(find <pkg>)/launch/<file.launch>" />
+	<node pkg="<pkg>" type="<node>" name="<name>">
+		<remap from="<from_topic>" to="<to_topic>" />
+	</node>
+</launch>
+```
+
+**Run it**
+
+```bash
+roslaunch <pkg> <file.launch>
+```
+
+## Rosbag
+
+To record logs from a topic and then can replay it for debugging purposes
+
+```bash
+rosbag record /<topic>
+```
+
+```bash
+rosbag play <file.bag>
+```
+
+### ROS Plot
+
+We can use `rqt_plot` to visualise the messages of the topic:
+
+```bash
+rosrun rqt_plot rqt_plot
+```
+
+Use `rosmsg` to see what lines you can add to the plot and visualise.
+
+```bash
+rosmsg info /<topic>
+```
+
+## ROS Actions
+
+TODO: Complete
+
+## ROS Services
+
+TODO: Complete
+
 ## Useful ROS Commands
 
 ```bash
@@ -166,23 +219,6 @@ rosrun rviz rviz -d `rospack find rosplan_stage_demo`/config/rosplan_stage_demo.
 
 # Running Stage Simulator
 roslaunch rosplan_stage_demo empty_stage_single_robot.launch &
-```
-
-## Launch Files
-
-**Example: `launch/talker_listener.launch`**
-
-```xml
-<launch>
-  <node pkg="my_package" type="talker.py" name="talker" output="screen"/>
-  <node pkg="my_package" type="listener.py" name="listener" output="screen"/>
-</launch>
-```
-
-**Run it**
-
-```bash
-roslaunch my_package talker_listener.launch
 ```
 
 ## Common Message Types
