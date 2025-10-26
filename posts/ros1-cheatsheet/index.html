@@ -673,6 +673,24 @@ catkin_create_pkg <span class="token operator">&lt;</span>pkg_name<span class="t
 └── scripts/
     └── talker.py
 </code></pre>
+<h2 id="configure-cmakelists-txt">Configure CMakeLists.txt</h2>
+<p>For custom messages, services, actions please refer to the <code>CMakeLists.txt</code> that is automatically generated with <code>catkin_create_pkg</code>.</p>
+<p>Quickish places to add:</p>
+<pre class="language-cmake" tabindex="0"><code class="language-cmake"><span class="token keyword">find_package</span><span class="token punctuation">(</span>catkin REQUIRED COMPONENTS rospy std_msgs message_generation<span class="token punctuation">)</span>
+
+add_&lt;messages/services/actions<span class="token punctuation">&gt;</span><span class="token function">_files</span><span class="token punctuation">(</span>
+  FILES
+  &lt;file.srv<span class="token punctuation">&gt;</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">generate_messages</span><span class="token punctuation">(</span>
+  DEPENDENCIES
+  std_msgs
+<span class="token punctuation">)</span>
+
+<span class="token function">catkin_package</span><span class="token punctuation">(</span>
+  CATKIN_DEPENDS message_runtime
+<span class="token punctuation">)</span></code></pre>
 <h2 id="writing-a-python-node">Writing a Python Node</h2>
 <p><strong>Example: <code>talker.py</code></strong></p>
 <pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
@@ -766,10 +784,162 @@ rostopic info /chatter</code></pre>
 <pre class="language-bash" tabindex="0"><code class="language-bash">rosrun rqt_plot rqt_plot</code></pre>
 <p>Use <code>rosmsg</code> to see what lines you can add to the plot and visualise.</p>
 <pre class="language-bash" tabindex="0"><code class="language-bash">rosmsg info /<span class="token operator">&lt;</span>topic<span class="token operator">&gt;</span></code></pre>
-<h2 id="ros-actions">ROS Actions</h2>
-<p>TODO: Complete</p>
 <h2 id="ros-services">ROS Services</h2>
-<p>TODO: Complete</p>
+<p>Services are synchronous (request/response) communication between nodes.</p>
+<h3 id="create-a-service-definition">Create a Service Definition</h3>
+<p>Example File: <code>srv/AddTwoInts.srv</code></p>
+<pre class="language-srv" tabindex="0"><code class="language-srv">int64 a
+int64 b
+---
+int64 sum</code></pre>
+<p>Place inside:<br>
+<code>&lt;pkg&gt;/srv/&lt;file.srv&gt;</code></p>
+<h3 id="service-server-example">Service Server Example</h3>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+
+<span class="token keyword">from</span> your_package<span class="token punctuation">.</span>srv <span class="token keyword">import</span> AddTwoInts<span class="token punctuation">,</span> AddTwoIntsResponse
+<span class="token keyword">import</span> rospy
+
+<span class="token keyword">def</span> <span class="token function">handle_add_two_ints</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Adding </span><span class="token interpolation"><span class="token punctuation">{</span>req<span class="token punctuation">.</span>a<span class="token punctuation">}</span></span><span class="token string"> + </span><span class="token interpolation"><span class="token punctuation">{</span>req<span class="token punctuation">.</span>b<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> AddTwoIntsResponse<span class="token punctuation">(</span>req<span class="token punctuation">.</span>a <span class="token operator">+</span> req<span class="token punctuation">.</span>b<span class="token punctuation">)</span>
+
+rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'add_two_ints_server'</span><span class="token punctuation">)</span>
+service <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Service<span class="token punctuation">(</span><span class="token string">'add_two_ints'</span><span class="token punctuation">,</span> AddTwoInts<span class="token punctuation">,</span> handle_add_two_ints<span class="token punctuation">)</span>
+rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"Ready to add two ints."</span><span class="token punctuation">)</span>
+rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h3 id="service-client-server">Service Client Server</h3>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> your_package<span class="token punctuation">.</span>srv <span class="token keyword">import</span> AddTwoInts
+
+rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'add_two_ints_client'</span><span class="token punctuation">)</span>
+rospy<span class="token punctuation">.</span>wait_for_service<span class="token punctuation">(</span><span class="token string">'add_two_ints'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    add_two_ints <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">'add_two_ints'</span><span class="token punctuation">,</span> AddTwoInts<span class="token punctuation">)</span>
+    resp <span class="token operator">=</span> add_two_ints<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Sum = </span><span class="token interpolation"><span class="token punctuation">{</span>resp<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span class="token keyword">except</span> rospy<span class="token punctuation">.</span>ServiceException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>logerr<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Service call failed: </span><span class="token interpolation"><span class="token punctuation">{</span>e<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></code></pre>
+<h3 id="command-line-tools">Command-line Tools</h3>
+<pre class="language-bash" tabindex="0"><code class="language-bash">rosservice list
+rosservice info /add_two_ints
+rosservice call /add_two_ints <span class="token string">"a: 2 b: 3"</span>
+rossrv show your_package/AddTwoInts</code></pre>
+<h2 id="ros-actions">ROS Actions</h2>
+<p>Actions are asynchronous, providing feedback and allowing preemption.</p>
+<h3 id="create-an-action-definition">Create an Action Definition</h3>
+<p>Example File: <code>action/Fibonacci.action</code></p>
+<pre class="language-action" tabindex="0"><code class="language-action">int32 order
+---
+int32[] sequence
+---
+int32[] feedback_sequence</code></pre>
+<p>Place inside:<br>
+<code>&lt;pkg&gt;/action/&lt;file.action&gt;</code></p>
+<h3 id="3-python-action-server">💻 <strong>3. Python Action Server</strong></h3>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+
+<span class="token keyword">import</span> rospy
+<span class="token keyword">import</span> actionlib
+<span class="token keyword">from</span> your_package<span class="token punctuation">.</span>msg <span class="token keyword">import</span> FibonacciAction<span class="token punctuation">,</span> FibonacciFeedback<span class="token punctuation">,</span> FibonacciResult
+
+<span class="token keyword">class</span> <span class="token class-name">FibonacciActionServer</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>server <span class="token operator">=</span> actionlib<span class="token punctuation">.</span>SimpleActionServer<span class="token punctuation">(</span><span class="token string">'fibonacci'</span><span class="token punctuation">,</span> FibonacciAction<span class="token punctuation">,</span> self<span class="token punctuation">.</span>execute<span class="token punctuation">,</span> <span class="token boolean">False</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>server<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">execute</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> goal<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        feedback <span class="token operator">=</span> FibonacciFeedback<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        result <span class="token operator">=</span> FibonacciResult<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        feedback<span class="token punctuation">.</span>sequence <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>
+
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> goal<span class="token punctuation">.</span>order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>server<span class="token punctuation">.</span>is_preempt_requested<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"Goal preempted"</span><span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>server<span class="token punctuation">.</span>set_preempted<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span>
+
+            feedback<span class="token punctuation">.</span>sequence<span class="token punctuation">.</span>append<span class="token punctuation">(</span>feedback<span class="token punctuation">.</span>sequence<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> feedback<span class="token punctuation">.</span>sequence<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>server<span class="token punctuation">.</span>publish_feedback<span class="token punctuation">(</span>feedback<span class="token punctuation">)</span>
+            rospy<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span>
+
+        result<span class="token punctuation">.</span>sequence <span class="token operator">=</span> feedback<span class="token punctuation">.</span>sequence
+        self<span class="token punctuation">.</span>server<span class="token punctuation">.</span>set_succeeded<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+
+rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'fibonacci_server'</span><span class="token punctuation">)</span>
+server <span class="token operator">=</span> FibonacciActionServer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<hr>
+<h3 id="action-client">Action Client</h3>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+
+<span class="token keyword">import</span> rospy
+<span class="token keyword">import</span> actionlib
+<span class="token keyword">from</span> your_package<span class="token punctuation">.</span>msg <span class="token keyword">import</span> FibonacciAction<span class="token punctuation">,</span> FibonacciGoal
+
+<span class="token keyword">def</span> <span class="token function">feedback_cb</span><span class="token punctuation">(</span>feedback<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Feedback: </span><span class="token interpolation"><span class="token punctuation">{</span>feedback<span class="token punctuation">.</span>sequence<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'fibonacci_client'</span><span class="token punctuation">)</span>
+client <span class="token operator">=</span> actionlib<span class="token punctuation">.</span>SimpleActionClient<span class="token punctuation">(</span><span class="token string">'fibonacci'</span><span class="token punctuation">,</span> FibonacciAction<span class="token punctuation">)</span>
+client<span class="token punctuation">.</span>wait_for_server<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+goal <span class="token operator">=</span> FibonacciGoal<span class="token punctuation">(</span>order<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>
+client<span class="token punctuation">.</span>send_goal<span class="token punctuation">(</span>goal<span class="token punctuation">,</span> feedback_cb<span class="token operator">=</span>feedback_cb<span class="token punctuation">)</span>
+client<span class="token punctuation">.</span>wait_for_result<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+result <span class="token operator">=</span> client<span class="token punctuation">.</span>get_result<span class="token punctuation">(</span><span class="token punctuation">)</span>
+rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Result: </span><span class="token interpolation"><span class="token punctuation">{</span>result<span class="token punctuation">.</span>sequence<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></code></pre>
+<h3 id="command-line-tools-2">Command-line Tools</h3>
+<pre class="language-bash" tabindex="0"><code class="language-bash">rosaction list
+rosaction info fibonacci
+rosaction show your_package/Fibonacci
+
+<span class="token comment"># Using the action client tool (rqt or actionlib_tools)</span>
+rostopic pub /fibonacci/goal your_package/FibonacciActionGoal <span class="token string">"{goal: {order: 5}}"</span>
+rostopic <span class="token builtin class-name">echo</span> /fibonacci/feedback
+rostopic <span class="token builtin class-name">echo</span> /fibonacci/result</code></pre>
+<h2 id="service-vs-action-summary">Service vs Action Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Service</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Communication Style</td>
+<td>Synchronous (blocking)</td>
+<td>Asynchronous (non-blocking)</td>
+</tr>
+<tr>
+<td>Use Case</td>
+<td>Quick request/response</td>
+<td>Long-running task</td>
+</tr>
+<tr>
+<td>Feedback</td>
+<td>None</td>
+<td>Periodic feedback available</td>
+</tr>
+<tr>
+<td>Preemption</td>
+<td>Not possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td><code>rosservice</code></td>
+<td><code>actionlib</code>, <code>rostopic</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="useful-ros-commands">Useful ROS Commands</h2>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Running Stage simulator Rviz</span>
 rosrun rviz rviz <span class="token parameter variable">-d</span> <span class="token variable"><span class="token variable">`</span>rospack <span class="token function">find</span> rosplan_stage_demo<span class="token variable">`</span></span>/config/rosplan_stage_demo.rviz <span class="token operator">&amp;</span>
@@ -840,7 +1010,7 @@ rospy.logerr<span class="token punctuation">(</span><span class="token string">"
 			</p>
 		</footer>
 
-		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-26T16:06:47.583Z -->
+		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-26T19:41:06.977Z -->
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 	</body>
 </html>

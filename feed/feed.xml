@@ -50,6 +50,24 @@ catkin_create_pkg &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span
 └── scripts/
     └── talker.py
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;configure-cmakelists-txt&quot;&gt;Configure CMakeLists.txt&lt;/h2&gt;
+&lt;p&gt;For custom messages, services, actions please refer to the &lt;code&gt;CMakeLists.txt&lt;/code&gt; that is automatically generated with &lt;code&gt;catkin_create_pkg&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Quickish places to add:&lt;/p&gt;
+&lt;pre class=&quot;language-cmake&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-cmake&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;find_package&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;catkin REQUIRED COMPONENTS rospy std_msgs message_generation&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+add_&amp;lt;messages/services/actions&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;_files&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  FILES
+  &amp;lt;file.srv&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token function&quot;&gt;generate_messages&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  DEPENDENCIES
+  std_msgs
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token function&quot;&gt;catkin_package&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  CATKIN_DEPENDS message_runtime
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&quot;writing-a-python-node&quot;&gt;Writing a Python Node&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Example: &lt;code&gt;talker.py&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
@@ -143,10 +161,162 @@ rostopic info /chatter&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosrun rqt_plot rqt_plot&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Use &lt;code&gt;rosmsg&lt;/code&gt; to see what lines you can add to the plot and visualise.&lt;/p&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosmsg info /&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;topic&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;ros-actions&quot;&gt;ROS Actions&lt;/h2&gt;
-&lt;p&gt;TODO: Complete&lt;/p&gt;
 &lt;h2 id=&quot;ros-services&quot;&gt;ROS Services&lt;/h2&gt;
-&lt;p&gt;TODO: Complete&lt;/p&gt;
+&lt;p&gt;Services are synchronous (request/response) communication between nodes.&lt;/p&gt;
+&lt;h3 id=&quot;create-a-service-definition&quot;&gt;Create a Service Definition&lt;/h3&gt;
+&lt;p&gt;Example File: &lt;code&gt;srv/AddTwoInts.srv&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-srv&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-srv&quot;&gt;int64 a
+int64 b
+---
+int64 sum&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Place inside:&lt;br&gt;
+&lt;code&gt;&amp;lt;pkg&amp;gt;/srv/&amp;lt;file.srv&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;service-server-example&quot;&gt;Service Server Example&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;srv &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; AddTwoInts&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AddTwoIntsResponse
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;handle_add_two_ints&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Adding &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt; + &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;b&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; AddTwoIntsResponse&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;a &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;b&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints_server&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+service &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Service&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AddTwoInts&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; handle_add_two_ints&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Ready to add two ints.&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;spin&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;service-client-server&quot;&gt;Service Client Server&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;srv &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; AddTwoInts
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints_client&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;wait_for_service&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    add_two_ints &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ServiceProxy&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AddTwoInts&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    resp &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; add_two_ints&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Sum = &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;resp&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;except&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ServiceException &lt;span class=&quot;token keyword&quot;&gt;as&lt;/span&gt; e&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;logerr&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Service call failed: &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;e&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;command-line-tools&quot;&gt;Command-line Tools&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosservice list
+rosservice info /add_two_ints
+rosservice call /add_two_ints &lt;span class=&quot;token string&quot;&gt;&quot;a: 2 b: 3&quot;&lt;/span&gt;
+rossrv show your_package/AddTwoInts&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;ros-actions&quot;&gt;ROS Actions&lt;/h2&gt;
+&lt;p&gt;Actions are asynchronous, providing feedback and allowing preemption.&lt;/p&gt;
+&lt;h3 id=&quot;create-an-action-definition&quot;&gt;Create an Action Definition&lt;/h3&gt;
+&lt;p&gt;Example File: &lt;code&gt;action/Fibonacci.action&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-action&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-action&quot;&gt;int32 order
+---
+int32[] sequence
+---
+int32[] feedback_sequence&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Place inside:&lt;br&gt;
+&lt;code&gt;&amp;lt;pkg&amp;gt;/action/&amp;lt;file.action&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;3-python-action-server&quot;&gt;💻 &lt;strong&gt;3. Python Action Server&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; actionlib
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciFeedback&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciResult
+
+&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;FibonacciActionServer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; actionlib&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;SimpleActionServer&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;execute&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;start&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; goal&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        feedback &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciFeedback&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        result &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciResult&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; goal&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;order&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;is_preempt_requested&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+                rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Goal preempted&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+                self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;set_preempted&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt;
+
+            feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;append&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;publish_feedback&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sleep&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        result&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence
+        self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;set_succeeded&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;result&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci_server&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+server &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciActionServer&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;spin&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;action-client&quot;&gt;Action Client&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; actionlib
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciGoal
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;feedback_cb&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Feedback: &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci_client&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; actionlib&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;SimpleActionClient&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;wait_for_server&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+goal &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciGoal&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;order&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;send_goal&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;goal&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; feedback_cb&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;feedback_cb&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;wait_for_result&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+result &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get_result&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Result: &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;result&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;command-line-tools-2&quot;&gt;Command-line Tools&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosaction list
+rosaction info fibonacci
+rosaction show your_package/Fibonacci
+
+&lt;span class=&quot;token comment&quot;&gt;# Using the action client tool (rqt or actionlib_tools)&lt;/span&gt;
+rostopic pub /fibonacci/goal your_package/FibonacciActionGoal &lt;span class=&quot;token string&quot;&gt;&quot;{goal: {order: 5}}&quot;&lt;/span&gt;
+rostopic &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; /fibonacci/feedback
+rostopic &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; /fibonacci/result&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;service-vs-action-summary&quot;&gt;Service vs Action Summary&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature&lt;/th&gt;
+&lt;th&gt;Service&lt;/th&gt;
+&lt;th&gt;Action&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Communication Style&lt;/td&gt;
+&lt;td&gt;Synchronous (blocking)&lt;/td&gt;
+&lt;td&gt;Asynchronous (non-blocking)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Use Case&lt;/td&gt;
+&lt;td&gt;Quick request/response&lt;/td&gt;
+&lt;td&gt;Long-running task&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Feedback&lt;/td&gt;
+&lt;td&gt;None&lt;/td&gt;
+&lt;td&gt;Periodic feedback available&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Preemption&lt;/td&gt;
+&lt;td&gt;Not possible&lt;/td&gt;
+&lt;td&gt;Possible&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Tools&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;rosservice&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;actionlib&lt;/code&gt;, &lt;code&gt;rostopic&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;h2 id=&quot;useful-ros-commands&quot;&gt;Useful ROS Commands&lt;/h2&gt;
 &lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Running Stage simulator Rviz&lt;/span&gt;
 rosrun rviz rviz &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;rospack &lt;span class=&quot;token function&quot;&gt;find&lt;/span&gt; rosplan_stage_demo&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;&lt;/span&gt;/config/rosplan_stage_demo.rviz &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;
