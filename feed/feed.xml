@@ -5,7 +5,7 @@
   <subtitle>A place to store for all things beed</subtitle>
   <link href="https://blog.beed.org.uk/feed/feed.xml" rel="self" />
   <link href="https://blog.beed.org.uk/" />
-  <updated>2025-10-23T00:00:00Z</updated>
+  <updated>2025-10-26T00:00:00Z</updated>
   <id>https://blog.beed.org.uk/</id>
   <author>
     <name>Beed</name>
@@ -13,7 +13,7 @@
   <entry>
     <title>ROS1 Cheatsheet</title>
     <link href="https://blog.beed.org.uk/posts/ros1-cheatsheet/" />
-    <updated>2025-10-23T00:00:00Z</updated>
+    <updated>2025-10-26T00:00:00Z</updated>
     <id>https://blog.beed.org.uk/posts/ros1-cheatsheet/</id>
     <content type="html">
 &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;ros-noetic&quot;&gt;ROS Noetic&lt;/h1&gt;
