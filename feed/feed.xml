@@ -216,7 +216,7 @@ int32[] sequence
 int32[] feedback_sequence&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Place inside:&lt;br&gt;
 &lt;code&gt;&amp;lt;pkg&amp;gt;/action/&amp;lt;file.action&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;h3 id=&quot;3-python-action-server&quot;&gt;💻 &lt;strong&gt;3. Python Action Server&lt;/strong&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;action-server&quot;&gt;Action Server&lt;/h3&gt;
 &lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
 
 &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
@@ -250,7 +250,6 @@ int32[] feedback_sequence&lt;/code&gt;&lt;/pre&gt;
 rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci_server&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 server &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciActionServer&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;spin&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;hr&gt;
 &lt;h3 id=&quot;action-client&quot;&gt;Action Client&lt;/h3&gt;
 &lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
 

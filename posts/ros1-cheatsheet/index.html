@@ -839,7 +839,7 @@ int32[] sequence
 int32[] feedback_sequence</code></pre>
 <p>Place inside:<br>
 <code>&lt;pkg&gt;/action/&lt;file.action&gt;</code></p>
-<h3 id="3-python-action-server">💻 <strong>3. Python Action Server</strong></h3>
+<h3 id="action-server">Action Server</h3>
 <pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
 
 <span class="token keyword">import</span> rospy
@@ -873,7 +873,6 @@ int32[] feedback_sequence</code></pre>
 rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'fibonacci_server'</span><span class="token punctuation">)</span>
 server <span class="token operator">=</span> FibonacciActionServer<span class="token punctuation">(</span><span class="token punctuation">)</span>
 rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-<hr>
 <h3 id="action-client">Action Client</h3>
 <pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
 
@@ -1010,7 +1009,7 @@ rospy.logerr<span class="token punctuation">(</span><span class="token string">"
 			</p>
 		</footer>
 
-		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-26T19:45:10.501Z -->
+		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-27T10:40:52.188Z -->
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 	</body>
 </html>
