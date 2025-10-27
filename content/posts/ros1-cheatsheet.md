@@ -310,7 +310,7 @@ int32[] feedback_sequence
 Place inside:
 `<pkg>/action/<file.action>`
 
-### 💻 **3. Python Action Server**
+### Action Server
 
 ```python
 #!/usr/bin/env python
@@ -347,8 +347,6 @@ rospy.init_node('fibonacci_server')
 server = FibonacciActionServer()
 rospy.spin()
 ```
-
----
 
 ### Action Client
 
