@@ -1,7 +1,7 @@
 ---
 title: ROS1 Cheatsheet
 description: A space for updates, reflections, and snippets from beed. This is beefyi — Beed For Your Info.
-date: 2025-10-26
+date: 2025-11-07
 tags: ["cheatsheet", "draft"]
 ---
 
@@ -394,6 +394,104 @@ rostopic echo /fibonacci/result
 | Feedback            | None                   | Periodic feedback available |
 | Preemption          | Not possible           | Possible                    |
 | Tools               | `rosservice`           | `actionlib`, `rostopic`     |
+
+## ROS Transfomers
+
+TF2 lets you relate coordinate frames at any point in time.
+
+### TF tree
+
+```bash
+# visual
+rosrun rqt_tf_tree rqt_tf_tree
+
+# text only
+rosrun tf2_tools view_frames.py
+
+# numeric lookups
+rosrun tf tf_echo /base_link /map
+```
+
+### Broadcasting a static transform
+
+```bash
+# x y z roll pitch yaw frame_child frame_parent
+rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 camera_link base_link
+```
+
+### Broadcasting with Python
+
+```python
+#!/usr/bin/env python3
+
+import rospy
+import tf_conversions
+import tf2_ros
+import geometry_msgs.msg
+
+rospy.init_node('tf_broadcaster')
+br = tf2_ros.TransformBroadcaster()
+t = geometry_msgs.msg.TransformStamped()
+
+rate = rospy.Rate(10)
+while not rospy.is_shutdown():
+    t.header.stamp = rospy.Time.now()
+    t.header.frame_id = "base_link"
+    t.child_frame_id = "camera_link"
+    t.transform.translation.x = 0.1
+    t.transform.translation.y = 0.0
+    t.transform.translation.z = 0.2
+    q = tf_conversions.transformations.quaternion_from_euler(0, 0, 0.52)
+    t.transform.rotation.x = q[0]
+    t.transform.rotation.y = q[1]
+    t.transform.rotation.z = q[2]
+    t.transform.rotation.w = q[3]
+    br.sendTransform(t)
+    rate.sleep()
+```
+
+### Listening in Python
+
+```python
+#!/usr/bin/env python3
+
+import rospy
+import tf2_ros
+import geometry_msgs.msg
+
+rospy.init_node('tf_listener')
+tfBuffer = tf2_ros.Buffer()
+listener = tf2_ros.TransformListener(tfBuffer)
+
+rate = rospy.Rate(10)
+while not rospy.is_shutdown():
+    try:
+        transf = tfBuffer.lookup_transform('map', 'base_link', rospy.Time(0))
+        rospy.loginfo(f"x = {transf.transform.translation.x:.3f}")
+    except Exception as e:
+        rospy.logwarn(str(e))
+    rate.sleep()
+```
+
+### Common patterns
+
+| What you want                         | How to do it                                           |
+| ------------------------------------- | ------------------------------------------------------ |
+| “where is frame B relative to A now?” | `tfBuffer.lookup_transform(A, B, now)`                 |
+| periodic static offsets               | run `static_transform_publisher` once                  |
+| convert Euler → quaternion            | `tf_conversions.transformations.quaternion_from_euler` |
+
+### Typical frame names
+
+| Frame            | Meaning                          |
+| ---------------- | -------------------------------- |
+| `map`            | global / world reference         |
+| `odom`           | continuous local (drift allowed) |
+| `base_link`      | robot body                       |
+| `base_footprint` | projected body on ground plane   |
+| sensors          | eg `lidar_link`, `camera_link`   |
+
+**rule of thumb:** only broadcast frames you _own_, never stomp another node's frame.
 
 ## Rviz Commands
 
