@@ -634,7 +634,7 @@ pre[class*="language-diff-"] {
 <h1 id="ros1-cheatsheet">ROS1 Cheatsheet</h1>
 
 <ul class="post-metadata">
-	<li><time datetime="2025-10-26">26 October 2025</time></li>
+	<li><time datetime="2025-11-07">07 November 2025</time></li>
 	<li><a href="/tags/cheatsheet/" class="post-tag">cheatsheet</a>, </li>
 	<li><a href="/tags/draft/" class="post-tag">draft</a></li>
 </ul>
@@ -939,6 +939,121 @@ rostopic <span class="token builtin class-name">echo</span> /fibonacci/result</c
 </tr>
 </tbody>
 </table>
+<h2 id="ros-transfomers">ROS Transfomers</h2>
+<p>TF2 lets you relate coordinate frames at any point in time.</p>
+<h3 id="tf-tree">TF tree</h3>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># visual</span>
+rosrun rqt_tf_tree rqt_tf_tree
+
+<span class="token comment"># text only</span>
+rosrun tf2_tools view_frames.py
+
+<span class="token comment"># numeric lookups</span>
+rosrun tf tf_echo /base_link /map</code></pre>
+<h3 id="broadcasting-a-static-transform">Broadcasting a static transform</h3>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># x y z roll pitch yaw frame_child frame_parent</span>
+rosrun tf2_ros static_transform_publisher <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> camera_link base_link</code></pre>
+<h3 id="broadcasting-with-python">Broadcasting with Python</h3>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
+
+<span class="token keyword">import</span> rospy
+<span class="token keyword">import</span> tf_conversions
+<span class="token keyword">import</span> tf2_ros
+<span class="token keyword">import</span> geometry_msgs<span class="token punctuation">.</span>msg
+
+rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'tf_broadcaster'</span><span class="token punctuation">)</span>
+br <span class="token operator">=</span> tf2_ros<span class="token punctuation">.</span>TransformBroadcaster<span class="token punctuation">(</span><span class="token punctuation">)</span>
+t <span class="token operator">=</span> geometry_msgs<span class="token punctuation">.</span>msg<span class="token punctuation">.</span>TransformStamped<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t<span class="token punctuation">.</span>header<span class="token punctuation">.</span>stamp <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Time<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span>header<span class="token punctuation">.</span>frame_id <span class="token operator">=</span> <span class="token string">"base_link"</span>
+    t<span class="token punctuation">.</span>child_frame_id <span class="token operator">=</span> <span class="token string">"camera_link"</span>
+    t<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">0.1</span>
+    t<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">0.0</span>
+    t<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>z <span class="token operator">=</span> <span class="token number">0.2</span>
+    q <span class="token operator">=</span> tf_conversions<span class="token punctuation">.</span>transformations<span class="token punctuation">.</span>quaternion_from_euler<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0.52</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x <span class="token operator">=</span> q<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    t<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y <span class="token operator">=</span> q<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    t<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z <span class="token operator">=</span> q<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+    t<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>w <span class="token operator">=</span> q<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+    br<span class="token punctuation">.</span>sendTransform<span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+    rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h3 id="listening-in-python">Listening in Python</h3>
+<pre class="language-python" tabindex="0"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
+
+<span class="token keyword">import</span> rospy
+<span class="token keyword">import</span> tf2_ros
+<span class="token keyword">import</span> geometry_msgs<span class="token punctuation">.</span>msg
+
+rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'tf_listener'</span><span class="token punctuation">)</span>
+tfBuffer <span class="token operator">=</span> tf2_ros<span class="token punctuation">.</span>Buffer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+listener <span class="token operator">=</span> tf2_ros<span class="token punctuation">.</span>TransformListener<span class="token punctuation">(</span>tfBuffer<span class="token punctuation">)</span>
+
+rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        transf <span class="token operator">=</span> tfBuffer<span class="token punctuation">.</span>lookup_transform<span class="token punctuation">(</span><span class="token string">'map'</span><span class="token punctuation">,</span> <span class="token string">'base_link'</span><span class="token punctuation">,</span> rospy<span class="token punctuation">.</span>Time<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"x = </span><span class="token interpolation"><span class="token punctuation">{</span>transf<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>x<span class="token punctuation">:</span><span class="token format-spec">.3f</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>logwarn<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<h3 id="common-patterns">Common patterns</h3>
+<table>
+<thead>
+<tr>
+<th>What you want</th>
+<th>How to do it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“where is frame B relative to A now?”</td>
+<td><code>tfBuffer.lookup_transform(A, B, now)</code></td>
+</tr>
+<tr>
+<td>periodic static offsets</td>
+<td>run <code>static_transform_publisher</code> once</td>
+</tr>
+<tr>
+<td>convert Euler → quaternion</td>
+<td><code>tf_conversions.transformations.quaternion_from_euler</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="typical-frame-names">Typical frame names</h3>
+<table>
+<thead>
+<tr>
+<th>Frame</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>map</code></td>
+<td>global / world reference</td>
+</tr>
+<tr>
+<td><code>odom</code></td>
+<td>continuous local (drift allowed)</td>
+</tr>
+<tr>
+<td><code>base_link</code></td>
+<td>robot body</td>
+</tr>
+<tr>
+<td><code>base_footprint</code></td>
+<td>projected body on ground plane</td>
+</tr>
+<tr>
+<td>sensors</td>
+<td>eg <code>lidar_link</code>, <code>camera_link</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>rule of thumb:</strong> only broadcast frames you <em>own</em>, never stomp another node's frame.</p>
 <h2 id="rviz-commands">Rviz Commands</h2>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token comment"># Running Stage simulator Rviz</span>
 rosrun rviz rviz <span class="token parameter variable">-d</span> <span class="token variable"><span class="token variable">`</span>rospack <span class="token function">find</span> rosplan_stage_demo<span class="token variable">`</span></span>/config/rosplan_stage_demo.rviz <span class="token operator">&amp;</span>
@@ -1009,7 +1124,7 @@ rospy.logerr<span class="token punctuation">(</span><span class="token string">"
 			</p>
 		</footer>
 
-		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-10-27T10:40:52.188Z -->
+		<!-- This page `/posts/ros1-cheatsheet/` was built on 2025-11-07T18:56:45.035Z -->
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 	</body>
 </html>
