@@ -9,20 +9,19 @@ if git show-ref --quiet refs/heads/pages; then
   git checkout pages
 else
   git switch --orphan pages
-  git rm -rf .
 fi
+
+# Remove all tracked files from pages (safe)
+git rm -rf . || true
 
 # Ensure Pages never uses LFS
 rm -f .gitattributes
-
-# Clear old content
-rm -rf *
 
 # Copy built site
 cp -r _site/* .
 cp _site/.domains .
 
-# Clean up
+# Clean up build artefacts
 rm -rf _site node_modules
 
 git add -A
