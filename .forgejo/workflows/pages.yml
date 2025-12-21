@@ -37,7 +37,8 @@ jobs:
           git rm -rf . || true
 
           cp -r _site/* .
-          [ -f ../.domains ] && cp ../.domains .
+          [ -f _site/.domains ] && cp _site/.domains .
+          rm -rf _site
 
           git add -A
           git commit -m "Deploy pages" || echo "No changes to commit"
