@@ -12,3 +12,4 @@ cp _site/.domains .
 rm -rf _site
 
 git add -A && git commit -m "Deploy pages"
+git push -u origin pages
