@@ -1,17 +1,32 @@
 #!/bin/bash
+set -e
 
-npm i
+npm install
 npm run build-pages
 
-git switch --orphan pages || git checkout pages
+# Switch to pages branch (create if missing)
+if git show-ref --quiet refs/heads/pages; then
+  git checkout pages
+else
+  git switch --orphan pages
+  git rm -rf .
+fi
 
-git rm --cached -r . && git add -A && git commit -m "Remove pages content"
+# Ensure Pages never uses LFS
+rm -f .gitattributes
 
-rm -rf node_modules
+# Clear old content
+rm -rf *
 
+# Copy built site
 cp -r _site/* .
 cp _site/.domains .
-rm -rf _site
 
-git add -A && git commit -m "Deploy pages"
+# Clean up
+rm -rf _site node_modules
+
+git add -A
+git commit -m "Deploy pages"
 git push -u origin pages
+
+git checkout main
