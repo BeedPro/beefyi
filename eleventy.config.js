@@ -127,7 +127,7 @@ export default async function (eleventyConfig) {
 
 	const mdOptions = {
 		html: true,
-		breaks: true,
+		breaks: false,
 		linkify: true,
 	};
 
