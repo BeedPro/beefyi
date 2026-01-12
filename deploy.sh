@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-npm install
 npm run build-pages
 
 # Switch to pages branch (create if missing)
@@ -25,8 +24,9 @@ cp _site/.domains .
 rm -rf _site node_modules
 
 git add -A
-git commit -m "$(date '+%Y.%m.%d %H:%M')"
+git commit -m "Deploy pages"
 git push -u origin pages --force
 
 git checkout main
 git branch -d pages
+npm install
