@@ -25,7 +25,8 @@ cp _site/.domains .
 rm -rf _site node_modules
 
 git add -A
-git commit -m "Deploy pages"
-git push -u origin pages
+git commit -m "$(date '+%Y.%m.%d %H:%M')"
+git push -u origin pages --force
 
 git checkout main
+git branch -d pages
