@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="pretty-atom-feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>beefyi</title>
+  <subtitle>A place to store for all things beed</subtitle>
+  <link href="https://blog.beed.org.uk/feed/feed.xml" rel="self" />
+  <link href="https://blog.beed.org.uk/" />
+  <updated>2025-12-21T00:00:00Z</updated>
+  <id>https://blog.beed.org.uk/</id>
+  <author>
+    <name>Beed</name>
+  </author>
+  <entry>
+    <title>ROS1 Cheatsheet</title>
+    <link href="https://blog.beed.org.uk/posts/ros1-cheatsheet/" />
+    <updated>2025-12-21T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/ros1-cheatsheet/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;ros-noetic&quot;&gt;ROS Noetic&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;ROS Noetic&lt;/strong&gt; (Robot Operating System) is the final and most stable release of ROS 1, a framework for building and connecting robot software. It’s designed for Ubuntu 20.04 with Python 3 support and comes packed with tools, libraries, and community packages. However as of writing it has gone out of support from the ROS community and you should start using/migrating to ROS2. All code samples will be written in Python.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Useful resources:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://wiki.ros.org&quot;&gt;ROS Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.ros.org&quot;&gt;ROS Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://answers.ros.org&quot;&gt;ROS Answers (Community Q&amp;amp;A)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/ros&quot;&gt;ROS GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;using-apptainer&quot;&gt;Using apptainer&lt;/h2&gt;
+&lt;p&gt;As I&#39;m learning ROS, it was recommended to use containerisation software to run all the ROS tools in an isolated environment. For my setup, I&#39;ll be using &lt;a href=&quot;https://apptainer.org/&quot;&gt;Apptainer&lt;/a&gt; to manage and run everything inside a container:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apptainer run -B /run/user/$UID /&amp;lt;path_to_container.sif&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Anything in wrapped with &quot;&amp;lt;&amp;gt;&quot; are templates and should not be copied into the command but replaced accordingly to the context the command. For example in the above command &quot;&amp;lt;path_to_container&amp;gt;&quot; should be replaced with the actual path of the &lt;code&gt;.sif&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;Assume that any command shown in this post is run within this container, code can be written in any IDE of your choice but the commands need to be run in the container.&lt;/p&gt;
+&lt;h2 id=&quot;ros-environment-setup&quot;&gt;ROS Environment Setup&lt;/h2&gt;
+&lt;p&gt;In ROS, a workspace (ws) is a directory where you build, modify, and organise your ROS packages and projects. We will be running our custom nodes and everything in the packages here.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Create and source your workspace&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-p&lt;/span&gt; ~/catkin_ws/src
+&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ~/catkin_ws
+catkin_make
+&lt;span class=&quot;token builtin class-name&quot;&gt;source&lt;/span&gt; devel/setup.bash&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;package-creation&quot;&gt;Package Creation&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Packages&lt;/strong&gt; are the core building blocks that contain your code, nodes, launch files, and configuration, essentially everything needed for a specific function or feature in a robot system.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ~/catkin_ws/src
+catkin_create_pkg &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;pkg_name&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; rospy &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;dep&lt;span class=&quot;token operator&quot;&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;1&lt;/span&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;depn&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Where &lt;code&gt;&amp;lt;dep1&amp;gt; &amp;lt;...&amp;gt; &amp;lt;depn&amp;gt;&lt;/code&gt; is all the packages needed for the package. Note I leave rospy there since we will be using Python and do not worry you can go back to this and add more dependencies in the &lt;code&gt;packages.xml&lt;/code&gt; file that is created after running this command.&lt;/p&gt;
+&lt;h3 id=&quot;full-package-structure&quot;&gt;Full Package structure&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;my_package/
+├── CMakeLists.txt
+├── package.xml
+├── src/
+│   └── my_node.py
+└── scripts/
+    └── talker.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;configure-cmakelists-txt&quot;&gt;Configure CMakeLists.txt&lt;/h2&gt;
+&lt;p&gt;For custom messages, services, actions please refer to the &lt;code&gt;CMakeLists.txt&lt;/code&gt; that is automatically generated with &lt;code&gt;catkin_create_pkg&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Quickish places to add:&lt;/p&gt;
+&lt;pre class=&quot;language-cmake&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-cmake&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;find_package&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;catkin REQUIRED COMPONENTS rospy std_msgs message_generation&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+add_&amp;lt;messages/services/actions&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;_files&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  FILES
+  &amp;lt;file.srv&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token function&quot;&gt;generate_messages&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  DEPENDENCIES
+  std_msgs
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token function&quot;&gt;catkin_package&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  CATKIN_DEPENDS message_runtime
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;writing-a-python-node&quot;&gt;Writing a Python Node&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Example: &lt;code&gt;talker.py&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; std_msgs&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; String
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;talker&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    pub &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Publisher&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;chatter&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; String&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; queue_size&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;talker&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; anonymous&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rate &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Rate&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 10Hz&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;not&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;is_shutdown&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        msg &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Hello ROS Noetic! %s&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get_time&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;msg&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        pub&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;publish&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;msg&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        rate&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sleep&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; __name__ &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;__main__&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        talker&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;except&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ROSInterruptException&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;pass&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;subscribing-to-topics&quot;&gt;Subscribing to Topics&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Example: &lt;code&gt;listener.py&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; std_msgs&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; String
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;I heard %s&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; data&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;data&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;listener&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;listener&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; anonymous&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Subscriber&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;chatter&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; String&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; callback&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;spin&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; __name__ &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;__main__&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    listener&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;running-nodes&quot;&gt;Running Nodes&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Make executable&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;chmod&lt;/span&gt; +x scripts/&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;.py
+
+&lt;span class=&quot;token comment&quot;&gt;# Build the workspace&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ~/catkin_ws
+catkin_make
+
+&lt;span class=&quot;token comment&quot;&gt;# Source the workspace&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;source&lt;/span&gt; devel/setup.bash
+
+&lt;span class=&quot;token comment&quot;&gt;# Run roscore&lt;/span&gt;
+roscore
+
+&lt;span class=&quot;token comment&quot;&gt;# In a new terminal&lt;/span&gt;
+rosrun &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;pkg&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;.py&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;node-commands&quot;&gt;Node Commands&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Check node info&lt;/span&gt;
+rosnode info /talker
+
+&lt;span class=&quot;token comment&quot;&gt;# List active nodes&lt;/span&gt;
+rosnode list
+
+&lt;span class=&quot;token comment&quot;&gt;# Kill a node&lt;/span&gt;
+rosnode &lt;span class=&quot;token function&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;node_name&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# Kill all nodes&lt;/span&gt;
+rosnode &lt;span class=&quot;token function&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-a&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;topic-commands&quot;&gt;Topic commands&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# List topics&lt;/span&gt;
+rostopic list
+
+&lt;span class=&quot;token comment&quot;&gt;# Echo topic messages&lt;/span&gt;
+rostopic &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; /chatter
+
+&lt;span class=&quot;token comment&quot;&gt;# Info about a topic&lt;/span&gt;
+rostopic info /chatter&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;ros-launch&quot;&gt;ROS Launch&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Example of a launch file:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-xml&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-xml&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;launch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+	&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;include&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;$(find &amp;lt;pkg&amp;gt;)/launch/&amp;lt;file.launch&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;
+	&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;node&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;pkg&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;node&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;name&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+		&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;remap&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;from_topic&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&amp;lt;to_topic&amp;gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;
+	&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;node&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;launch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Run it&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;roslaunch &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;pkg&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;file.launch&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;rosbag&quot;&gt;Rosbag&lt;/h2&gt;
+&lt;p&gt;To record logs from a topic and then can replay it for debugging purposes&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosbag record /&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;topic&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosbag play &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;file.bag&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;ros-plot&quot;&gt;ROS Plot&lt;/h3&gt;
+&lt;p&gt;We can use &lt;code&gt;rqt_plot&lt;/code&gt; to visualise the messages of the topic:&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosrun rqt_plot rqt_plot&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Use &lt;code&gt;rosmsg&lt;/code&gt; to see what lines you can add to the plot and visualise.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosmsg info /&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;topic&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;ros-services&quot;&gt;ROS Services&lt;/h2&gt;
+&lt;p&gt;Services are synchronous (request/response) communication between nodes.&lt;/p&gt;
+&lt;h3 id=&quot;create-a-service-definition&quot;&gt;Create a Service Definition&lt;/h3&gt;
+&lt;p&gt;Example File: &lt;code&gt;srv/AddTwoInts.srv&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-srv&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-srv&quot;&gt;int64 a
+int64 b
+---
+int64 sum&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Place inside:
+&lt;code&gt;&amp;lt;pkg&amp;gt;/srv/&amp;lt;file.srv&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;service-server-example&quot;&gt;Service Server Example&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;srv &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; AddTwoInts&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AddTwoIntsResponse
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;handle_add_two_ints&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Adding &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt; + &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;b&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; AddTwoIntsResponse&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;a &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;b&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints_server&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+service &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Service&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AddTwoInts&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; handle_add_two_ints&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Ready to add two ints.&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;spin&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;service-client-server&quot;&gt;Service Client Server&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;srv &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; AddTwoInts
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints_client&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;wait_for_service&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    add_two_ints &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ServiceProxy&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;add_two_ints&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AddTwoInts&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    resp &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; add_two_ints&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Sum = &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;resp&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;except&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ServiceException &lt;span class=&quot;token keyword&quot;&gt;as&lt;/span&gt; e&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;logerr&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Service call failed: &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;e&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;command-line-tools&quot;&gt;Command-line Tools&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosservice list
+rosservice info /add_two_ints
+rosservice call /add_two_ints &lt;span class=&quot;token string&quot;&gt;&quot;a: 2 b: 3&quot;&lt;/span&gt;
+rossrv show your_package/AddTwoInts&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;ros-actions&quot;&gt;ROS Actions&lt;/h2&gt;
+&lt;p&gt;Actions are asynchronous, providing feedback and allowing preemption.&lt;/p&gt;
+&lt;h3 id=&quot;create-an-action-definition&quot;&gt;Create an Action Definition&lt;/h3&gt;
+&lt;p&gt;Example File: &lt;code&gt;action/Fibonacci.action&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;language-action&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-action&quot;&gt;int32 order
+---
+int32[] sequence
+---
+int32[] feedback_sequence&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Place inside:
+&lt;code&gt;&amp;lt;pkg&amp;gt;/action/&amp;lt;file.action&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;action-server&quot;&gt;Action Server&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; actionlib
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciFeedback&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciResult
+
+&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;FibonacciActionServer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; actionlib&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;SimpleActionServer&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;execute&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;start&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; goal&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        feedback &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciFeedback&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        result &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciResult&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; goal&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;order&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;is_preempt_requested&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+                rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Goal preempted&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+                self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;set_preempted&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt;
+
+            feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;append&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;publish_feedback&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sleep&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        result&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence
+        self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;set_succeeded&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;result&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci_server&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+server &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciActionServer&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;spin&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;action-client&quot;&gt;Action Client&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; actionlib
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; your_package&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciGoal
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;feedback_cb&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Feedback: &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;feedback&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci_client&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; actionlib&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;SimpleActionClient&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;fibonacci&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; FibonacciAction&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;wait_for_server&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+goal &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; FibonacciGoal&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;order&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;send_goal&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;goal&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; feedback_cb&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;feedback_cb&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;wait_for_result&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+result &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get_result&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;Result: &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;result&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sequence&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;command-line-tools-2&quot;&gt;Command-line Tools&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;rosaction list
+rosaction info fibonacci
+rosaction show your_package/Fibonacci
+
+&lt;span class=&quot;token comment&quot;&gt;# Using the action client tool (rqt or actionlib_tools)&lt;/span&gt;
+rostopic pub /fibonacci/goal your_package/FibonacciActionGoal &lt;span class=&quot;token string&quot;&gt;&quot;{goal: {order: 5}}&quot;&lt;/span&gt;
+rostopic &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; /fibonacci/feedback
+rostopic &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; /fibonacci/result&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;service-vs-action-summary&quot;&gt;Service vs Action Summary&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature&lt;/th&gt;
+&lt;th&gt;Service&lt;/th&gt;
+&lt;th&gt;Action&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Communication Style&lt;/td&gt;
+&lt;td&gt;Synchronous (blocking)&lt;/td&gt;
+&lt;td&gt;Asynchronous (non-blocking)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Use Case&lt;/td&gt;
+&lt;td&gt;Quick request/response&lt;/td&gt;
+&lt;td&gt;Long-running task&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Feedback&lt;/td&gt;
+&lt;td&gt;None&lt;/td&gt;
+&lt;td&gt;Periodic feedback available&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Preemption&lt;/td&gt;
+&lt;td&gt;Not possible&lt;/td&gt;
+&lt;td&gt;Possible&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Tools&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;rosservice&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;actionlib&lt;/code&gt;, &lt;code&gt;rostopic&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&quot;ros-transfomers&quot;&gt;ROS Transfomers&lt;/h2&gt;
+&lt;p&gt;TF2 lets you relate coordinate frames at any point in time.&lt;/p&gt;
+&lt;h3 id=&quot;tf-tree&quot;&gt;TF tree&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# visual&lt;/span&gt;
+rosrun rqt_tf_tree rqt_tf_tree
+
+&lt;span class=&quot;token comment&quot;&gt;# text only&lt;/span&gt;
+rosrun tf2_tools view_frames.py
+
+&lt;span class=&quot;token comment&quot;&gt;# numeric lookups&lt;/span&gt;
+rosrun tf tf_echo /base_link /map&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;broadcasting-a-static-transform&quot;&gt;Broadcasting a static transform&lt;/h3&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# x y z roll pitch yaw frame_child frame_parent&lt;/span&gt;
+rosrun tf2_ros static_transform_publisher &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; camera_link base_link&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;broadcasting-with-python&quot;&gt;Broadcasting with Python&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; tf_conversions
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; tf2_ros
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; geometry_msgs&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;tf_broadcaster&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+br &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; tf2_ros&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;TransformBroadcaster&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+t &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; geometry_msgs&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;TransformStamped&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rate &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Rate&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;not&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;is_shutdown&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;header&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;stamp &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Time&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;now&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;header&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frame_id &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;base_link&quot;&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;child_frame_id &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;camera_link&quot;&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;translation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;x &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0.1&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;translation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;y &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0.0&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;translation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;z &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0.2&lt;/span&gt;
+    q &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; tf_conversions&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transformations&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;quaternion_from_euler&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0.52&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rotation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;x &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; q&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rotation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;y &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; q&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rotation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;z &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; q&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+    t&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rotation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;w &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; q&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+    br&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sendTransform&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;t&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rate&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sleep&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;listening-in-python&quot;&gt;Listening in Python&lt;/h3&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; rospy
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; tf2_ros
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; geometry_msgs&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;msg
+
+rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;init_node&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;tf_listener&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+tfBuffer &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; tf2_ros&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Buffer&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+listener &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; tf2_ros&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;TransformListener&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;tfBuffer&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+rate &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Rate&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;not&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;is_shutdown&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        transf &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; tfBuffer&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;lookup_transform&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;map&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;base_link&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Time&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string-interpolation&quot;&gt;&lt;span class=&quot;token string&quot;&gt;f&quot;x = &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;transf&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;transform&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;translation&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;x&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token format-spec&quot;&gt;.3f&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;except&lt;/span&gt; Exception &lt;span class=&quot;token keyword&quot;&gt;as&lt;/span&gt; e&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        rospy&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;logwarn&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;e&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    rate&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sleep&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;common-patterns&quot;&gt;Common patterns&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;What you want&lt;/th&gt;
+&lt;th&gt;How to do it&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;“where is frame B relative to A now?”&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tfBuffer.lookup_transform(A, B, now)&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;periodic static offsets&lt;/td&gt;
+&lt;td&gt;run &lt;code&gt;static_transform_publisher&lt;/code&gt; once&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;convert Euler → quaternion&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tf_conversions.transformations.quaternion_from_euler&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&quot;typical-frame-names&quot;&gt;Typical frame names&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Frame&lt;/th&gt;
+&lt;th&gt;Meaning&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;map&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;global / world reference&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;odom&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;continuous local (drift allowed)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;base_link&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;robot body&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;base_footprint&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;projected body on ground plane&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sensors&lt;/td&gt;
+&lt;td&gt;eg &lt;code&gt;lidar_link&lt;/code&gt;, &lt;code&gt;camera_link&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;rule of thumb:&lt;/strong&gt; only broadcast frames you &lt;em&gt;own&lt;/em&gt;, never stomp another node&#39;s frame.&lt;/p&gt;
+&lt;h2 id=&quot;rviz-commands&quot;&gt;Rviz Commands&lt;/h2&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Running Stage simulator Rviz&lt;/span&gt;
+rosrun rviz rviz &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;rospack &lt;span class=&quot;token function&quot;&gt;find&lt;/span&gt; rosplan_stage_demo&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;&lt;/span&gt;/config/rosplan_stage_demo.rviz &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# Running Stage Simulator&lt;/span&gt;
+roslaunch rosplan_stage_demo empty_stage_single_robot.launch &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;common-message-types&quot;&gt;Common Message Types&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Import&lt;/th&gt;
+&lt;th&gt;Example Use&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;std_msgs/String&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;from std_msgs.msg import String&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Chat or text data&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;geometry_msgs/Twist&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;from geometry_msgs.msg import Twist&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Velocity commands&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;sensor_msgs/Image&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;from sensor_msgs.msg import Image&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Camera data&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;nav_msgs/Odometry&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;from nav_msgs.msg import Odometry&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Robot position data&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&quot;workspace-maintenance&quot;&gt;Workspace Maintenance&lt;/h2&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Clean workspace&lt;/span&gt;
+catkin_make clean
+
+&lt;span class=&quot;token comment&quot;&gt;# Rebuild everything&lt;/span&gt;
+catkin_make &lt;span class=&quot;token parameter variable&quot;&gt;-DCMAKE_BUILD_TYPE&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;Release
+
+&lt;span class=&quot;token comment&quot;&gt;# Re-source environment&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;source&lt;/span&gt; devel/setup.bash&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;debugging-tips&quot;&gt;Debugging Tips&lt;/h2&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Check log files&lt;/span&gt;
+roscd log
+&lt;span class=&quot;token function&quot;&gt;less&lt;/span&gt; latest/rosout.log
+
+&lt;span class=&quot;token comment&quot;&gt;# Print debug messages&lt;/span&gt;
+rospy.logdebug&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Debug message&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy.loginfo&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Info message&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy.logwarn&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Warning message&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+rospy.logerr&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Error message&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
+    <title>picoCTF - Reverse Engineering | Flag Hunters</title>
+    <link href="https://blog.beed.org.uk/posts/picoctf-reverse-engineering-flag-hunters/" />
+    <updated>2025-08-31T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/picoctf-reverse-engineering-flag-hunters/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://play.picoctf.org/practice/challenge/472?category=3&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;Flag Hunters&lt;/a&gt; is a reverse engineering challenge. The idea with these is straightforward: figure out what the program is doing, then twist that to your advantage. In this case, though, we&#39;re given the source code – so it feels less like breaking into a black box and more like an coding dry-run exercise. The code&#39;s written in Python, and our mission is to print out the flag that the program does not show us.&lt;/p&gt;
+&lt;h2 id=&quot;source-code&quot;&gt;Source code&lt;/h2&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; re
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; time
+
+
+&lt;span class=&quot;token comment&quot;&gt;# Read in flag from file&lt;/span&gt;
+flag &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;flag.txt&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;r&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;read&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+secret_intro &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &#92;
+&lt;span class=&quot;token triple-quoted-string string&quot;&gt;&#39;&#39;&#39;Pico warriors rising, puzzles laid bare,
+Solving each challenge with precision and flair.
+With unity and skill, flags we deliver,
+The ether’s ours to conquer, &#39;&#39;&#39;&lt;/span&gt;&#92;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; flag &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;&#92;n&#39;&lt;/span&gt;
+
+
+song_flag_hunters &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; secret_intro &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&#92;
+&lt;span class=&quot;token triple-quoted-string string&quot;&gt;&#39;&#39;&#39;
+
+[REFRAIN]
+We’re flag hunters in the ether, lighting up the grid,
+No puzzle too dark, no challenge too hid.
+With every exploit we trigger, every byte we decrypt,
+We’re chasing that victory, and we’ll never quit.
+CROWD (Singalong here!);
+RETURN
+
+[VERSE1]
+Command line wizards, we’re starting it right,
+Spawning shells in the terminal, hacking all night.
+Scripts and searches, grep through the void,
+Every keystroke, we&#39;re a cypher&#39;s envoy.
+Brute force the lock or craft that regex,
+Flag on the horizon, what challenge is next?
+
+REFRAIN;
+
+Echoes in memory, packets in trace,
+Digging through the remnants to uncover with haste.
+Hex and headers, carving out clues,
+Resurrect the hidden, it&#39;s forensics we choose.
+Disk dumps and packet dumps, follow the trail,
+Buried deep in the noise, but we will prevail.
+
+REFRAIN;
+
+Binary sorcerers, let’s tear it apart,
+Disassemble the code to reveal the dark heart.
+From opcode to logic, tracing each line,
+Emulate and break it, this key will be mine.
+Debugging the maze, and I see through the deceit,
+Patch it up right, and watch the lock release.
+
+REFRAIN;
+
+Ciphertext tumbling, breaking the spin,
+Feistel or AES, we’re destined to win.
+Frequency, padding, primes on the run,
+Vigenère, RSA, cracking them for fun.
+Shift the letters, matrices fall,
+Decrypt that flag and hear the ether call.
+
+REFRAIN;
+
+SQL injection, XSS flow,
+Map the backend out, let the database show.
+Inspecting each cookie, fiddler in the fight,
+Capturing requests, push the payload just right.
+HTML&#39;s secrets, backdoors unlocked,
+In the world wide labyrinth, we’re never lost.
+
+REFRAIN;
+
+Stack&#39;s overflowing, breaking the chain,
+ROP gadget wizardry, ride it to fame.
+Heap spray in silence, memory&#39;s plight,
+Race the condition, crash it just right.
+Shellcode ready, smashing the frame,
+Control the instruction, flags call my name.
+
+REFRAIN;
+
+END;
+&#39;&#39;&#39;&lt;/span&gt;
+
+MAX_LINES &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;100&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;reader&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;song&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; startLabel&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  start &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  refrain &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  refrain_return &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  finished &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;False&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;# Get list of lyric lines&lt;/span&gt;
+  song_lines &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; song&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;splitlines&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;# Find startLabel, refrain and refrain return&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;song_lines&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; startLabel&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      start &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;[REFRAIN]&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      refrain &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;RETURN&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      refrain_return &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; i
+
+  &lt;span class=&quot;token comment&quot;&gt;# Print lyrics&lt;/span&gt;
+  line_count &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;
+  lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; start
+  &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;not&lt;/span&gt; finished &lt;span class=&quot;token keyword&quot;&gt;and&lt;/span&gt; line_count &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; MAX_LINES&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    line_count &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; line &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;;&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; line &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;&#39;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;and&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;continue&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; line &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;REFRAIN&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;refrain_return&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;RETURN &#39;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;lip &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; refrain
+      &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;CROWD.*&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        crowd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; crowd
+        lip &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;RETURN [0-9]+&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;line&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; line &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;END&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        finished &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;line&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; flush&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        time&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sleep&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        lip &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;
+
+
+
+reader&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;song_flag_hunters&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;[VERSE1]&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Looking through the code, it&#39;s clear that the &lt;code&gt;secret_intro&lt;/code&gt; is hiding the flag right at the start of the song. The catch? The lyric reader doesn’t begin there – it starts off at &lt;code&gt;[VERSE1]&lt;/code&gt;. That means we never actually see the intro unless we mess with the program flow. The program moves between sections using the keywords &lt;code&gt;[REFRAIN]&lt;/code&gt; and &lt;code&gt;RETURN&lt;/code&gt;, so the trick is to sneak one of those into the lyrics and force the reader to jump back up to the very first line. There are 3 key areas of the code that allow us to inject our own code and make it read out the start of the song.&lt;/p&gt;
+&lt;p&gt;First up, the splitting:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; line &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;;&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This means every line is chopped up at &lt;code&gt;;&lt;/code&gt;, so you can sneak in multiple &#39;mini-lines&#39; by separating them with semicolons.&lt;/p&gt;
+&lt;p&gt;Then, the user input with no checks:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;CROWD.*&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    crowd &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    song_lines&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;lip&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;Crowd: &#39;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; crowd
+    lip &lt;span class=&quot;token operator&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;See the problem? Whatever you type into &lt;code&gt;Crowd:&lt;/code&gt; gets dumped straight back into the song. No filtering, no sanitisation – just raw text being executed by the program. Perfert to inject into.&lt;/p&gt;
+&lt;p&gt;And finally, the &lt;code&gt;RETURN&lt;/code&gt; command:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;elif&lt;/span&gt; re&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;r&quot;RETURN [0-9]+&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; line&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    lip &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;line&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;split&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the program sees &lt;code&gt;RETURN &amp;lt;number&amp;gt;&lt;/code&gt;, it jumps directly to that line number in the song. Combine this with the input above, and we can plant something like &lt;code&gt;RETURN 0&lt;/code&gt; into the lyrics and force the program to loop back to the start – right where the flag is sitting in &lt;code&gt;secret_intro&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;The solution is to use the &lt;code&gt;Crowd:&lt;/code&gt; input as our injection point. If we start our input with a &lt;code&gt;;&lt;/code&gt;, the program treats everything after it as a brand-new line. That means we can slip in our own &lt;code&gt;RETURN&lt;/code&gt; statement.&lt;/p&gt;
+&lt;p&gt;So, something like this works perfectly:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;RETURN 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;What happens is neat: after the jump, the program sees an empty &lt;code&gt;Crowd:&lt;/code&gt; field (so nothing breaks), and then sees &lt;code&gt;RETURN 0&lt;/code&gt; due to the split and immediately loops back to the top of the song. And since the &lt;code&gt;secret_intro&lt;/code&gt; is sitting right there, it starts reading out the flag for us!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Crowd: ;RETURN 0
+
+Echoes in memory, packets in trace,
+Digging through the remnants to uncover with haste.
+Hex and headers, carving out clues,
+Resurrect the hidden, it&#39;s forensics we choose.
+Disk dumps and packet dumps, follow the trail,
+Buried deep in the noise, but we will prevail.
+
+We’re flag hunters in the ether, lighting up the grid,
+No puzzle too dark, no challenge too hid.
+With every exploit we trigger, every byte we decrypt,
+We’re chasing that victory, and we’ll never quit.
+Crowd:
+Pico warriors rising, puzzles laid bare,
+Solving each challenge with precision and flair.
+With unity and skill, flags we deliver,
+The ether’s ours to conquer, picoCTF{70637h3r_f0r3v3r_c373964d}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
+    <title>picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</title>
+    <link href="https://blog.beed.org.uk/posts/picoctf-cryptography-even-rsa-can-be-broken/" />
+    <updated>2025-08-31T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/picoctf-cryptography-even-rsa-can-be-broken/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;style id=&quot;MJX-SVG-styles&quot;&gt;
+mjx-container[jax=&quot;SVG&quot;] {
+  direction: ltr;
+}
+
+mjx-container[jax=&quot;SVG&quot;] &gt; svg {
+  overflow: visible;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+mjx-container[jax=&quot;SVG&quot;] &gt; svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display=&quot;block&quot;] {
+  width: 100% !important;
+}
+
+mjx-container[jax=&quot;SVG&quot;][display=&quot;true&quot;] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax=&quot;SVG&quot;][display=&quot;true&quot;][width=&quot;full&quot;] {
+  display: flex;
+}
+
+mjx-container[jax=&quot;SVG&quot;][justify=&quot;left&quot;] {
+  text-align: left;
+}
+
+mjx-container[jax=&quot;SVG&quot;][justify=&quot;right&quot;] {
+  text-align: right;
+}
+
+g[data-mml-node=&quot;merror&quot;] &gt; g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node=&quot;merror&quot;] &gt; rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; line[data-line], svg[data-table] &gt; g &gt; line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; rect[data-frame], svg[data-table] &gt; g &gt; rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; .mjx-dashed, svg[data-table] &gt; g &gt; .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; .mjx-dotted, svg[data-table] &gt; g &gt; .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node=&quot;mtable&quot;] &gt; g &gt; svg {
+  overflow: visible;
+}
+
+[jax=&quot;SVG&quot;] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax=&quot;SVG&quot;] mjx-tool &gt; mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool &gt; mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node=&quot;maction&quot;][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container[jax=&quot;SVG&quot;] path[data-c], mjx-container[jax=&quot;SVG&quot;] use[data-c] {
+  stroke-width: 3;
+}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Picking up from the last blog, I had a go at the &lt;a href=&quot;https://play.picoctf.org/practice/challenge/470?category=2&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;EVEN RSA CAN BE BROKEN??&lt;/a&gt; cryptography challenge. To be honest, it felt more like an exercise in RSA than a proper puzzle, but it&#39;s a good way to dip your toes into crypto. Think of RSA as the &quot;hello world&quot; of cryptography - simple, classic, and a solid starting point. The challenge kicks off by asking us to connect via netcat, where we&#39;re handed an encrypted message &lt;code&gt;c&lt;/code&gt;, and its public key &lt;code&gt;(N, e)&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;nc&lt;/span&gt; verbal-sleep.picoctf.net &lt;span class=&quot;token number&quot;&gt;56957&lt;/span&gt;
+
+N: &lt;span class=&quot;token number&quot;&gt;22715301090244944555782064618276252525023771968883364484388038636123683358976283740304327683722247637952999616864052130853477842537404917091331688687558122&lt;/span&gt;
+e: &lt;span class=&quot;token number&quot;&gt;65537&lt;/span&gt;
+cyphertext: &lt;span class=&quot;token number&quot;&gt;14293253600340155854054831280856936574632994961947887972916917485609072959383679102282010013872401143755895229136463678205587523830693631363813380495455347&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I won&#39;t go into how RSA works here - that&#39;s left to some &lt;a href=&quot;https://en.wikipedia.org/wiki/RSA_cryptosystem&quot;&gt;further reading&lt;/a&gt;. But the short version (TL;DR) is this: RSA relies on a pair of keys - one public and one private. Together, they&#39;re what let us encrypt and decrypt ciphertext (term for encrypted text). As you can see we only got the public key, and so this challenge is to find the private key and then decrypt the message.&lt;/p&gt;
+&lt;p&gt;The catch that allows us to find the private key is to notice that &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: 0;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;2.009ex&quot; height=&quot;1.545ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -683 888 683&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D441&quot; xlink:href=&quot;#MJX-TEX-I-1D441&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; is &lt;em&gt;even&lt;/em&gt;. Typically &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: 0;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;2.009ex&quot; height=&quot;1.545ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -683 888 683&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D441&quot; xlink:href=&quot;#MJX-TEX-I-1D441&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; is the product of two &lt;strong&gt;large primes&lt;/strong&gt; - but it is always a product of primes. If it&#39;s even, that means one of those primes must be &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: 0;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.131ex&quot; height=&quot;1.507ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -666 500 666&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mn&quot;&gt;&lt;use data-c=&quot;32&quot; xlink:href=&quot;#MJX-TEX-N-32&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;.&lt;/p&gt;
+&lt;p&gt;So we set &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.439ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;5.286ex&quot; height=&quot;1.946ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -666 2336.6 860&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D45D&quot; xlink:href=&quot;#MJX-TEX-I-1D45D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(780.8,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(1836.6,0)&quot;&gt;&lt;use data-c=&quot;32&quot; xlink:href=&quot;#MJX-TEX-N-32&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;, and then grab the other prime by dividing: &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.566ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;8.336ex&quot; height=&quot;2.262ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -750 3684.6 1000&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D45E&quot; xlink:href=&quot;#MJX-TEX-I-1D45E&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(737.8,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(1793.6,0)&quot;&gt;&lt;use data-c=&quot;1D441&quot; xlink:href=&quot;#MJX-TEX-I-1D441&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;TeXAtom&quot; data-mjx-texclass=&quot;ORD&quot; transform=&quot;translate(2681.6,0)&quot;&gt;&lt;g data-mml-node=&quot;mo&quot;&gt;&lt;use data-c=&quot;2F&quot; xlink:href=&quot;#MJX-TEX-N-2F&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(3181.6,0)&quot;&gt;&lt;use data-c=&quot;1D45D&quot; xlink:href=&quot;#MJX-TEX-I-1D45D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;mrow data-mjx-texclass=&quot;ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;. From there, we calculate Euler’s totient, &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.566ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;17.858ex&quot; height=&quot;2.262ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -750 7893.4 1000&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D719&quot; xlink:href=&quot;#MJX-TEX-I-1D719&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(873.8,0)&quot;&gt;&lt;use data-c=&quot;3D&quot; xlink:href=&quot;#MJX-TEX-N-3D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(1929.6,0)&quot;&gt;&lt;use data-c=&quot;28&quot; xlink:href=&quot;#MJX-TEX-N-28&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(2318.6,0)&quot;&gt;&lt;use data-c=&quot;1D45D&quot; xlink:href=&quot;#MJX-TEX-I-1D45D&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(3043.8,0)&quot;&gt;&lt;use data-c=&quot;2212&quot; xlink:href=&quot;#MJX-TEX-N-2212&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(4044,0)&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(4544,0)&quot;&gt;&lt;use data-c=&quot;29&quot; xlink:href=&quot;#MJX-TEX-N-29&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(4933,0)&quot;&gt;&lt;use data-c=&quot;28&quot; xlink:href=&quot;#MJX-TEX-N-28&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mi&quot; transform=&quot;translate(5322,0)&quot;&gt;&lt;use data-c=&quot;1D45E&quot; xlink:href=&quot;#MJX-TEX-I-1D45E&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(6004.2,0)&quot;&gt;&lt;use data-c=&quot;2212&quot; xlink:href=&quot;#MJX-TEX-N-2212&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mn&quot; transform=&quot;translate(7004.4,0)&quot;&gt;&lt;use data-c=&quot;31&quot; xlink:href=&quot;#MJX-TEX-N-31&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;g data-mml-node=&quot;mo&quot; transform=&quot;translate(7504.4,0)&quot;&gt;&lt;use data-c=&quot;29&quot; xlink:href=&quot;#MJX-TEX-N-29&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;ϕ&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;.&lt;/p&gt;
+&lt;p&gt;Next step: finding the private key exponent &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.023ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.176ex&quot; height=&quot;1.593ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -694 520 704&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D451&quot; xlink:href=&quot;#MJX-TEX-I-1D451&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;. This is just the modular inverse of &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.025ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.054ex&quot; height=&quot;1.025ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -442 466 453&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D452&quot; xlink:href=&quot;#MJX-TEX-I-1D452&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; with respect to &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.464ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.348ex&quot; height=&quot;2.034ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -694 596 899&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D719&quot; xlink:href=&quot;#MJX-TEX-I-1D719&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;ϕ&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;. We can calculate this using Python&#39;s &lt;code&gt;pow(e, -1, phi)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;With &lt;mjx-container class=&quot;MathJax&quot; jax=&quot;SVG&quot; style=&quot;position: relative;&quot;&gt;&lt;svg style=&quot;vertical-align: -0.023ex;&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1.176ex&quot; height=&quot;1.593ex&quot; role=&quot;img&quot; focusable=&quot;false&quot; viewBox=&quot;0 -694 520 704&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot;&gt;&lt;g stroke=&quot;currentColor&quot; fill=&quot;currentColor&quot; stroke-width=&quot;0&quot; transform=&quot;scale(1,-1)&quot;&gt;&lt;g data-mml-node=&quot;math&quot;&gt;&lt;g data-mml-node=&quot;mi&quot;&gt;&lt;use data-c=&quot;1D451&quot; xlink:href=&quot;#MJX-TEX-I-1D451&quot;&gt;&lt;/use&gt;&lt;/g&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;&lt;mjx-assistive-mml unselectable=&quot;on&quot; display=&quot;inline&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt; in hand, we can finally decrypt: &lt;code&gt;m = pow(c, d, N)&lt;/code&gt;. That gives us the message, but in integer form. To make sense of it, we work out how many bytes long it should be, convert it with &lt;code&gt;to_bytes&lt;/code&gt;, and then decode to ASCII.&lt;/p&gt;
+&lt;p&gt;And that&#39;s really all there is to it. Merging all the steps together, the full script looks like this:&lt;/p&gt;
+&lt;pre class=&quot;language-python&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;N &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;22715301090244944555782064618276252525023771968883364484388038636123683358976283740304327683722247637952999616864052130853477842537404917091331688687558122&lt;/span&gt;
+e &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;65537&lt;/span&gt;
+c &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;14293253600340155854054831280856936574632994961947887972916917485609072959383679102282010013872401143755895229136463678205587523830693631363813380495455347&lt;/span&gt;
+p &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;
+q &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; N &lt;span class=&quot;token operator&quot;&gt;//&lt;/span&gt; p
+phi &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;p &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;q &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+d &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;e&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; phi&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+m &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; d&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; N&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+byte_len &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;m&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;bit_length&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;8&lt;/span&gt;
+pt_bytes &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; m&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;to_bytes&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;byte_len&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;big&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;d =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; d&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;m (int) =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; m&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;m (hex) =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; pt_bytes&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;m (ascii) =&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; pt_bytes&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;decode&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Giving us the decrypted message:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;picoCTF{tw0_1$_pr!m3df98b648}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;svg style=&quot;display: none;&quot; id=&quot;MJX-SVG-global-cache&quot;&gt;&lt;defs&gt;&lt;path id=&quot;MJX-TEX-I-1D441&quot; d=&quot;M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-32&quot; d=&quot;M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D45D&quot; d=&quot;M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-3D&quot; d=&quot;M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D45E&quot; d=&quot;M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-2F&quot; d=&quot;M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D719&quot; d=&quot;M409 688Q413 694 421 694H429H442Q448 688 448 686Q448 679 418 563Q411 535 404 504T392 458L388 442Q388 441 397 441T429 435T477 418Q521 397 550 357T579 260T548 151T471 65T374 11T279 -10H275L251 -105Q245 -128 238 -160Q230 -192 227 -198T215 -205H209Q189 -205 189 -198Q189 -193 211 -103L234 -11Q234 -10 226 -10Q221 -10 206 -8T161 6T107 36T62 89T43 171Q43 231 76 284T157 370T254 422T342 441Q347 441 348 445L378 567Q409 686 409 688ZM122 150Q122 116 134 91T167 53T203 35T237 27H244L337 404Q333 404 326 403T297 395T255 379T211 350T170 304Q152 276 137 237Q122 191 122 150ZM500 282Q500 320 484 347T444 385T405 400T381 404H378L332 217L284 29Q284 27 285 27Q293 27 317 33T357 47Q400 66 431 100T475 170T494 234T500 282Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-28&quot; d=&quot;M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-2212&quot; d=&quot;M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-31&quot; d=&quot;M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-N-29&quot; d=&quot;M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D451&quot; d=&quot;M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z&quot;&gt;&lt;/path&gt;&lt;path id=&quot;MJX-TEX-I-1D452&quot; d=&quot;M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z&quot;&gt;&lt;/path&gt;&lt;/defs&gt;&lt;/svg&gt;&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
+    <title>picoCTF - Web | SSTI1</title>
+    <link href="https://blog.beed.org.uk/posts/picoctf-web-ssti1/" />
+    <updated>2025-08-30T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/picoctf-web-ssti1/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;markdown-alert markdown-alert-note&quot;&gt;&lt;p class=&quot;markdown-alert-title&quot;&gt;Problem - SST1&lt;/p&gt;&lt;p&gt;I made a cool website where you can announce whatever you want!
+Try it out! I heard templating is a cool and modular way to build web apps!
+Check out my website &lt;a href=&quot;http://rescued-float.picoctf.net:61957/&quot;&gt;here&lt;/a&gt; !&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;I recently just wanted to get back into CTFs, not that I was an expert in the matter, but I had some free time today and thought I&#39;d try out a few challenges set by my University&#39;s Cyber Security Society. They&#39;re using &lt;a href=&quot;https://www.picoctf.org/&quot;&gt;picoCTF&lt;/a&gt; as the platform for these problems, they have alot of other challenges that you can check out as well and is not affiliated with my University.&lt;/p&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;So I began working on the first problem: &lt;a href=&quot;https://play.picoctf.org/practice/challenge/492?category=1&amp;amp;difficulty=1&amp;amp;page=1&quot;&gt;Web | SSTI1&lt;/a&gt;, and right away it looked like there was some kind of injection needed. My first thought was SQL injection, since that&#39;s the type of injection I was most familiar with. But pretty quickly it became obvious that wasn&#39;t the exploit here. So, I went back to the challenge description to see if I&#39;d missed anything, and the line &quot;I heard templating is cool&quot; immediately made me think of server-side templates you usually see in full stack frameworks such as Django or &lt;a href=&quot;http://ASP.NET&quot;&gt;ASP.NET&lt;/a&gt; core.&lt;/p&gt;
+&lt;p&gt;A quick Google search led me to SSTI, Sever-side Template Injection, funny how the challenge title was giving away the exploit needed. Using the following &lt;a href=&quot;https://github.com/ogtirth/SSTI&quot;&gt;SSTI/Payload Cheatsheet&lt;/a&gt;, I tested to see if the site was actually vulnerable and to figure out which templating engine it was running. Turns out, it was running on a Python server using Jinja2 and was indeed vulnerable to SSTI - inputting &lt;code&gt;{{7*7}}&lt;/code&gt; into the field renders the result of &lt;code&gt;49&lt;/code&gt;.&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/mJP0rfaFzY-1366.png&quot; alt=&quot;The picture of entering seven times sevens into the input field of the site&quot; width=&quot;1366&quot; height=&quot;640&quot;&gt;&lt;/picture&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/wYreil4eho-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/wYreil4eho-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/wYreil4eho-1366.png&quot; alt=&quot;The picture of the seven times sevens being executed in the backend and rendered to the user&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;Naturally, I started looking up Jinja2 SSTI payloads since the ones from the cheatsheet weren&#39;t working for me. That search led me to this &lt;a href=&quot;https://onsecurity.io/article/server-side-template-injection-with-jinja2/&quot;&gt;article&lt;/a&gt;, which walked through a vulnerable Python Flask app. It included the following payload:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;id&#39;).read()}} 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When I dropped that into the site, it worked - returning the user&#39;s ID along with their groups, confirming the exploit.&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.avif 2048w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.webp 2048w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/ssrrN_wAOu-2048.png&quot; alt=&quot;The picture of id and group of the user running the website&quot; width=&quot;2048&quot; height=&quot;309&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;The payload uses Python&#39;s &lt;a href=&quot;https://rszalski.github.io/magicmethods/&quot;&gt;magic methods&lt;/a&gt; in order to access the &lt;code&gt;os&lt;/code&gt; module and execute commands on the host. We can then list out the files in the server via:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls&#39;).read()}} 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/bvmpe7aQan-1366.avif 1366w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/bvmpe7aQan-1366.webp 1366w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/bvmpe7aQan-1366.png&quot; alt=&quot;The picture of result of ls showing __pychace__ directory, app.py and flag requirements.txt files&quot; width=&quot;1366&quot; height=&quot;637&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;Great! we found the flag, its named &quot;flag&quot;, all we need to do now is output the contents of the file. We use the &lt;code&gt;cat&lt;/code&gt; command in our next request:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; {{request.application.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;cat flag&#39;).read()}} 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Giving us our flag!&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/9laP8m5hGm-1585.avif 1585w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/9laP8m5hGm-1585.webp 1585w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/picoctf-web-ssti1/9laP8m5hGm-1585.png&quot; alt=&quot; picoCTF{s4rv3r_s1d3_t3mp14t3_1nj3ct10n5_4r3_c001_bdc95c1a}&quot; width=&quot;1585&quot; height=&quot;84&quot;&gt;&lt;/picture&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Distro Confusion? The Only 3 Linux Distros That Matter</title>
+    <link href="https://blog.beed.org.uk/posts/distro-confusion/" />
+    <updated>2025-08-18T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/distro-confusion/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Linux comes in countless flavours, known as distributions (or distros for short). At its core, Linux is just the kernel - the low-level program that manages hardware and system resources. What most people call &quot;Linux&quot; is technically GNU/Linux: the kernel combined with the GNU project&#39;s free software tools that make it a complete operating system. In everyday conversation though, we simply call it Linux.&lt;/p&gt;
+&lt;p&gt;As you probably quickly find out, Linux comes in many different distros. But what does a distro get you? A distro is essentially a premade bundle built around the Linux kernel, but it doesn&#39;t stop there. It also includes the software that makes your computer actually usable: essential tools and libraries that let programmes run, a package manager, a desktop environment that gives your system its look and feel, are pre-installed to get you started. On top of that, each distro comes with its own community and support network to help in the event of something going wrong, and yes something &lt;strong&gt;will&lt;/strong&gt; go wrong. In short, a distro is the complete operating system you can install, run, and enjoy.&lt;/p&gt;
+&lt;h2 id=&quot;why-choice-paralysis-happens&quot;&gt;Why Choice Paralysis Happens&lt;/h2&gt;
+&lt;p&gt;Unlike most operating systems, Linux lets you choose almost every part of your setup. You can pick a &lt;strong&gt;desktop environment&lt;/strong&gt; that matches how you like to work, install only the software you actually need, and even swap out core components of the system if you want to. This level of control is a big reason why Linux appeals to so many people. But the same freedom is also what makes Linux confusing. With so many choices available, it&#39;s easy to feel lost. There are dozens of desktop environments, multiple package managers, and countless distros, each with its own philosophy and way of doing things. For newcomers, that abundance of options often leads to choice paralysis. In short, Linux is attractive because you can shape it to fit your needs, but it&#39;s confusing because there are so many paths you could take to get there.&lt;/p&gt;
+&lt;p&gt;However the reality is that most of those options boil down to just a handful of choices. While there are hundreds of distros to pick from, the majority are built on top of a few core base distros. Over time, most people end up using one of these, whether directly or through one of their many derivatives.&lt;/p&gt;
+&lt;p&gt;This means that while the Linux world might look overwhelming at first, you&#39;re really choosing between a small number of well-established foundations. Once you know which base distros those are, the landscape becomes much clearer. Besides what most people switch a distro for in the beginning is for the &lt;strong&gt;desktop environment&lt;/strong&gt; and the &lt;strong&gt;package manager&lt;/strong&gt;. More experienced Linux users eventually realise that all distros can provide the same features. The difference lies in how each distro goes about it, with variations in tools, defaults, and setup rather than in what you can ultimately achieve. In most cases, any real issues you run into aren&#39;t specific to the distro itself but are general Linux problems. The exceptions usually come when a distro maintainer decides to move away from the defaults of its base distro, which can sometimes introduce quirks or instability.&lt;/p&gt;
+&lt;p&gt;Since most distros are based on another, it makes sense to go upstream to the source rather than downstream to a derivative. That&#39;s why I suggest most people start with the &quot;grandfather&quot; distros: Debian, Fedora, and Arch. These three serve as the foundation for many of the popular options new users usually come across.&lt;/p&gt;
+&lt;p&gt;There are, of course, other independent distros doing unique and amazing things, such as NixOS, Gentoo, openSUSE, and Void Linux. However, I won&#39;t be covering them here, as this post is aimed at newcomers to Linux. I may write about them separately in future posts.&lt;/p&gt;
+&lt;h2 id=&quot;rolling-vs-stable&quot;&gt;Rolling vs Stable&lt;/h2&gt;
+&lt;p&gt;One of the first concepts you&#39;ll come across when comparing distros is whether they&#39;re rolling release or stable release.&lt;/p&gt;
+&lt;p&gt;A stable release distro provides fixed versions of software that only receive security updates and critical fixes. This makes the system more predictable and reliable, since updates won&#39;t suddenly change how your software works. The trade-off is that you don&#39;t always get the newest features right away. This may be a problem for people using &lt;em&gt;bleeding-edge&lt;/em&gt; hardware that require such new software.&lt;/p&gt;
+&lt;p&gt;A rolling release distro, constantly updates to the latest versions of software as they&#39;re released. This means you always have the newest packages and features, but it can also introduce instability or breakages if something upstream changes.&lt;/p&gt;
+&lt;p&gt;Debian and Fedora are both stable release distros, but Debian takes stability much further than Fedora. Arch, on the other hand, is a rolling release. It sits at the opposite end of the spectrum from Debian, focused on being as bleeding-edge as possible.&lt;/p&gt;
+&lt;h2 id=&quot;debian&quot;&gt;Debian&lt;/h2&gt;
+&lt;p&gt;Debian is one of the oldest and most influential Linux distributions. It prides itself to stability, long-term support, and commitment to free software. Many distros trace their roots back to Debian, making it one of the pillars of the Linux ecosystem.&lt;/p&gt;
+&lt;p&gt;Debian is a good choice if you value reliability over bleeding-edge features. It&#39;s often used on servers where stability is critical, but it also works well on desktops for users who want a system that &quot;just works&quot; without frequent major changes. It&#39;s not the best option if you always want the latest software, but for those who prefer a dependable system, Debian is hard to beat.&lt;/p&gt;
+&lt;p&gt;Some of the most popular and widely used Linux distros are Debian derivatives. Ubuntu is the most famous example, which itself has spawned many other distros like Linux Mint, Pop!_OS, and elementary OS. This huge family tree shows just how central Debian is to the wider Linux world.&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/-_XLLXK3mL-1920.avif 1920w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/-_XLLXK3mL-1920.webp 1920w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/distro-confusion/-_XLLXK3mL-1920.png&quot; alt=&quot;A family tree of Debian and all the derivative distros from it, there are many children&quot; width=&quot;1920&quot; height=&quot;3138&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;This is my current distro as of writing. I&#39;ve had little to no issues with it, apart from the occasional problem with Nvidia drivers, since Debian&#39;s versions are often a bit outdated. I don&#39;t rely on the newest software, and my setup is clean and minimal, so this hasn&#39;t been a problem for me. It might also just be that I&#39;m most familiar with Debian and haven&#39;t felt the need to switch after landing on Debian. If you&#39;re new to Linux, I recommend starting with Debian. It has a huge support community, so help is easy to find if something goes wrong. The installation process has also improved a lot in recent years, making it much more beginner-friendly. During setup, you can choose from a variety of desktop environments such as GNOME, KDE Plasma, XFCE, or Cinnamon, allowing you to mimic the look and feel of many other popular distros.&lt;/p&gt;
+&lt;h2 id=&quot;fedora&quot;&gt;Fedora&lt;/h2&gt;
+&lt;p&gt;Fedora is known for being on the cutting edge while still maintaining a focus on stability. It&#39;s the upstream testing ground for Red Hat Enterprise Linux (RHEL), which means new technologies often land in Fedora first before being adopted into the enterprise world. This makes it an important distro for innovation in the Linux ecosystem. RHEL has picked up a bit of a bad reputation recently, which I won&#39;t go into here as that&#39;s a topic for another post, despite this I still think Fedora is a fantastic distro. That said, because of its connection to RHEL, I personally no longer use Fedora.&lt;/p&gt;
+&lt;p&gt;You may have already seen its children distros, the most popular being Nobara and Bazzite, both of which aim to provide an opinionated experience on top of Fedora&#39;s solid base to create a Linux gaming setup.&lt;/p&gt;
+&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/BFs8RWZ0Qi-1024.avif 1024w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/distro-confusion/BFs8RWZ0Qi-1024.webp 1024w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/distro-confusion/BFs8RWZ0Qi-1024.png&quot; alt=&quot;A family tree of Redhat and all distros from made by them along with child distros based on them&quot; width=&quot;1024&quot; height=&quot;1207&quot;&gt;&lt;/picture&gt;
+&lt;p&gt;Fedora benefits users who want fairly up-to-date software without going fully into rolling release territory. Developers in particular appreciate Fedora because it provides access to newer programming tools, libraries, and kernels while still remaining relatively stable for daily use. It&#39;s also a good fit for those interested in seeing where enterprise Linux is headed, since it shapes the direction of RHEL.&lt;/p&gt;
+&lt;p&gt;It&#39;s also a favourite among those who prefer the GNOME desktop in its pure form, since Fedora Workstation ships GNOME with very few modifications.&lt;/p&gt;
+&lt;p&gt;I like to think of Fedora as the new Ubuntu: a clean environment without Snap packages or heavy customisation. It gives users a pure Linux experience without third-party defaults getting in the way. Sitting somewhere between a rolling and a stable release, Fedora is an excellent final destination for distro hoppers or more technical users who need newer packages.&lt;/p&gt;
+&lt;p&gt;The only drawback is that it isn&#39;t quite as popular as Debian or Arch, which means some problems may not have as much community documentation. Fedora&#39;s forums and support channels are usually enough to help you troubleshoot and fix issues.&lt;/p&gt;
+&lt;h2 id=&quot;arch-linux&quot;&gt;Arch Linux&lt;/h2&gt;
+&lt;p&gt;Arch Linux follows a philosophy of simplicity, giving users complete control over their system. Unlike Debian or Fedora, Arch doesn&#39;t come with a preconfigured setup. Instead, you build the system yourself, choosing everything from the kernel modules to the desktop environment. This makes it highly customisable and minimal, with nothing installed that you didn&#39;t explicitly ask for.&lt;/p&gt;
+&lt;p&gt;Arch attracts advanced users because of this do-it-yourself approach. It&#39;s not that Arch can do things other distros can&#39;t - it&#39;s that it gives you full control over how those things are done. Recently installing Arch has gotten trivial with the additon of the &lt;code&gt;arch-install&lt;/code&gt; script. However the issue is that it follows a rolling release model, keeping you on the cutting edge with the latest software updates. With this model the issue of Arch is not the installation of it, but the maintenance of the system, without proper care Arch will break and it will always be the user&#39;s fault. Thus I don&#39;t recoommend Arch for new users but only for users that require the new packages and/or veteran Linux users that know what they are doing in the event of breakage.&lt;/p&gt;
+&lt;p&gt;Arch has several children aimed at making it more accessible. Manjaro, for example, provides a user-friendly installer and preconfigured desktop environments, while EndeavourOS offers a lightweight setup that stays closer to Arch but removes some of the complexity of the initial installation. However I haven&#39;t used any of these derivative distros myself, since I prefer Arch for its freedom to build my own system from the ground up, I&#39;ll leave covering my personal setup to a future post.&lt;/p&gt;
+&lt;h2 id=&quot;how-to-choose-between-them&quot;&gt;How to Choose Between Them&lt;/h2&gt;
+&lt;p&gt;Just pick based on what you need at the core. If you want stability, go with Debian. If you&#39;re setting up a desktop or gaming system and don&#39;t mind waiting a little for the latest software, Fedora is a great choice. If you want everything as up to date as possible, choose Arch. Debian gives you rock-solid stability, Fedora feels like a polished workstation, and Arch is a sharp sword - powerful but you can cut yourself with if you&#39;re not careful.&lt;/p&gt;
+&lt;p&gt;Linux is a journey. Start with one of these three and build from there. Most importantly, have fun and enjoy your new home on Linux.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Hello World!</title>
+    <link href="https://blog.beed.org.uk/posts/hello-world/" />
+    <updated>2025-07-30T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/hello-world/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Welcome to my blog! This is my first post, so there&#39;s not a whole lot here just yet - but hopefully that&#39;ll change soon. Feel free to check out the &lt;a href=&quot;https://blog.beed.org.uk/about/&quot;&gt;about&lt;/a&gt; page to find out a bit more about me and what this blog&#39;s all about.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+</feed>
