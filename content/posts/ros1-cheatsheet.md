@@ -10,10 +10,11 @@ tags: ["cheatsheet", "draft"]
 **ROS Noetic** (Robot Operating System) is the final and most stable release of ROS 1, a framework for building and connecting robot software. It’s designed for Ubuntu 20.04 with Python 3 support and comes packed with tools, libraries, and community packages. However as of writing it has gone out of support from the ROS community and you should start using/migrating to ROS2. All code samples will be written in Python.
 
 **Useful resources:**
-• [ROS Wiki](http://wiki.ros.org)
-• [ROS Documentation](https://docs.ros.org)
-• [ROS Answers (Community Q&A)](https://answers.ros.org)
-• [ROS GitHub](https://github.com/ros)
+
+- [ROS Wiki](http://wiki.ros.org)
+- [ROS Documentation](https://docs.ros.org)
+- [ROS Answers (Community Q&A)](https://answers.ros.org)
+- [ROS GitHub](https://github.com/ros)
 
 ## Using apptainer
 
