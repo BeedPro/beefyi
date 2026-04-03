@@ -24,6 +24,22 @@
 
 		{#- Add CSS to the bundle #}
 		<style>/* This is an arbitrary CSS string added to the bundle */</style>
+		<script eleventy:ignore>
+			(function () {
+				var storageKey = "theme-preference";
+				var preference = "system";
+				try {
+					var stored = localStorage.getItem(storageKey);
+					if (stored === "light" || stored === "dark" || stored === "system") {
+						preference = stored;
+					}
+				} catch (e) {}
+				var isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+				var resolved = preference === "system" ? (isDark ? "dark" : "light") : preference;
+				document.documentElement.setAttribute("data-theme", resolved);
+				document.documentElement.setAttribute("data-theme-preference", preference);
+			})();
+		</script>
 
 		{#- Add the contents of a file to the bundle #}
 		<style>{% include "css/index.css" %}</style>
@@ -54,6 +70,7 @@
 					<li class="nav-item"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
 				{%- endfor %}
 				</ul>
+				<button class="theme-toggle" id="theme-toggle" type="button">Theme: System</button>
 			</nav>
 		</header>
 
@@ -70,6 +87,70 @@
 		</footer>
 
 		<!-- This page `{{ page.url }}` was built on {% currentBuildDate %} -->
+		<script eleventy:ignore>
+			(function () {
+				var storageKey = "theme-preference";
+				var cycle = ["system", "dark", "light"];
+				var button = document.getElementById("theme-toggle");
+				if (!button) {
+					return;
+				}
+
+				function getStoredPreference() {
+					var value = document.documentElement.getAttribute("data-theme-preference") || "system";
+					if (value === "light" || value === "dark" || value === "system") {
+						return value;
+					}
+					return "system";
+				}
+
+				function resolvedTheme(preference) {
+					if (preference === "light" || preference === "dark") {
+						return preference;
+					}
+					return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				}
+
+				function setPreference(preference) {
+					var resolved = resolvedTheme(preference);
+					document.documentElement.setAttribute("data-theme", resolved);
+					document.documentElement.setAttribute("data-theme-preference", preference);
+					try {
+						localStorage.setItem(storageKey, preference);
+					} catch (e) {}
+					updateButton(preference, resolved);
+				}
+
+				function updateButton(preference, resolved) {
+					var label = preference.charAt(0).toUpperCase() + preference.slice(1);
+					button.textContent = "Theme: " + label;
+					button.setAttribute("aria-label", "Theme " + label + " (active palette: " + resolved + ")");
+					button.setAttribute("title", "Switch theme (System, Dark, Light)");
+				}
+
+				button.addEventListener("click", function () {
+					var current = getStoredPreference();
+					var nextIndex = (cycle.indexOf(current) + 1) % cycle.length;
+					setPreference(cycle[nextIndex]);
+				});
+
+				var initialPreference = getStoredPreference();
+				setPreference(initialPreference);
+
+				var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+				var handleSystemChange = function () {
+					if (getStoredPreference() === "system") {
+						setPreference("system");
+					}
+				};
+
+				if (mediaQuery.addEventListener) {
+					mediaQuery.addEventListener("change", handleSystemChange);
+				} else if (mediaQuery.addListener) {
+					mediaQuery.addListener(handleSystemChange);
+				}
+			})();
+		</script>
 		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
 	</body>
 </html>

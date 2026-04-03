@@ -9,27 +9,91 @@
 
 /* Theme colors */
 :root {
-	--color-gray-20: #bac2de;
-	--color-gray-90: #cdd6f4;
+	--color-gray-20: #cacac7;
+	--color-gray-90: #22262d;
 
-	--background-color: #11111b;
+	--background-color: #f2f1ef;
+	--color-surface: #e2e1df;
+	--table-head-bg: #dddddb;
+	--table-row-hover-bg: #c7d7e0;
 
 	--text-color: var(--color-gray-90);
-	--text-color-link: #b4befe;
-	--text-color-link-active: #89b4fa;
-	--text-color-link-visited: #cba6f7;
+	--text-color-link: #4d699b;
+	--text-color-link-active: #5d57a3;
+	--text-color-link-visited: #624c83;
+
+	--color-note: #5a7785;
+	--color-tip: #6f894e;
+	--color-important: #c84053;
+	--color-warning: #e98a00;
+	--color-caution: #836f4a;
 
 	--syntax-tab-size: 2;
 }
 
-:root {
-	--ctp-surface: #1e1e2e;
+:root[data-theme="light"] {
+	--color-gray-20: #cacac7;
+	--color-gray-90: #22262d;
 
-	--ctp-note: #89b4fa; /* Blue */
-	--ctp-tip: #a6e3a1; /* Green */
-	--ctp-important: #f38ba8; /* Red */
-	--ctp-warning: #f9e2af; /* Yellow */
-	--ctp-caution: #fab387; /* Peach */
+	--background-color: #f2f1ef;
+	--color-surface: #e2e1df;
+	--table-head-bg: #dddddb;
+	--table-row-hover-bg: #c7d7e0;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #4d699b;
+	--text-color-link-active: #5d57a3;
+	--text-color-link-visited: #624c83;
+
+	--color-note: #5a7785;
+	--color-tip: #6f894e;
+	--color-important: #c84053;
+	--color-warning: #e98a00;
+	--color-caution: #836f4a;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--color-gray-20: #393b44;
+		--color-gray-90: #c5c9c7;
+
+		--background-color: #090e13;
+		--color-surface: #1c1e25;
+		--table-head-bg: #1c1e25;
+		--table-row-hover-bg: #22262d;
+
+		--text-color: var(--color-gray-90);
+		--text-color-link: #7fb4ca;
+		--text-color-link-active: #8ba4b0;
+		--text-color-link-visited: #938aa9;
+
+		--color-note: #658594;
+		--color-tip: #98bb6c;
+		--color-important: #c34043;
+		--color-warning: #dca561;
+		--color-caution: #b6927b;
+	}
+}
+
+:root[data-theme="dark"] {
+	--color-gray-20: #393b44;
+	--color-gray-90: #c5c9c7;
+
+	--background-color: #090e13;
+	--color-surface: #1c1e25;
+	--table-head-bg: #1c1e25;
+	--table-row-hover-bg: #22262d;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #7fb4ca;
+	--text-color-link-active: #8ba4b0;
+	--text-color-link-visited: #938aa9;
+
+	--color-note: #658594;
+	--color-tip: #98bb6c;
+	--color-important: #c34043;
+	--color-warning: #dca561;
+	--color-caution: #b6927b;
 }
 
 /* Global stylesheet */
@@ -210,6 +274,13 @@ header {
 }
 
 /* Nav */
+header nav {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
 .nav {
 	display: flex;
 	gap: 0.5em 1em;
@@ -225,6 +296,23 @@ header {
 }
 .nav a[href][aria-current="page"] {
 	text-decoration: underline;
+}
+
+.theme-toggle {
+	border: 1px solid var(--color-gray-20);
+	background-color: var(--color-surface);
+	color: var(--text-color);
+	padding: 0.4rem 0.75rem;
+	border-radius: 999px;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.875rem;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+	border-color: var(--text-color-link-active);
+	outline: none;
 }
 
 /* Posts list */
@@ -303,7 +391,7 @@ header {
 	margin: 1.5rem 0;
 	border-left: 4px solid;
 	border-radius: 6px;
-	background-color: var(--ctp-surface);
+	background-color: var(--color-surface);
 	color: var(--text-color);
 	font-size: 0.95rem;
 	line-height: 1.5;
@@ -322,70 +410,70 @@ header {
 	letter-spacing: 0.03em;
 }
 
-/* Variants using Catppuccin variables */
+/* Alert variants */
 
 .markdown-alert-note {
-	border-left-color: var(--ctp-note);
+	border-left-color: var(--color-note);
 }
 
 .markdown-alert-tip {
-	border-left-color: var(--ctp-tip);
+	border-left-color: var(--color-tip);
 }
 
 .markdown-alert-important {
-	border-left-color: var(--ctp-important);
+	border-left-color: var(--color-important);
 }
 
 .markdown-alert-warning {
-	border-left-color: var(--ctp-warning);
+	border-left-color: var(--color-warning);
 }
 
 .markdown-alert-caution {
-	border-left-color: var(--ctp-caution);
+	border-left-color: var(--color-caution);
 }
 
-/* Colour-specific titles matching the border */
+/* Alert title color follows border color */
 .markdown-alert-note .markdown-alert-title {
-	color: var(--ctp-note);
+	color: var(--color-note);
 }
 
 .markdown-alert-tip .markdown-alert-title {
-	color: var(--ctp-tip);
+	color: var(--color-tip);
 }
 
 .markdown-alert-important .markdown-alert-title {
-	color: var(--ctp-important);
+	color: var(--color-important);
 }
 
 .markdown-alert-warning .markdown-alert-title {
-	color: var(--ctp-warning);
+	color: var(--color-warning);
 }
 
 .markdown-alert-caution .markdown-alert-title {
-	color: var(--ctp-caution);
+	color: var(--color-caution);
 }
 
-/* Catppuccin Mocha table styling */
+/* Table styling */
 table {
 	width: 100%;
 	border-collapse: collapse;
-	background-color: var(--ctp-surface);
+	background-color: var(--color-surface);
 	color: var(--text-color);
 	border: 1px solid var(--color-gray-20);
 }
 
-/* Table header cells (th in thead) */
+/* Table header cells */
 thead th {
-	background-color: #181825;
+	background-color: var(--table-head-bg);
 	color: var(--text-color);
 	text-align: left;
 	padding: 0.6rem 0.8rem;
 	border-bottom: 2px solid var(--color-gray-20);
 }
 
-/* Body header cells (th in tbody) */
+/* Body header cells */
 tbody tr th {
-	background-color: #181825;
+	background-color: var(--table-head-bg);
 	color: var(--text-color);
 	font-weight: 500;
 	padding: 0.6rem 0.8rem;
@@ -405,24 +493,24 @@ tbody tr + tr td {
 	border-top: 1px solid var(--color-gray-20);
 }
 
-/* Subtle row hover state */
+/* Row hover state */
 tbody tr:hover {
-	background-color: #2a2a3b;
+	background-color: var(--table-row-hover-bg);
 }
 
-/* Optional: colour-accented category headers in tbody */
+/* Optional category accents in tbody */
 tbody tr th[data-type="note"] {
-	border-left: 3px solid var(--ctp-note);
+	border-left: 3px solid var(--color-note);
 }
 tbody tr th[data-type="tip"] {
-	border-left: 3px solid var(--ctp-tip);
+	border-left: 3px solid var(--color-tip);
 }
 tbody tr th[data-type="important"] {
-	border-left: 3px solid var(--ctp-important);
+	border-left: 3px solid var(--color-important);
 }
 tbody tr th[data-type="warning"] {
-	border-left: 3px solid var(--ctp-warning);
+	border-left: 3px solid var(--color-warning);
 }
 tbody tr th[data-type="caution"] {
-	border-left: 3px solid var(--ctp-caution);
+	border-left: 3px solid var(--color-caution);
 }
