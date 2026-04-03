@@ -3,6 +3,28 @@ pre[class*="language-"] {
 	color: #22262d;
 }
 
+pre[class*="language-"] {
+	margin: 0.5em 0;
+	line-height: 1.375;
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	overflow-x: auto;
+}
+
+code[class*="language-"] {
+	word-break: normal;
+}
+
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
 	background: #e2e1df;
