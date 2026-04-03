@@ -27,3 +27,39 @@ Verify push targets:
 ```bash
 git remote get-url --push --all origin
 ```
+
+## Deployment (Codeberg Pages)
+
+This site is deployed to Codeberg Pages from the `pages` branch.
+
+### Automatic deployment (recommended)
+
+- Workflow file: `.forgejo/workflows/pages.yml`
+- Trigger: push to `main`
+- Build command: `npm run build-pages`
+- Publish target: `pages` branch
+
+So after pushing `main`, Forgejo Actions builds `_site/` and replaces the contents of `pages`.
+
+### Manual deployment to `pages`
+
+If needed, you can deploy locally:
+
+```bash
+npm ci
+npm run build-pages
+
+# from repo root, publish generated _site output to pages branch
+git fetch origin pages:pages
+git worktree add /tmp/beefyi-pages pages
+git -C /tmp/beefyi-pages rm -rf .
+git -C /tmp/beefyi-pages clean -fdx
+cp -a _site/. /tmp/beefyi-pages/
+git -C /tmp/beefyi-pages add -A
+git -C /tmp/beefyi-pages commit -m "Deploy pages"
+git -C /tmp/beefyi-pages push ssh://git@codeberg.org/Beed/beefyi.git pages:pages
+```
+
+### Custom domain
+
+If `_site/.domains` exists, deployment should keep it at the root of the `pages` branch so Codeberg Pages can use the custom domain configuration.
