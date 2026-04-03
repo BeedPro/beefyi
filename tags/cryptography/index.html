@@ -8,6 +8,22 @@
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="beefyi">
 		<link rel="icon" href="/favicon/favicon.ico" sizes="any">
 		
+		<script>
+			(function () {
+				var storageKey = "theme-preference";
+				var preference = "system";
+				try {
+					var stored = localStorage.getItem(storageKey);
+					if (stored === "light" || stored === "dark" || stored === "system") {
+						preference = stored;
+					}
+				} catch (e) {}
+				var isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+				var resolved = preference === "system" ? (isDark ? "dark" : "light") : preference;
+				document.documentElement.setAttribute("data-theme", resolved);
+				document.documentElement.setAttribute("data-theme-preference", preference);
+			})();
+		</script>
 		
 		
 		<style>/* This is an arbitrary CSS string added to the bundle */
@@ -22,27 +38,91 @@
 
 /* Theme colors */
 :root {
-	--color-gray-20: #bac2de;
-	--color-gray-90: #cdd6f4;
+	--color-gray-20: #cacac7;
+	--color-gray-90: #22262d;
 
-	--background-color: #11111b;
+	--background-color: #f2f1ef;
+	--color-surface: #e2e1df;
+	--table-head-bg: #dddddb;
+	--table-row-hover-bg: #c7d7e0;
 
 	--text-color: var(--color-gray-90);
-	--text-color-link: #b4befe;
-	--text-color-link-active: #89b4fa;
-	--text-color-link-visited: #cba6f7;
+	--text-color-link: #4d699b;
+	--text-color-link-active: #5d57a3;
+	--text-color-link-visited: #624c83;
+
+	--color-note: #5a7785;
+	--color-tip: #6f894e;
+	--color-important: #c84053;
+	--color-warning: #e98a00;
+	--color-caution: #836f4a;
 
 	--syntax-tab-size: 2;
 }
 
-:root {
-	--ctp-surface: #1e1e2e;
+:root[data-theme="light"] {
+	--color-gray-20: #cacac7;
+	--color-gray-90: #22262d;
 
-	--ctp-note: #89b4fa; /* Blue */
-	--ctp-tip: #a6e3a1; /* Green */
-	--ctp-important: #f38ba8; /* Red */
-	--ctp-warning: #f9e2af; /* Yellow */
-	--ctp-caution: #fab387; /* Peach */
+	--background-color: #f2f1ef;
+	--color-surface: #e2e1df;
+	--table-head-bg: #dddddb;
+	--table-row-hover-bg: #c7d7e0;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #4d699b;
+	--text-color-link-active: #5d57a3;
+	--text-color-link-visited: #624c83;
+
+	--color-note: #5a7785;
+	--color-tip: #6f894e;
+	--color-important: #c84053;
+	--color-warning: #e98a00;
+	--color-caution: #836f4a;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--color-gray-20: #393b44;
+		--color-gray-90: #c5c9c7;
+
+		--background-color: #090e13;
+		--color-surface: #1c1e25;
+		--table-head-bg: #1c1e25;
+		--table-row-hover-bg: #22262d;
+
+		--text-color: var(--color-gray-90);
+		--text-color-link: #7fb4ca;
+		--text-color-link-active: #8ba4b0;
+		--text-color-link-visited: #938aa9;
+
+		--color-note: #658594;
+		--color-tip: #98bb6c;
+		--color-important: #c34043;
+		--color-warning: #dca561;
+		--color-caution: #b6927b;
+	}
+}
+
+:root[data-theme="dark"] {
+	--color-gray-20: #393b44;
+	--color-gray-90: #c5c9c7;
+
+	--background-color: #090e13;
+	--color-surface: #1c1e25;
+	--table-head-bg: #1c1e25;
+	--table-row-hover-bg: #22262d;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #7fb4ca;
+	--text-color-link-active: #8ba4b0;
+	--text-color-link-visited: #938aa9;
+
+	--color-note: #658594;
+	--color-tip: #98bb6c;
+	--color-important: #c34043;
+	--color-warning: #dca561;
+	--color-caution: #b6927b;
 }
 
 /* Global stylesheet */
@@ -207,14 +287,13 @@ code {
 /* Header */
 header {
 	display: flex;
-	gap: 1em;
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
+	gap: 1rem;
 	padding: 1em;
 }
 .home-link {
-	flex-grow: 1;
 	font-size: 1em; /* 16px /16 */
 	font-weight: 700;
 }
@@ -223,6 +302,11 @@ header {
 }
 
 /* Nav */
+header nav {
+	display: flex;
+	align-items: center;
+}
+
 .nav {
 	display: flex;
 	gap: 0.5em 1em;
@@ -239,6 +323,123 @@ header {
 .nav a[href][aria-current="page"] {
 	text-decoration: underline;
 }
+
+.theme-label {
+	font-size: 0.875rem;
+	margin-bottom: 0.4rem;
+	display: block;
+	font-weight: 700;
+}
+
+.theme-system-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	margin-bottom: 0.8rem;
+	cursor: pointer;
+}
+
+.theme-system-toggle input {
+	margin: 0;
+}
+
+.theme-options {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.65rem;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+.theme-option {
+	display: block;
+	border: 1px solid var(--color-gray-20);
+	border-radius: 0;
+	padding: 0.7rem 0.9rem;
+	background-color: var(--color-surface);
+	cursor: pointer;
+	transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.theme-option input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.theme-option-title {
+	display: block;
+	font-weight: 700;
+}
+
+.theme-preview {
+	display: grid;
+	gap: 0.35rem;
+	margin-bottom: 0.55rem;
+}
+
+.theme-preview span {
+	display: block;
+	height: 0.5rem;
+	border: 1px solid var(--color-gray-20);
+}
+
+.theme-preview-dark {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.theme-preview-dark span:nth-child(1) {
+	background: #090e13;
+}
+
+.theme-preview-dark span:nth-child(2) {
+	background: #1c1e25;
+}
+
+.theme-preview-dark span:nth-child(3) {
+	background: #8ba4b0;
+}
+
+.theme-preview-light {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.theme-preview-light span:nth-child(1) {
+	background: #f2f1ef;
+}
+
+.theme-preview-light span:nth-child(2) {
+	background: #e2e1df;
+}
+
+.theme-preview-light span:nth-child(3) {
+	background: #5d57a3;
+}
+
+.theme-option-desc {
+	display: block;
+	margin-top: 0.15rem;
+	font-size: 0.85rem;
+	color: var(--text-color-link-active);
+}
+
+.theme-option:hover,
+.theme-option:focus-within {
+	border-color: var(--text-color-link-active);
+}
+
+.theme-option.is-selected {
+	border-color: var(--text-color-link-active);
+	background-color: var(--table-row-hover-bg);
+}
+
+@media (max-width: 640px) {
+	.theme-options {
+		grid-template-columns: 1fr;
+	}
+}
+
 
 /* Posts list */
 .postlist {
@@ -316,7 +517,7 @@ header {
 	margin: 1.5rem 0;
 	border-left: 4px solid;
 	border-radius: 6px;
-	background-color: var(--ctp-surface);
+	background-color: var(--color-surface);
 	color: var(--text-color);
 	font-size: 0.95rem;
 	line-height: 1.5;
@@ -335,70 +536,70 @@ header {
 	letter-spacing: 0.03em;
 }
 
-/* Variants using Catppuccin variables */
+/* Alert variants */
 
 .markdown-alert-note {
-	border-left-color: var(--ctp-note);
+	border-left-color: var(--color-note);
 }
 
 .markdown-alert-tip {
-	border-left-color: var(--ctp-tip);
+	border-left-color: var(--color-tip);
 }
 
 .markdown-alert-important {
-	border-left-color: var(--ctp-important);
+	border-left-color: var(--color-important);
 }
 
 .markdown-alert-warning {
-	border-left-color: var(--ctp-warning);
+	border-left-color: var(--color-warning);
 }
 
 .markdown-alert-caution {
-	border-left-color: var(--ctp-caution);
+	border-left-color: var(--color-caution);
 }
 
-/* Colour-specific titles matching the border */
+/* Alert title color follows border color */
 .markdown-alert-note .markdown-alert-title {
-	color: var(--ctp-note);
+	color: var(--color-note);
 }
 
 .markdown-alert-tip .markdown-alert-title {
-	color: var(--ctp-tip);
+	color: var(--color-tip);
 }
 
 .markdown-alert-important .markdown-alert-title {
-	color: var(--ctp-important);
+	color: var(--color-important);
 }
 
 .markdown-alert-warning .markdown-alert-title {
-	color: var(--ctp-warning);
+	color: var(--color-warning);
 }
 
 .markdown-alert-caution .markdown-alert-title {
-	color: var(--ctp-caution);
+	color: var(--color-caution);
 }
 
-/* Catppuccin Mocha table styling */
+/* Table styling */
 table {
 	width: 100%;
 	border-collapse: collapse;
-	background-color: var(--ctp-surface);
+	background-color: var(--color-surface);
 	color: var(--text-color);
 	border: 1px solid var(--color-gray-20);
 }
 
-/* Table header cells (th in thead) */
+/* Table header cells */
 thead th {
-	background-color: #181825;
+	background-color: var(--table-head-bg);
 	color: var(--text-color);
 	text-align: left;
 	padding: 0.6rem 0.8rem;
 	border-bottom: 2px solid var(--color-gray-20);
 }
 
-/* Body header cells (th in tbody) */
+/* Body header cells */
 tbody tr th {
-	background-color: #181825;
+	background-color: var(--table-head-bg);
 	color: var(--text-color);
 	font-weight: 500;
 	padding: 0.6rem 0.8rem;
@@ -418,26 +619,26 @@ tbody tr + tr td {
 	border-top: 1px solid var(--color-gray-20);
 }
 
-/* Subtle row hover state */
+/* Row hover state */
 tbody tr:hover {
-	background-color: #2a2a3b;
+	background-color: var(--table-row-hover-bg);
 }
 
-/* Optional: colour-accented category headers in tbody */
+/* Optional category accents in tbody */
 tbody tr th[data-type="note"] {
-	border-left: 3px solid var(--ctp-note);
+	border-left: 3px solid var(--color-note);
 }
 tbody tr th[data-type="tip"] {
-	border-left: 3px solid var(--ctp-tip);
+	border-left: 3px solid var(--color-tip);
 }
 tbody tr th[data-type="important"] {
-	border-left: 3px solid var(--ctp-important);
+	border-left: 3px solid var(--color-important);
 }
 tbody tr th[data-type="warning"] {
-	border-left: 3px solid var(--ctp-warning);
+	border-left: 3px solid var(--color-warning);
 }
 tbody tr th[data-type="caution"] {
-	border-left: 3px solid var(--ctp-caution);
+	border-left: 3px solid var(--color-caution);
 }</style>
 		
 	</head>
@@ -453,6 +654,7 @@ tbody tr th[data-type="caution"] {
 					<li class="nav-item"><a href="/tags/">Tags</a></li>
 					<li class="nav-item"><a href="/about/">About</a></li>
 					<li class="nav-item"><a href="/feed/feed.xml">Feed</a></li>
+					<li class="nav-item"><a href="/settings/">Settings</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -483,7 +685,97 @@ tbody tr th[data-type="caution"] {
 			</p>
 		</footer>
 
-		<!-- This page `/tags/cryptography/` was built on 2026-01-12T02:28:52.459Z -->
+		<!-- This page `/tags/cryptography/` was built on 2026-04-03T21:39:59.564Z -->
+		<script>
+			(function () {
+				var storageKey = "theme-preference";
+				var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name="theme-select"]'));
+				var systemToggle = document.getElementById("theme-system-toggle");
+				if (inputs.length === 0 && !systemToggle) {
+					return;
+				}
+
+				function getStoredPreference() {
+					var value = document.documentElement.getAttribute("data-theme-preference") || "system";
+					if (value === "light" || value === "dark" || value === "system") {
+						return value;
+					}
+					return "system";
+				}
+
+				function resolvedTheme(preference) {
+					if (preference === "light" || preference === "dark") {
+						return preference;
+					}
+					return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				}
+
+				function setPreference(preference, persist) {
+					var resolved = resolvedTheme(preference);
+					document.documentElement.setAttribute("data-theme", resolved);
+					document.documentElement.setAttribute("data-theme-preference", preference);
+					if (persist !== false) {
+						try {
+							localStorage.setItem(storageKey, preference);
+						} catch (e) {}
+					}
+					updateInputs(preference, resolved);
+				}
+
+				function updateInputs(preference, resolved) {
+					inputs.forEach(function (input) {
+						var selected = input.value === preference && preference !== "system";
+						input.checked = selected;
+						var option = input.closest(".theme-option");
+						if (option) {
+							option.classList.toggle("is-selected", selected);
+							option.setAttribute("aria-label", "Theme " + input.value + " (active palette: " + resolved + ")");
+						}
+					});
+					if (systemToggle) {
+						systemToggle.checked = preference === "system";
+						systemToggle.setAttribute("aria-label", "Use system theme");
+					}
+				}
+
+				inputs.forEach(function (input) {
+					input.addEventListener("change", function () {
+						if (input.checked) {
+							setPreference(input.value, true);
+						}
+					});
+				});
+
+				if (systemToggle) {
+					systemToggle.addEventListener("change", function () {
+						if (systemToggle.checked) {
+							setPreference("system", true);
+						} else {
+							var selectedInput = inputs.find(function (input) {
+								return input.checked;
+							});
+							setPreference(selectedInput ? selectedInput.value : "dark", true);
+						}
+					});
+				}
+
+				var initialPreference = getStoredPreference();
+				setPreference(initialPreference, false);
+
+				var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+				var handleSystemChange = function () {
+					if (getStoredPreference() === "system") {
+						setPreference("system", false);
+					}
+				};
+
+				if (mediaQuery.addEventListener) {
+					mediaQuery.addEventListener("change", handleSystemChange);
+				} else if (mediaQuery.addListener) {
+					mediaQuery.addListener(handleSystemChange);
+				}
+			})();
+		</script>
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 	</body>
 </html>

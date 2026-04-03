@@ -8,6 +8,22 @@
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="beefyi">
 		<link rel="icon" href="/favicon/favicon.ico" sizes="any">
 		
+		<script>
+			(function () {
+				var storageKey = "theme-preference";
+				var preference = "system";
+				try {
+					var stored = localStorage.getItem(storageKey);
+					if (stored === "light" || stored === "dark" || stored === "system") {
+						preference = stored;
+					}
+				} catch (e) {}
+				var isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+				var resolved = preference === "system" ? (isDark ? "dark" : "light") : preference;
+				document.documentElement.setAttribute("data-theme", resolved);
+				document.documentElement.setAttribute("data-theme-preference", preference);
+			})();
+		</script>
 		
 		
 		<style>/* This is an arbitrary CSS string added to the bundle */
@@ -22,27 +38,91 @@
 
 /* Theme colors */
 :root {
-	--color-gray-20: #bac2de;
-	--color-gray-90: #cdd6f4;
+	--color-gray-20: #cacac7;
+	--color-gray-90: #22262d;
 
-	--background-color: #11111b;
+	--background-color: #f2f1ef;
+	--color-surface: #e2e1df;
+	--table-head-bg: #dddddb;
+	--table-row-hover-bg: #c7d7e0;
 
 	--text-color: var(--color-gray-90);
-	--text-color-link: #b4befe;
-	--text-color-link-active: #89b4fa;
-	--text-color-link-visited: #cba6f7;
+	--text-color-link: #4d699b;
+	--text-color-link-active: #5d57a3;
+	--text-color-link-visited: #624c83;
+
+	--color-note: #5a7785;
+	--color-tip: #6f894e;
+	--color-important: #c84053;
+	--color-warning: #e98a00;
+	--color-caution: #836f4a;
 
 	--syntax-tab-size: 2;
 }
 
-:root {
-	--ctp-surface: #1e1e2e;
+:root[data-theme="light"] {
+	--color-gray-20: #cacac7;
+	--color-gray-90: #22262d;
 
-	--ctp-note: #89b4fa; /* Blue */
-	--ctp-tip: #a6e3a1; /* Green */
-	--ctp-important: #f38ba8; /* Red */
-	--ctp-warning: #f9e2af; /* Yellow */
-	--ctp-caution: #fab387; /* Peach */
+	--background-color: #f2f1ef;
+	--color-surface: #e2e1df;
+	--table-head-bg: #dddddb;
+	--table-row-hover-bg: #c7d7e0;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #4d699b;
+	--text-color-link-active: #5d57a3;
+	--text-color-link-visited: #624c83;
+
+	--color-note: #5a7785;
+	--color-tip: #6f894e;
+	--color-important: #c84053;
+	--color-warning: #e98a00;
+	--color-caution: #836f4a;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--color-gray-20: #393b44;
+		--color-gray-90: #c5c9c7;
+
+		--background-color: #090e13;
+		--color-surface: #1c1e25;
+		--table-head-bg: #1c1e25;
+		--table-row-hover-bg: #22262d;
+
+		--text-color: var(--color-gray-90);
+		--text-color-link: #7fb4ca;
+		--text-color-link-active: #8ba4b0;
+		--text-color-link-visited: #938aa9;
+
+		--color-note: #658594;
+		--color-tip: #98bb6c;
+		--color-important: #c34043;
+		--color-warning: #dca561;
+		--color-caution: #b6927b;
+	}
+}
+
+:root[data-theme="dark"] {
+	--color-gray-20: #393b44;
+	--color-gray-90: #c5c9c7;
+
+	--background-color: #090e13;
+	--color-surface: #1c1e25;
+	--table-head-bg: #1c1e25;
+	--table-row-hover-bg: #22262d;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #7fb4ca;
+	--text-color-link-active: #8ba4b0;
+	--text-color-link-visited: #938aa9;
+
+	--color-note: #658594;
+	--color-tip: #98bb6c;
+	--color-important: #c34043;
+	--color-warning: #dca561;
+	--color-caution: #b6927b;
 }
 
 /* Global stylesheet */
@@ -207,14 +287,13 @@ code {
 /* Header */
 header {
 	display: flex;
-	gap: 1em;
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
+	gap: 1rem;
 	padding: 1em;
 }
 .home-link {
-	flex-grow: 1;
 	font-size: 1em; /* 16px /16 */
 	font-weight: 700;
 }
@@ -223,6 +302,11 @@ header {
 }
 
 /* Nav */
+header nav {
+	display: flex;
+	align-items: center;
+}
+
 .nav {
 	display: flex;
 	gap: 0.5em 1em;
@@ -239,6 +323,123 @@ header {
 .nav a[href][aria-current="page"] {
 	text-decoration: underline;
 }
+
+.theme-label {
+	font-size: 0.875rem;
+	margin-bottom: 0.4rem;
+	display: block;
+	font-weight: 700;
+}
+
+.theme-system-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	margin-bottom: 0.8rem;
+	cursor: pointer;
+}
+
+.theme-system-toggle input {
+	margin: 0;
+}
+
+.theme-options {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.65rem;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+.theme-option {
+	display: block;
+	border: 1px solid var(--color-gray-20);
+	border-radius: 0;
+	padding: 0.7rem 0.9rem;
+	background-color: var(--color-surface);
+	cursor: pointer;
+	transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.theme-option input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.theme-option-title {
+	display: block;
+	font-weight: 700;
+}
+
+.theme-preview {
+	display: grid;
+	gap: 0.35rem;
+	margin-bottom: 0.55rem;
+}
+
+.theme-preview span {
+	display: block;
+	height: 0.5rem;
+	border: 1px solid var(--color-gray-20);
+}
+
+.theme-preview-dark {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.theme-preview-dark span:nth-child(1) {
+	background: #090e13;
+}
+
+.theme-preview-dark span:nth-child(2) {
+	background: #1c1e25;
+}
+
+.theme-preview-dark span:nth-child(3) {
+	background: #8ba4b0;
+}
+
+.theme-preview-light {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.theme-preview-light span:nth-child(1) {
+	background: #f2f1ef;
+}
+
+.theme-preview-light span:nth-child(2) {
+	background: #e2e1df;
+}
+
+.theme-preview-light span:nth-child(3) {
+	background: #5d57a3;
+}
+
+.theme-option-desc {
+	display: block;
+	margin-top: 0.15rem;
+	font-size: 0.85rem;
+	color: var(--text-color-link-active);
+}
+
+.theme-option:hover,
+.theme-option:focus-within {
+	border-color: var(--text-color-link-active);
+}
+
+.theme-option.is-selected {
+	border-color: var(--text-color-link-active);
+	background-color: var(--table-row-hover-bg);
+}
+
+@media (max-width: 640px) {
+	.theme-options {
+		grid-template-columns: 1fr;
+	}
+}
+
 
 /* Posts list */
 .postlist {
@@ -316,7 +517,7 @@ header {
 	margin: 1.5rem 0;
 	border-left: 4px solid;
 	border-radius: 6px;
-	background-color: var(--ctp-surface);
+	background-color: var(--color-surface);
 	color: var(--text-color);
 	font-size: 0.95rem;
 	line-height: 1.5;
@@ -335,70 +536,70 @@ header {
 	letter-spacing: 0.03em;
 }
 
-/* Variants using Catppuccin variables */
+/* Alert variants */
 
 .markdown-alert-note {
-	border-left-color: var(--ctp-note);
+	border-left-color: var(--color-note);
 }
 
 .markdown-alert-tip {
-	border-left-color: var(--ctp-tip);
+	border-left-color: var(--color-tip);
 }
 
 .markdown-alert-important {
-	border-left-color: var(--ctp-important);
+	border-left-color: var(--color-important);
 }
 
 .markdown-alert-warning {
-	border-left-color: var(--ctp-warning);
+	border-left-color: var(--color-warning);
 }
 
 .markdown-alert-caution {
-	border-left-color: var(--ctp-caution);
+	border-left-color: var(--color-caution);
 }
 
-/* Colour-specific titles matching the border */
+/* Alert title color follows border color */
 .markdown-alert-note .markdown-alert-title {
-	color: var(--ctp-note);
+	color: var(--color-note);
 }
 
 .markdown-alert-tip .markdown-alert-title {
-	color: var(--ctp-tip);
+	color: var(--color-tip);
 }
 
 .markdown-alert-important .markdown-alert-title {
-	color: var(--ctp-important);
+	color: var(--color-important);
 }
 
 .markdown-alert-warning .markdown-alert-title {
-	color: var(--ctp-warning);
+	color: var(--color-warning);
 }
 
 .markdown-alert-caution .markdown-alert-title {
-	color: var(--ctp-caution);
+	color: var(--color-caution);
 }
 
-/* Catppuccin Mocha table styling */
+/* Table styling */
 table {
 	width: 100%;
 	border-collapse: collapse;
-	background-color: var(--ctp-surface);
+	background-color: var(--color-surface);
 	color: var(--text-color);
 	border: 1px solid var(--color-gray-20);
 }
 
-/* Table header cells (th in thead) */
+/* Table header cells */
 thead th {
-	background-color: #181825;
+	background-color: var(--table-head-bg);
 	color: var(--text-color);
 	text-align: left;
 	padding: 0.6rem 0.8rem;
 	border-bottom: 2px solid var(--color-gray-20);
 }
 
-/* Body header cells (th in tbody) */
+/* Body header cells */
 tbody tr th {
-	background-color: #181825;
+	background-color: var(--table-head-bg);
 	color: var(--text-color);
 	font-weight: 500;
 	padding: 0.6rem 0.8rem;
@@ -418,103 +619,78 @@ tbody tr + tr td {
 	border-top: 1px solid var(--color-gray-20);
 }
 
-/* Subtle row hover state */
+/* Row hover state */
 tbody tr:hover {
-	background-color: #2a2a3b;
+	background-color: var(--table-row-hover-bg);
 }
 
-/* Optional: colour-accented category headers in tbody */
+/* Optional category accents in tbody */
 tbody tr th[data-type="note"] {
-	border-left: 3px solid var(--ctp-note);
+	border-left: 3px solid var(--color-note);
 }
 tbody tr th[data-type="tip"] {
-	border-left: 3px solid var(--ctp-tip);
+	border-left: 3px solid var(--color-tip);
 }
 tbody tr th[data-type="important"] {
-	border-left: 3px solid var(--ctp-important);
+	border-left: 3px solid var(--color-important);
 }
 tbody tr th[data-type="warning"] {
-	border-left: 3px solid var(--ctp-warning);
+	border-left: 3px solid var(--color-warning);
 }
 tbody tr th[data-type="caution"] {
-	border-left: 3px solid var(--ctp-caution);
+	border-left: 3px solid var(--color-caution);
 }
-/**
- * okaidia theme for JavaScript, CSS and HTML
- * Loosely based on Monokai textmate theme by http://www.monokai.nl/
- * @author ocodia
- */
-
 code[class*="language-"],
 pre[class*="language-"] {
-	color: #f8f8f2;
-	background: none;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-	font-size: 1em;
+	color: #22262d;
+}
+
+pre[class*="language-"] {
+	margin: 0.5em 0;
+	line-height: 1.375;
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
 	word-wrap: normal;
-	line-height: 1.5;
-
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
-	tab-size: 4;
-
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
-	hyphens: none;
+	overflow-x: auto;
 }
 
-/* Code blocks */
-pre[class*="language-"] {
-	padding: 1em;
-	margin: .5em 0;
-	overflow: auto;
-	border-radius: 0.3em;
+code[class*="language-"] {
+	word-break: normal;
 }
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: #272822;
-}
-
-/* Inline code */
-:not(pre) > code[class*="language-"] {
-	padding: .1em;
-	border-radius: .3em;
-	white-space: normal;
+	background: #e2e1df;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: #8292a2;
+	color: #6d6d69;
 }
 
 .token.punctuation {
-	color: #f8f8f2;
-}
-
-.token.namespace {
-	opacity: .7;
+	color: #6d6d69;
 }
 
 .token.property,
 .token.tag,
+.token.boolean,
+.token.number,
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: #f92672;
-}
-
-.token.boolean,
-.token.number {
-	color: #ae81ff;
+	color: #b35b79;
 }
 
 .token.selector,
@@ -523,44 +699,173 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: #a6e22e;
+	color: #6f894e;
 }
 
 .token.operator,
 .token.entity,
 .token.url,
 .language-css .token.string,
-.style .token.string,
-.token.variable {
-	color: #f8f8f2;
+.style .token.string {
+	color: #5c6068;
 }
 
 .token.atrule,
 .token.attr-value,
-.token.function,
-.token.class-name {
-	color: #e6db74;
+.token.keyword {
+	color: #624c83;
 }
 
-.token.keyword {
-	color: #66d9ef;
+.token.function,
+.token.class-name {
+	color: #4d699b;
 }
 
 .token.regex,
-.token.important {
-	color: #fd971f;
+.token.important,
+.token.variable {
+	color: #cc6d00;
 }
 
-.token.important,
-.token.bold {
-	font-weight: bold;
+.token.bold,
+.token.important {
+	font-weight: 700;
 }
+
 .token.italic {
 	font-style: italic;
 }
 
-.token.entity {
-	cursor: help;
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) code[class*="language-"],
+	:root:not([data-theme="light"]) pre[class*="language-"] {
+		color: #c5c9c7;
+	}
+
+	:root:not([data-theme="light"]) :not(pre) > code[class*="language-"],
+	:root:not([data-theme="light"]) pre[class*="language-"] {
+		background: #1c1e25;
+	}
+
+	:root:not([data-theme="light"]) .token.comment,
+	:root:not([data-theme="light"]) .token.prolog,
+	:root:not([data-theme="light"]) .token.doctype,
+	:root:not([data-theme="light"]) .token.cdata {
+		color: #75797f;
+	}
+
+	:root:not([data-theme="light"]) .token.punctuation {
+		color: #909398;
+	}
+
+	:root:not([data-theme="light"]) .token.property,
+	:root:not([data-theme="light"]) .token.tag,
+	:root:not([data-theme="light"]) .token.boolean,
+	:root:not([data-theme="light"]) .token.number,
+	:root:not([data-theme="light"]) .token.constant,
+	:root:not([data-theme="light"]) .token.symbol,
+	:root:not([data-theme="light"]) .token.deleted {
+		color: #a292a3;
+	}
+
+	:root:not([data-theme="light"]) .token.selector,
+	:root:not([data-theme="light"]) .token.attr-name,
+	:root:not([data-theme="light"]) .token.string,
+	:root:not([data-theme="light"]) .token.char,
+	:root:not([data-theme="light"]) .token.builtin,
+	:root:not([data-theme="light"]) .token.inserted {
+		color: #8a9a7b;
+	}
+
+	:root:not([data-theme="light"]) .token.operator,
+	:root:not([data-theme="light"]) .token.entity,
+	:root:not([data-theme="light"]) .token.url,
+	:root:not([data-theme="light"]) .language-css .token.string,
+	:root:not([data-theme="light"]) .style .token.string {
+		color: #909398;
+	}
+
+	:root:not([data-theme="light"]) .token.atrule,
+	:root:not([data-theme="light"]) .token.attr-value,
+	:root:not([data-theme="light"]) .token.keyword {
+		color: #8992a7;
+	}
+
+	:root:not([data-theme="light"]) .token.function,
+	:root:not([data-theme="light"]) .token.class-name {
+		color: #8ba4b0;
+	}
+
+	:root:not([data-theme="light"]) .token.regex,
+	:root:not([data-theme="light"]) .token.important,
+	:root:not([data-theme="light"]) .token.variable {
+		color: #b6927b;
+	}
+}
+
+:root[data-theme="dark"] code[class*="language-"],
+:root[data-theme="dark"] pre[class*="language-"] {
+	color: #c5c9c7;
+}
+
+:root[data-theme="dark"] :not(pre) > code[class*="language-"],
+:root[data-theme="dark"] pre[class*="language-"] {
+	background: #1c1e25;
+}
+
+:root[data-theme="dark"] .token.comment,
+:root[data-theme="dark"] .token.prolog,
+:root[data-theme="dark"] .token.doctype,
+:root[data-theme="dark"] .token.cdata {
+	color: #75797f;
+}
+
+:root[data-theme="dark"] .token.punctuation {
+	color: #909398;
+}
+
+:root[data-theme="dark"] .token.property,
+:root[data-theme="dark"] .token.tag,
+:root[data-theme="dark"] .token.boolean,
+:root[data-theme="dark"] .token.number,
+:root[data-theme="dark"] .token.constant,
+:root[data-theme="dark"] .token.symbol,
+:root[data-theme="dark"] .token.deleted {
+	color: #a292a3;
+}
+
+:root[data-theme="dark"] .token.selector,
+:root[data-theme="dark"] .token.attr-name,
+:root[data-theme="dark"] .token.string,
+:root[data-theme="dark"] .token.char,
+:root[data-theme="dark"] .token.builtin,
+:root[data-theme="dark"] .token.inserted {
+	color: #8a9a7b;
+}
+
+:root[data-theme="dark"] .token.operator,
+:root[data-theme="dark"] .token.entity,
+:root[data-theme="dark"] .token.url,
+:root[data-theme="dark"] .language-css .token.string,
+:root[data-theme="dark"] .style .token.string {
+	color: #909398;
+}
+
+:root[data-theme="dark"] .token.atrule,
+:root[data-theme="dark"] .token.attr-value,
+:root[data-theme="dark"] .token.keyword {
+	color: #8992a7;
+}
+
+:root[data-theme="dark"] .token.function,
+:root[data-theme="dark"] .token.class-name {
+	color: #8ba4b0;
+}
+
+:root[data-theme="dark"] .token.regex,
+:root[data-theme="dark"] .token.important,
+:root[data-theme="dark"] .token.variable {
+	color: #b6927b;
 }
 /*
  * New diff- syntax
@@ -759,6 +1064,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 					<li class="nav-item"><a href="/tags/">Tags</a></li>
 					<li class="nav-item"><a href="/about/">About</a></li>
 					<li class="nav-item"><a href="/feed/feed.xml">Feed</a></li>
+					<li class="nav-item"><a href="/settings/">Settings</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -768,7 +1074,6 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 				
 
 
-<link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet">
 <h1 id="picoctf-cryptography-even-rsa-can-be-broken">picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</h1>
 
 <ul class="post-metadata">
@@ -821,7 +1126,97 @@ pt_bytes <span class="token operator">=</span> m<span class="token punctuation">
 			</p>
 		</footer>
 
-		<!-- This page `/posts/picoctf-cryptography-even-rsa-can-be-broken/` was built on 2026-01-12T02:28:52.373Z -->
+		<!-- This page `/posts/picoctf-cryptography-even-rsa-can-be-broken/` was built on 2026-04-03T21:39:59.481Z -->
+		<script>
+			(function () {
+				var storageKey = "theme-preference";
+				var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name="theme-select"]'));
+				var systemToggle = document.getElementById("theme-system-toggle");
+				if (inputs.length === 0 && !systemToggle) {
+					return;
+				}
+
+				function getStoredPreference() {
+					var value = document.documentElement.getAttribute("data-theme-preference") || "system";
+					if (value === "light" || value === "dark" || value === "system") {
+						return value;
+					}
+					return "system";
+				}
+
+				function resolvedTheme(preference) {
+					if (preference === "light" || preference === "dark") {
+						return preference;
+					}
+					return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				}
+
+				function setPreference(preference, persist) {
+					var resolved = resolvedTheme(preference);
+					document.documentElement.setAttribute("data-theme", resolved);
+					document.documentElement.setAttribute("data-theme-preference", preference);
+					if (persist !== false) {
+						try {
+							localStorage.setItem(storageKey, preference);
+						} catch (e) {}
+					}
+					updateInputs(preference, resolved);
+				}
+
+				function updateInputs(preference, resolved) {
+					inputs.forEach(function (input) {
+						var selected = input.value === preference && preference !== "system";
+						input.checked = selected;
+						var option = input.closest(".theme-option");
+						if (option) {
+							option.classList.toggle("is-selected", selected);
+							option.setAttribute("aria-label", "Theme " + input.value + " (active palette: " + resolved + ")");
+						}
+					});
+					if (systemToggle) {
+						systemToggle.checked = preference === "system";
+						systemToggle.setAttribute("aria-label", "Use system theme");
+					}
+				}
+
+				inputs.forEach(function (input) {
+					input.addEventListener("change", function () {
+						if (input.checked) {
+							setPreference(input.value, true);
+						}
+					});
+				});
+
+				if (systemToggle) {
+					systemToggle.addEventListener("change", function () {
+						if (systemToggle.checked) {
+							setPreference("system", true);
+						} else {
+							var selectedInput = inputs.find(function (input) {
+								return input.checked;
+							});
+							setPreference(selectedInput ? selectedInput.value : "dark", true);
+						}
+					});
+				}
+
+				var initialPreference = getStoredPreference();
+				setPreference(initialPreference, false);
+
+				var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+				var handleSystemChange = function () {
+					if (getStoredPreference() === "system") {
+						setPreference("system", false);
+					}
+				};
+
+				if (mediaQuery.addEventListener) {
+					mediaQuery.addEventListener("change", handleSystemChange);
+				} else if (mediaQuery.addListener) {
+					mediaQuery.addListener(handleSystemChange);
+				}
+			})();
+		</script>
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 	<svg style="display: none;" id="MJX-SVG-global-cache"><defs><path id="MJX-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path><path id="MJX-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-TEX-I-1D45E" d="M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path><path id="MJX-TEX-N-2F" d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z"></path><path id="MJX-TEX-I-1D719" d="M409 688Q413 694 421 694H429H442Q448 688 448 686Q448 679 418 563Q411 535 404 504T392 458L388 442Q388 441 397 441T429 435T477 418Q521 397 550 357T579 260T548 151T471 65T374 11T279 -10H275L251 -105Q245 -128 238 -160Q230 -192 227 -198T215 -205H209Q189 -205 189 -198Q189 -193 211 -103L234 -11Q234 -10 226 -10Q221 -10 206 -8T161 6T107 36T62 89T43 171Q43 231 76 284T157 370T254 422T342 441Q347 441 348 445L378 567Q409 686 409 688ZM122 150Q122 116 134 91T167 53T203 35T237 27H244L337 404Q333 404 326 403T297 395T255 379T211 350T170 304Q152 276 137 237Q122 191 122 150ZM500 282Q500 320 484 347T444 385T405 400T381 404H378L332 217L284 29Q284 27 285 27Q293 27 317 33T357 47Q400 66 431 100T475 170T494 234T500 282Z"></path><path id="MJX-TEX-N-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path id="MJX-TEX-N-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path><path id="MJX-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-TEX-N-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path><path id="MJX-TEX-I-1D451" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path><path id="MJX-TEX-I-1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></defs></svg></body>
 </html>

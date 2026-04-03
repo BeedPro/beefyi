@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Tagged &#39;cheatsheet&#39;</title>
+		<title>beefyi</title>
 		<meta name="description" content="A place to store for all things beed">
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="beefyi">
 		<link rel="icon" href="/favicon/favicon.ico" sizes="any">
@@ -654,7 +654,7 @@ tbody tr th[data-type="caution"] {
 					<li class="nav-item"><a href="/tags/">Tags</a></li>
 					<li class="nav-item"><a href="/about/">About</a></li>
 					<li class="nav-item"><a href="/feed/feed.xml">Feed</a></li>
-					<li class="nav-item"><a href="/settings/">Settings</a></li>
+					<li class="nav-item"><a href="/settings/" aria-current="page">Settings</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -662,18 +662,32 @@ tbody tr th[data-type="caution"] {
 		<main id="main">
 			<heading-anchors>
 				
-<h1 id="tagged-cheatsheet">Tagged “cheatsheet”</h1>
+<h1 id="settings">Settings</h1>
 
+<p class="theme-label">Theme mode</p>
+<label class="theme-system-toggle" for="theme-system-toggle">
+	<input id="theme-system-toggle" type="checkbox" name="theme-system-toggle">
+	<span>Use system theme</span>
+</label>
 
-<ol reversed="" class="postlist" style="--postlist-index: 2">
-	<li class="postlist-item">
-		<a href="/posts/ros1-cheatsheet/" class="postlist-link">ROS1 Cheatsheet</a>
-		<time class="postlist-date" datetime="2026-03-15">March 2026</time>
-	</li>
-</ol>
-
-
-<p>See <a href="/tags/">all tags</a>.</p>
+<fieldset class="theme-options" aria-label="Theme mode">
+	<label class="theme-option" for="theme-dark">
+		<input id="theme-dark" type="radio" name="theme-select" value="dark">
+		<span class="theme-preview theme-preview-dark" aria-hidden="true">
+			<span></span><span></span><span></span>
+		</span>
+		<span class="theme-option-title">Dark</span>
+		<span class="theme-option-desc">Always use Zen</span>
+	</label>
+	<label class="theme-option" for="theme-light">
+		<input id="theme-light" type="radio" name="theme-select" value="light">
+		<span class="theme-preview theme-preview-light" aria-hidden="true">
+			<span></span><span></span><span></span>
+		</span>
+		<span class="theme-option-title">Light</span>
+		<span class="theme-option-desc">Always use Pearl</span>
+	</label>
+</fieldset>
 
 
 			</heading-anchors>
@@ -685,7 +699,7 @@ tbody tr th[data-type="caution"] {
 			</p>
 		</footer>
 
-		<!-- This page `/tags/cheatsheet/` was built on 2026-04-03T21:39:59.572Z -->
+		<!-- This page `/settings/` was built on 2026-04-03T21:39:59.481Z -->
 		<script>
 			(function () {
 				var storageKey = "theme-preference";
