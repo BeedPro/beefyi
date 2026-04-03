@@ -10,18 +10,71 @@
 		
 		<script>
 			(function () {
-				var storageKey = "theme-preference";
+				var themeStorageKey = "theme-preference";
+				var readingValueStorageKey = "reading-value";
+				var legacyReadingStorageKey = "reading-preference";
+
+				function clamp(value, min, max) {
+					return Math.min(max, Math.max(min, value));
+				}
+
+				function lerp(start, end, amount) {
+					return start + (end - start) * amount;
+				}
+
+				function readingVars(value) {
+					var clamped = clamp(value, 0, 100);
+					var compact = { fontSize: 0.95, lineHeight: 1.4, maxWidth: 36 };
+					var balanced = { fontSize: 1, lineHeight: 1.5, maxWidth: 40 };
+					var comfort = { fontSize: 1.06, lineHeight: 1.68, maxWidth: 46 };
+					if (clamped <= 50) {
+						var tA = clamped / 50;
+						return {
+							fontSize: lerp(compact.fontSize, balanced.fontSize, tA),
+							lineHeight: lerp(compact.lineHeight, balanced.lineHeight, tA),
+							maxWidth: lerp(compact.maxWidth, balanced.maxWidth, tA)
+						};
+					}
+					var tB = (clamped - 50) / 50;
+					return {
+						fontSize: lerp(balanced.fontSize, comfort.fontSize, tB),
+						lineHeight: lerp(balanced.lineHeight, comfort.lineHeight, tB),
+						maxWidth: lerp(balanced.maxWidth, comfort.maxWidth, tB)
+					};
+				}
+
+				function applyReading(value) {
+					var vars = readingVars(value);
+					document.documentElement.style.setProperty("--reading-font-size", vars.fontSize.toFixed(3).replace(/\.0+$/, "") + "rem");
+					document.documentElement.style.setProperty("--reading-line-height", vars.lineHeight.toFixed(3).replace(/\.0+$/, ""));
+					document.documentElement.style.setProperty("--reading-max-width", vars.maxWidth.toFixed(3).replace(/\.0+$/, "") + "em");
+					document.documentElement.setAttribute("data-reading-value", String(Math.round(value)));
+				}
+
 				var preference = "system";
+				var readingValue = 50;
 				try {
-					var stored = localStorage.getItem(storageKey);
+					var stored = localStorage.getItem(themeStorageKey);
 					if (stored === "light" || stored === "dark" || stored === "system") {
 						preference = stored;
+					}
+					var storedReadingValue = localStorage.getItem(readingValueStorageKey);
+					if (storedReadingValue !== null && !Number.isNaN(Number(storedReadingValue))) {
+						readingValue = clamp(Number(storedReadingValue), 0, 100);
+					} else {
+						var legacyReading = localStorage.getItem(legacyReadingStorageKey);
+						if (legacyReading === "compact") {
+							readingValue = 0;
+						} else if (legacyReading === "comfortable") {
+							readingValue = 100;
+						}
 					}
 				} catch (e) {}
 				var isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 				var resolved = preference === "system" ? (isDark ? "dark" : "light") : preference;
 				document.documentElement.setAttribute("data-theme", resolved);
 				document.documentElement.setAttribute("data-theme-preference", preference);
+				applyReading(readingValue);
 			})();
 		</script>
 		
@@ -34,6 +87,9 @@
 		Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console,
 		Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono,
 		Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+	--reading-font-size: 1rem;
+	--reading-line-height: 1.5;
+	--reading-max-width: 40em;
 }
 
 /* Theme colors */
@@ -154,7 +210,8 @@ html {
 	overflow-y: scroll;
 }
 body {
-	max-width: 40em;
+	max-width: var(--reading-max-width);
+	font-size: var(--reading-font-size);
 }
 
 ::selection {
@@ -203,11 +260,11 @@ p:last-child {
 	margin-bottom: 0;
 }
 p {
-	line-height: 1.5;
+	line-height: var(--reading-line-height);
 }
 
 li {
-	line-height: 1.5;
+	line-height: var(--reading-line-height);
 }
 
 a[href] {
@@ -452,9 +509,74 @@ header nav {
 	background-color: var(--table-row-hover-bg);
 }
 
+.reading-settings {
+	padding: 0;
+}
+
+.reading-preset-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.5rem;
+	margin-bottom: 0.75rem;
+}
+
+.reading-preset {
+	border: 1px solid var(--color-gray-20);
+	background-color: var(--background-color);
+	color: var(--text-color);
+	padding: 0.45rem 0.55rem;
+	font: inherit;
+	cursor: pointer;
+}
+
+.reading-preset:hover,
+.reading-preset:focus-visible {
+	border-color: var(--text-color-link-active);
+	outline: none;
+}
+
+.reading-preset.is-selected {
+	border-color: var(--text-color-link-active);
+	background-color: var(--table-row-hover-bg);
+}
+
+.reading-range {
+	width: 100%;
+	margin: 0;
+	accent-color: var(--text-color-link-active);
+}
+
+.reading-scale {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	font-size: 0.8rem;
+	margin-top: 0.3rem;
+	color: var(--text-color-link-active);
+}
+
+.reading-scale span:nth-child(2) {
+	text-align: center;
+}
+
+.reading-scale span:nth-child(3) {
+	text-align: right;
+}
+
+.reading-value {
+	margin-top: 0.6rem;
+	font-size: 0.9rem;
+}
+
 @media (max-width: 640px) {
-	.theme-options {
+	.theme-options,
+	.reading-preset-grid,
+	.reading-scale {
 		grid-template-columns: 1fr;
+	}
+
+	.reading-scale span:nth-child(2),
+	.reading-scale span:nth-child(3) {
+		text-align: left;
 	}
 }
 
@@ -703,14 +825,71 @@ tbody tr th[data-type="caution"] {
 			</p>
 		</footer>
 
-		<!-- This page `/tags/cheatsheet/` was built on 2026-04-03T21:53:31.728Z -->
+		<!-- This page `/tags/cheatsheet/` was built on 2026-04-03T22:50:05.085Z -->
 		<script>
 			(function () {
-				var storageKey = "theme-preference";
+				var themeStorageKey = "theme-preference";
+				var readingValueStorageKey = "reading-value";
+				var legacyReadingStorageKey = "reading-preference";
 				var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name="theme-select"]'));
 				var systemToggle = document.getElementById("theme-system-toggle");
-				if (inputs.length === 0 && !systemToggle) {
+				var readingRange = document.getElementById("reading-range");
+				var readingValueLabel = document.getElementById("reading-value");
+				var readingPresets = Array.prototype.slice.call(document.querySelectorAll("[data-reading-preset]"));
+				if (inputs.length === 0 && !systemToggle && !readingRange) {
 					return;
+				}
+
+				function clamp(value, min, max) {
+					return Math.min(max, Math.max(min, value));
+				}
+
+				function lerp(start, end, amount) {
+					return start + (end - start) * amount;
+				}
+
+				function readingVars(value) {
+					var clamped = clamp(value, 0, 100);
+					var compact = { fontSize: 0.95, lineHeight: 1.4, maxWidth: 36 };
+					var balanced = { fontSize: 1, lineHeight: 1.5, maxWidth: 40 };
+					var comfort = { fontSize: 1.06, lineHeight: 1.68, maxWidth: 46 };
+					if (clamped <= 50) {
+						var tA = clamped / 50;
+						return {
+							fontSize: lerp(compact.fontSize, balanced.fontSize, tA),
+							lineHeight: lerp(compact.lineHeight, balanced.lineHeight, tA),
+							maxWidth: lerp(compact.maxWidth, balanced.maxWidth, tA)
+						};
+					}
+					var tB = (clamped - 50) / 50;
+					return {
+						fontSize: lerp(balanced.fontSize, comfort.fontSize, tB),
+						lineHeight: lerp(balanced.lineHeight, comfort.lineHeight, tB),
+						maxWidth: lerp(balanced.maxWidth, comfort.maxWidth, tB)
+					};
+				}
+
+				function applyReading(value) {
+					var rounded = Math.round(clamp(value, 0, 100));
+					var vars = readingVars(rounded);
+					document.documentElement.style.setProperty("--reading-font-size", vars.fontSize.toFixed(3).replace(/\.0+$/, "") + "rem");
+					document.documentElement.style.setProperty("--reading-line-height", vars.lineHeight.toFixed(3).replace(/\.0+$/, ""));
+					document.documentElement.style.setProperty("--reading-max-width", vars.maxWidth.toFixed(3).replace(/\.0+$/, "") + "em");
+					document.documentElement.setAttribute("data-reading-value", String(rounded));
+					return rounded;
+				}
+
+				function readingLabel(value) {
+					if (value === 0) {
+						return "Compact";
+					}
+					if (value === 50) {
+						return "Balanced";
+					}
+					if (value === 100) {
+						return "Comfort";
+					}
+					return "Custom";
 				}
 
 				function getStoredPreference() {
@@ -734,10 +913,41 @@ tbody tr th[data-type="caution"] {
 					document.documentElement.setAttribute("data-theme-preference", preference);
 					if (persist !== false) {
 						try {
-							localStorage.setItem(storageKey, preference);
+							localStorage.setItem(themeStorageKey, preference);
 						} catch (e) {}
 					}
 					updateInputs(preference, resolved);
+				}
+
+				function getStoredReadingValue() {
+					var dataValue = Number(document.documentElement.getAttribute("data-reading-value"));
+					if (!Number.isNaN(dataValue)) {
+						return clamp(dataValue, 0, 100);
+					}
+					try {
+						var stored = localStorage.getItem(readingValueStorageKey);
+						if (stored !== null && !Number.isNaN(Number(stored))) {
+							return clamp(Number(stored), 0, 100);
+						}
+						var legacy = localStorage.getItem(legacyReadingStorageKey);
+						if (legacy === "compact") {
+							return 0;
+						}
+						if (legacy === "comfortable") {
+							return 100;
+						}
+					} catch (e) {}
+					return 50;
+				}
+
+				function setReading(value, persist) {
+					var applied = applyReading(Math.round(clamp(value, 0, 100)));
+					if (persist !== false) {
+						try {
+							localStorage.setItem(readingValueStorageKey, String(applied));
+						} catch (e) {}
+					}
+					updateReadingUI(applied);
 				}
 
 				function updateInputs(preference, resolved) {
@@ -754,6 +964,21 @@ tbody tr th[data-type="caution"] {
 						systemToggle.checked = preference === "system";
 						systemToggle.setAttribute("aria-label", "Use system theme");
 					}
+				}
+
+				function updateReadingUI(value) {
+					if (readingRange) {
+						readingRange.value = String(value);
+					}
+					if (readingValueLabel) {
+						readingValueLabel.textContent = "Reading: " + readingLabel(value) + " (" + value + ")";
+					}
+					readingPresets.forEach(function (presetButton) {
+						var presetValue = Number(presetButton.getAttribute("data-reading-preset"));
+						var selected = presetValue === value;
+						presetButton.classList.toggle("is-selected", selected);
+						presetButton.setAttribute("aria-pressed", selected ? "true" : "false");
+					});
 				}
 
 				inputs.forEach(function (input) {
@@ -777,8 +1002,21 @@ tbody tr th[data-type="caution"] {
 					});
 				}
 
+				if (readingRange) {
+					readingRange.addEventListener("input", function () {
+						setReading(Number(readingRange.value), true);
+					});
+				}
+
+				readingPresets.forEach(function (presetButton) {
+					presetButton.addEventListener("click", function () {
+						setReading(Number(presetButton.getAttribute("data-reading-preset")), true);
+					});
+				});
+
 				var initialPreference = getStoredPreference();
 				setPreference(initialPreference, false);
+				setReading(getStoredReadingValue(), false);
 
 				var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 				var handleSystemChange = function () {
