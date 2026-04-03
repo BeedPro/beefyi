@@ -71,14 +71,6 @@
 				{%- endfor %}
 				</ul>
 			</nav>
-			<div class="theme-control">
-				<label for="theme-select" class="theme-label">Theme</label>
-				<select class="theme-select" id="theme-select" name="theme">
-					<option value="system">System</option>
-					<option value="dark">Dark</option>
-					<option value="light">Light</option>
-				</select>
-			</div>
 		</header>
 
 		<main id="main">
@@ -97,8 +89,9 @@
 		<script eleventy:ignore>
 			(function () {
 				var storageKey = "theme-preference";
-				var select = document.getElementById("theme-select");
-				if (!select) {
+				var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name="theme-select"]'));
+				var systemToggle = document.getElementById("theme-system-toggle");
+				if (inputs.length === 0 && !systemToggle) {
 					return;
 				}
 
@@ -126,18 +119,45 @@
 							localStorage.setItem(storageKey, preference);
 						} catch (e) {}
 					}
-					updateSelect(preference, resolved);
+					updateInputs(preference, resolved);
 				}
 
-				function updateSelect(preference, resolved) {
-					select.value = preference;
-					select.setAttribute("aria-label", "Theme " + preference + " (active palette: " + resolved + ")");
-					select.setAttribute("title", "Switch theme");
+				function updateInputs(preference, resolved) {
+					inputs.forEach(function (input) {
+						var selected = input.value === preference && preference !== "system";
+						input.checked = selected;
+						var option = input.closest(".theme-option");
+						if (option) {
+							option.classList.toggle("is-selected", selected);
+							option.setAttribute("aria-label", "Theme " + input.value + " (active palette: " + resolved + ")");
+						}
+					});
+					if (systemToggle) {
+						systemToggle.checked = preference === "system";
+						systemToggle.setAttribute("aria-label", "Use system theme");
+					}
 				}
 
-				select.addEventListener("change", function () {
-					setPreference(select.value, true);
+				inputs.forEach(function (input) {
+					input.addEventListener("change", function () {
+						if (input.checked) {
+							setPreference(input.value, true);
+						}
+					});
 				});
+
+				if (systemToggle) {
+					systemToggle.addEventListener("change", function () {
+						if (systemToggle.checked) {
+							setPreference("system", true);
+						} else {
+							var selectedInput = inputs.find(function (input) {
+								return input.checked;
+							});
+							setPreference(selectedInput ? selectedInput.value : "dark", true);
+						}
+					});
+				}
 
 				var initialPreference = getStoredPreference();
 				setPreference(initialPreference, false);

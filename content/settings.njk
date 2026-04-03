@@ -1,0 +1,32 @@
+---js
+const eleventyNavigation = {
+	key: "Settings",
+	order: 5
+};
+---
+<h1>Settings</h1>
+
+<p class="theme-label">Theme mode</p>
+<label class="theme-system-toggle" for="theme-system-toggle">
+	<input id="theme-system-toggle" type="checkbox" name="theme-system-toggle">
+	<span>Use system theme</span>
+</label>
+
+<fieldset class="theme-options" aria-label="Theme mode">
+	<label class="theme-option" for="theme-dark">
+		<input id="theme-dark" type="radio" name="theme-select" value="dark">
+		<span class="theme-preview theme-preview-dark" aria-hidden="true">
+			<span></span><span></span><span></span>
+		</span>
+		<span class="theme-option-title">Dark</span>
+		<span class="theme-option-desc">Always use Zen</span>
+	</label>
+	<label class="theme-option" for="theme-light">
+		<input id="theme-light" type="radio" name="theme-select" value="light">
+		<span class="theme-preview theme-preview-light" aria-hidden="true">
+			<span></span><span></span><span></span>
+		</span>
+		<span class="theme-option-title">Light</span>
+		<span class="theme-option-desc">Always use Pearl</span>
+	</label>
+</fieldset>
