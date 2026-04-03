@@ -70,8 +70,15 @@
 					<li class="nav-item"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
 				{%- endfor %}
 				</ul>
-				<button class="theme-toggle" id="theme-toggle" type="button">Theme: System</button>
 			</nav>
+			<div class="theme-control">
+				<label for="theme-select" class="theme-label">Theme</label>
+				<select class="theme-select" id="theme-select" name="theme">
+					<option value="system">System</option>
+					<option value="dark">Dark</option>
+					<option value="light">Light</option>
+				</select>
+			</div>
 		</header>
 
 		<main id="main">
@@ -90,9 +97,8 @@
 		<script eleventy:ignore>
 			(function () {
 				var storageKey = "theme-preference";
-				var cycle = ["system", "dark", "light"];
-				var button = document.getElementById("theme-toggle");
-				if (!button) {
+				var select = document.getElementById("theme-select");
+				if (!select) {
 					return;
 				}
 
@@ -111,36 +117,35 @@
 					return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 				}
 
-				function setPreference(preference) {
+				function setPreference(preference, persist) {
 					var resolved = resolvedTheme(preference);
 					document.documentElement.setAttribute("data-theme", resolved);
 					document.documentElement.setAttribute("data-theme-preference", preference);
-					try {
-						localStorage.setItem(storageKey, preference);
-					} catch (e) {}
-					updateButton(preference, resolved);
+					if (persist !== false) {
+						try {
+							localStorage.setItem(storageKey, preference);
+						} catch (e) {}
+					}
+					updateSelect(preference, resolved);
 				}
 
-				function updateButton(preference, resolved) {
-					var label = preference.charAt(0).toUpperCase() + preference.slice(1);
-					button.textContent = "Theme: " + label;
-					button.setAttribute("aria-label", "Theme " + label + " (active palette: " + resolved + ")");
-					button.setAttribute("title", "Switch theme (System, Dark, Light)");
+				function updateSelect(preference, resolved) {
+					select.value = preference;
+					select.setAttribute("aria-label", "Theme " + preference + " (active palette: " + resolved + ")");
+					select.setAttribute("title", "Switch theme");
 				}
 
-				button.addEventListener("click", function () {
-					var current = getStoredPreference();
-					var nextIndex = (cycle.indexOf(current) + 1) % cycle.length;
-					setPreference(cycle[nextIndex]);
+				select.addEventListener("change", function () {
+					setPreference(select.value, true);
 				});
 
 				var initialPreference = getStoredPreference();
-				setPreference(initialPreference);
+				setPreference(initialPreference, false);
 
 				var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 				var handleSystemChange = function () {
 					if (getStoredPreference() === "system") {
-						setPreference("system");
+						setPreference("system", false);
 					}
 				};
 

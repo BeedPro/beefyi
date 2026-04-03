@@ -257,15 +257,14 @@ code {
 
 /* Header */
 header {
-	display: flex;
-	gap: 1em;
-	flex-wrap: wrap;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
 	align-items: center;
+	gap: 1rem;
 	padding: 1em;
 }
 .home-link {
-	flex-grow: 1;
+	justify-self: start;
 	font-size: 1em; /* 16px /16 */
 	font-weight: 700;
 }
@@ -275,10 +274,7 @@ header {
 
 /* Nav */
 header nav {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	flex-wrap: wrap;
+	justify-self: center;
 }
 
 .nav {
@@ -298,21 +294,44 @@ header nav {
 	text-decoration: underline;
 }
 
-.theme-toggle {
+.theme-control {
+	justify-self: end;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.theme-label {
+	font-size: 0.875rem;
+}
+
+.theme-select {
 	border: 1px solid var(--color-gray-20);
 	background-color: var(--color-surface);
 	color: var(--text-color);
 	padding: 0.4rem 0.75rem;
-	border-radius: 999px;
-	cursor: pointer;
+	border-radius: 0.5rem;
 	font: inherit;
 	font-size: 0.875rem;
 }
 
-.theme-toggle:hover,
-.theme-toggle:focus-visible {
+.theme-select:hover,
+.theme-select:focus-visible {
 	border-color: var(--text-color-link-active);
 	outline: none;
+}
+
+@media (max-width: 700px) {
+	header {
+		grid-template-columns: 1fr;
+		justify-items: center;
+	}
+
+	.home-link,
+	header nav,
+	.theme-control {
+		justify-self: center;
+	}
 }
 
 /* Posts list */
