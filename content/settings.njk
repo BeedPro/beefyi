@@ -30,3 +30,19 @@ const eleventyNavigation = {
 		<span class="theme-option-desc">Always use Pearl</span>
 	</label>
 </fieldset>
+
+<p class="theme-label">Reading mode</p>
+<section class="reading-settings" aria-label="Reading mode settings">
+	<div class="reading-preset-grid" role="group" aria-label="Reading presets">
+		<button class="reading-preset" type="button" data-reading-preset="0">Compact</button>
+		<button class="reading-preset" type="button" data-reading-preset="50">Balanced</button>
+		<button class="reading-preset" type="button" data-reading-preset="100">Comfort</button>
+	</div>
+	<input id="reading-range" class="reading-range" type="range" min="0" max="100" step="1" value="50" aria-label="Reading level">
+	<div class="reading-scale" aria-hidden="true">
+		<span>Compact</span>
+		<span>Balanced</span>
+		<span>Comfort</span>
+	</div>
+	<p class="reading-value" id="reading-value">Reading: Balanced (50)</p>
+</section>

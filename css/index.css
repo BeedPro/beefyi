@@ -5,6 +5,9 @@
 		Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console,
 		Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono,
 		Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+	--reading-font-size: 1rem;
+	--reading-line-height: 1.5;
+	--reading-max-width: 40em;
 }
 
 /* Theme colors */
@@ -125,7 +128,8 @@ html {
 	overflow-y: scroll;
 }
 body {
-	max-width: 40em;
+	max-width: var(--reading-max-width);
+	font-size: var(--reading-font-size);
 }
 
 ::selection {
@@ -174,11 +178,11 @@ p:last-child {
 	margin-bottom: 0;
 }
 p {
-	line-height: 1.5;
+	line-height: var(--reading-line-height);
 }
 
 li {
-	line-height: 1.5;
+	line-height: var(--reading-line-height);
 }
 
 a[href] {
@@ -423,9 +427,74 @@ header nav {
 	background-color: var(--table-row-hover-bg);
 }
 
+.reading-settings {
+	padding: 0;
+}
+
+.reading-preset-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.5rem;
+	margin-bottom: 0.75rem;
+}
+
+.reading-preset {
+	border: 1px solid var(--color-gray-20);
+	background-color: var(--background-color);
+	color: var(--text-color);
+	padding: 0.45rem 0.55rem;
+	font: inherit;
+	cursor: pointer;
+}
+
+.reading-preset:hover,
+.reading-preset:focus-visible {
+	border-color: var(--text-color-link-active);
+	outline: none;
+}
+
+.reading-preset.is-selected {
+	border-color: var(--text-color-link-active);
+	background-color: var(--table-row-hover-bg);
+}
+
+.reading-range {
+	width: 100%;
+	margin: 0;
+	accent-color: var(--text-color-link-active);
+}
+
+.reading-scale {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	font-size: 0.8rem;
+	margin-top: 0.3rem;
+	color: var(--text-color-link-active);
+}
+
+.reading-scale span:nth-child(2) {
+	text-align: center;
+}
+
+.reading-scale span:nth-child(3) {
+	text-align: right;
+}
+
+.reading-value {
+	margin-top: 0.6rem;
+	font-size: 0.9rem;
+}
+
 @media (max-width: 640px) {
-	.theme-options {
+	.theme-options,
+	.reading-preset-grid,
+	.reading-scale {
 		grid-template-columns: 1fr;
+	}
+
+	.reading-scale span:nth-child(2),
+	.reading-scale span:nth-child(3) {
+		text-align: left;
 	}
 }
 
