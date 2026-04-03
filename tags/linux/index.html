@@ -50,6 +50,8 @@
 	--text-color-link: #4d699b;
 	--text-color-link-active: #5d57a3;
 	--text-color-link-visited: #624c83;
+	--selection-bg: #5d57a3;
+	--selection-text: #f2f1ef;
 
 	--color-note: #5a7785;
 	--color-tip: #6f894e;
@@ -73,6 +75,8 @@
 	--text-color-link: #4d699b;
 	--text-color-link-active: #5d57a3;
 	--text-color-link-visited: #624c83;
+	--selection-bg: #5d57a3;
+	--selection-text: #f2f1ef;
 
 	--color-note: #5a7785;
 	--color-tip: #6f894e;
@@ -95,6 +99,8 @@
 		--text-color-link: #7fb4ca;
 		--text-color-link-active: #8ba4b0;
 		--text-color-link-visited: #938aa9;
+		--selection-bg: #658594;
+		--selection-text: #090e13;
 
 		--color-note: #658594;
 		--color-tip: #98bb6c;
@@ -117,6 +123,8 @@
 	--text-color-link: #7fb4ca;
 	--text-color-link-active: #8ba4b0;
 	--text-color-link-visited: #938aa9;
+	--selection-bg: #658594;
+	--selection-text: #090e13;
 
 	--color-note: #658594;
 	--color-tip: #98bb6c;
@@ -147,6 +155,16 @@ html {
 }
 body {
 	max-width: 40em;
+}
+
+::selection {
+	background: var(--selection-bg);
+	color: var(--selection-text);
+}
+
+::-moz-selection {
+	background: var(--selection-bg);
+	color: var(--selection-text);
 }
 
 /* https://www.a11yproject.com/posts/how-to-hide-content/ */
@@ -685,7 +703,7 @@ tbody tr th[data-type="caution"] {
 			</p>
 		</footer>
 
-		<!-- This page `/tags/linux/` was built on 2026-04-03T21:39:59.575Z -->
+		<!-- This page `/tags/linux/` was built on 2026-04-03T21:53:31.731Z -->
 		<script>
 			(function () {
 				var storageKey = "theme-preference";
