@@ -27,6 +27,7 @@
 		<script eleventy:ignore>
 			(function () {
 				var themeStorageKey = "theme-preference";
+				var fontSizeStorageKey = "font-size";
 				var readingValueStorageKey = "reading-value";
 				var legacyReadingStorageKey = "reading-preference";
 
@@ -61,18 +62,29 @@
 
 				function applyReading(value) {
 					var vars = readingVars(value);
-					document.documentElement.style.setProperty("--reading-font-size", vars.fontSize.toFixed(3).replace(/\.0+$/, "") + "rem");
+					document.documentElement.style.setProperty("--reading-font-scale", vars.fontSize.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-line-height", vars.lineHeight.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-max-width", vars.maxWidth.toFixed(3).replace(/\.0+$/, "") + "em");
 					document.documentElement.setAttribute("data-reading-value", String(Math.round(value)));
 				}
 
+				function applyFontSize(value) {
+					var rounded = Math.round(clamp(value, 75, 200));
+					document.documentElement.style.setProperty("--site-font-size", rounded / 100 + "rem");
+					document.documentElement.setAttribute("data-font-size", String(rounded));
+				}
+
 				var preference = "system";
+				var fontSize = 100;
 				var readingValue = 50;
 				try {
 					var stored = localStorage.getItem(themeStorageKey);
 					if (stored === "light" || stored === "dark" || stored === "system") {
 						preference = stored;
+					}
+					var storedFontSize = localStorage.getItem(fontSizeStorageKey);
+					if (storedFontSize !== null && !Number.isNaN(Number(storedFontSize))) {
+						fontSize = clamp(Number(storedFontSize), 75, 200);
 					}
 					var storedReadingValue = localStorage.getItem(readingValueStorageKey);
 					if (storedReadingValue !== null && !Number.isNaN(Number(storedReadingValue))) {
@@ -90,6 +102,7 @@
 				var resolved = preference === "system" ? (isDark ? "dark" : "light") : preference;
 				document.documentElement.setAttribute("data-theme", resolved);
 				document.documentElement.setAttribute("data-theme-preference", preference);
+				applyFontSize(fontSize);
 				applyReading(readingValue);
 			})();
 		</script>
@@ -142,14 +155,14 @@
 		<script eleventy:ignore>
 			(function () {
 				var themeStorageKey = "theme-preference";
+				var fontSizeStorageKey = "font-size";
 				var readingValueStorageKey = "reading-value";
 				var legacyReadingStorageKey = "reading-preference";
 				var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name="theme-select"]'));
 				var systemToggle = document.getElementById("theme-system-toggle");
+				var fontSizeRange = document.getElementById("font-size-range");
 				var readingRange = document.getElementById("reading-range");
-				var readingValueLabel = document.getElementById("reading-value");
-				var readingPresets = Array.prototype.slice.call(document.querySelectorAll("[data-reading-preset]"));
-				if (inputs.length === 0 && !systemToggle && !readingRange) {
+				if (inputs.length === 0 && !systemToggle && !fontSizeRange && !readingRange) {
 					return;
 				}
 
@@ -185,10 +198,17 @@
 				function applyReading(value) {
 					var rounded = Math.round(clamp(value, 0, 100));
 					var vars = readingVars(rounded);
-					document.documentElement.style.setProperty("--reading-font-size", vars.fontSize.toFixed(3).replace(/\.0+$/, "") + "rem");
+					document.documentElement.style.setProperty("--reading-font-scale", vars.fontSize.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-line-height", vars.lineHeight.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-max-width", vars.maxWidth.toFixed(3).replace(/\.0+$/, "") + "em");
 					document.documentElement.setAttribute("data-reading-value", String(rounded));
+					return rounded;
+				}
+
+				function applyFontSize(value) {
+					var rounded = Math.round(clamp(value, 75, 200));
+					document.documentElement.style.setProperty("--site-font-size", rounded / 100 + "rem");
+					document.documentElement.setAttribute("data-font-size", String(rounded));
 					return rounded;
 				}
 
@@ -203,6 +223,18 @@
 						return "Comfort";
 					}
 					return "Custom";
+				}
+
+				function snapReadingValue(value) {
+					var rounded = Math.round(clamp(value, 0, 100));
+					var snapTargets = [0, 50, 100];
+					var snapDistance = 8;
+					for (var i = 0; i < snapTargets.length; i++) {
+						if (Math.abs(rounded - snapTargets[i]) <= snapDistance) {
+							return snapTargets[i];
+						}
+					}
+					return rounded;
 				}
 
 				function getStoredPreference() {
@@ -253,8 +285,32 @@
 					return 50;
 				}
 
+				function getStoredFontSize() {
+					var dataValue = Number(document.documentElement.getAttribute("data-font-size"));
+					if (!Number.isNaN(dataValue)) {
+						return clamp(dataValue, 75, 200);
+					}
+					try {
+						var stored = localStorage.getItem(fontSizeStorageKey);
+						if (stored !== null && !Number.isNaN(Number(stored))) {
+							return clamp(Number(stored), 75, 200);
+						}
+					} catch (e) {}
+					return 100;
+				}
+
+				function setFontSize(value, persist) {
+					var applied = applyFontSize(value);
+					if (persist !== false) {
+						try {
+							localStorage.setItem(fontSizeStorageKey, String(applied));
+						} catch (e) {}
+					}
+					updateFontSizeUI(applied);
+				}
+
 				function setReading(value, persist) {
-					var applied = applyReading(Math.round(clamp(value, 0, 100)));
+					var applied = applyReading(snapReadingValue(value));
 					if (persist !== false) {
 						try {
 							localStorage.setItem(readingValueStorageKey, String(applied));
@@ -282,17 +338,15 @@
 				function updateReadingUI(value) {
 					if (readingRange) {
 						readingRange.value = String(value);
-						readingRange.setAttribute("aria-valuetext", readingLabel(value) + " reading mode, level " + value);
+						readingRange.setAttribute("aria-valuetext", readingLabel(value) + " reading width, level " + value);
 					}
-					if (readingValueLabel) {
-						readingValueLabel.textContent = "Reading: " + readingLabel(value) + " (" + value + ")";
+				}
+
+				function updateFontSizeUI(value) {
+					if (fontSizeRange) {
+						fontSizeRange.value = String(value);
+						fontSizeRange.setAttribute("aria-valuetext", value + "%");
 					}
-					readingPresets.forEach(function (presetButton) {
-						var presetValue = Number(presetButton.getAttribute("data-reading-preset"));
-						var selected = presetValue === value;
-						presetButton.classList.toggle("is-selected", selected);
-						presetButton.setAttribute("aria-pressed", selected ? "true" : "false");
-					});
 				}
 
 				inputs.forEach(function (input) {
@@ -316,20 +370,21 @@
 					});
 				}
 
+				if (fontSizeRange) {
+					fontSizeRange.addEventListener("change", function () {
+						setFontSize(Number(fontSizeRange.value), true);
+					});
+				}
+
 				if (readingRange) {
 					readingRange.addEventListener("input", function () {
 						setReading(Number(readingRange.value), true);
 					});
 				}
 
-				readingPresets.forEach(function (presetButton) {
-					presetButton.addEventListener("click", function () {
-						setReading(Number(presetButton.getAttribute("data-reading-preset")), true);
-					});
-				});
-
 				var initialPreference = getStoredPreference();
 				setPreference(initialPreference, false);
+				setFontSize(getStoredFontSize(), false);
 				setReading(getStoredReadingValue(), false);
 
 				var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");

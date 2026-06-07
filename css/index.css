@@ -40,7 +40,8 @@
 		Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter,
 		DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono,
 		Nimbus Mono L, Courier New, Courier, monospace;
-	--reading-font-size: 1rem;
+	--site-font-size: 1rem;
+	--reading-font-scale: 1;
 	--reading-line-height: 1.5;
 	--reading-max-width: 40em;
 }
@@ -160,11 +161,12 @@ body {
 	background-color: var(--background-color);
 }
 html {
+	font-size: var(--site-font-size);
 	overflow-y: scroll;
 }
 body {
 	max-width: var(--reading-max-width);
-	font-size: var(--reading-font-size);
+	font-size: calc(1rem * var(--reading-font-scale));
 }
 
 :where(main, footer) :lang(ar) {
@@ -491,37 +493,27 @@ header nav {
 	padding: 0;
 }
 
-.reading-preset-grid {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 0.5rem;
-	margin-bottom: 0.75rem;
+.font-size-settings {
+	padding: 0;
+	margin-bottom: 1.25rem;
 }
 
-.reading-preset {
+.font-size-select {
+	width: 100%;
 	border: 1px solid var(--color-gray-20);
+	border-radius: 0;
+	padding: 0.75rem 2.5rem 0.75rem 0.9rem;
 	background-color: var(--color-surface);
 	color: var(--text-color);
-	padding: 0.6rem 0.75rem;
 	font: inherit;
-	cursor: pointer;
-	transition:
-		border-color 120ms ease,
-		background-color 120ms ease,
-		box-shadow 120ms ease;
 }
 
-.reading-preset:hover,
-.reading-preset:focus-visible {
+.font-size-select:hover,
+.font-size-select:focus-visible {
 	border-color: var(--text-color-link);
 	background-color: var(--background-color);
-	outline: none;
-}
-
-.reading-preset.is-selected {
-	border-color: var(--text-color-link-active);
-	background-color: var(--background-color);
-	box-shadow: inset 0 0 0 2px var(--text-color-link-active);
+	outline: 2px solid var(--text-color-link);
+	outline-offset: 0.15rem;
 }
 
 .reading-range {
@@ -585,14 +577,13 @@ header nav {
 	text-align: right;
 }
 
-.reading-value {
+.settings-value {
 	margin-top: 0.6rem;
 	font-size: 1rem;
 }
 
 @media (max-width: 640px) {
 	.theme-options,
-	.reading-preset-grid,
 	.reading-scale {
 		grid-template-columns: 1fr;
 	}

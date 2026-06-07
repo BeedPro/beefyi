@@ -31,18 +31,24 @@ const eleventyNavigation = {
 	</label>
 </fieldset>
 
-<label class="theme-label" for="reading-range">Reading mode</label>
-<section class="reading-settings" aria-label="Reading mode settings">
-	<div class="reading-preset-grid" role="group" aria-label="Reading presets">
-		<button class="reading-preset" type="button" data-reading-preset="0">Compact</button>
-		<button class="reading-preset" type="button" data-reading-preset="50">Balanced</button>
-		<button class="reading-preset" type="button" data-reading-preset="100">Comfort</button>
-	</div>
-	<input id="reading-range" class="reading-range" type="range" min="0" max="100" step="1" value="50" aria-describedby="reading-value" aria-label="Reading level">
+<label class="theme-label" for="font-size-range">Font size</label>
+<section class="font-size-settings" aria-label="Font size settings">
+	<select id="font-size-range" class="font-size-select" name="font-size-range" aria-label="Site font size">
+		<option value="75">75%</option>
+		<option value="100">100%</option>
+		<option value="125">125%</option>
+		<option value="150">150%</option>
+		<option value="175">175%</option>
+		<option value="200">200%</option>
+	</select>
+</section>
+
+<label class="theme-label" for="reading-range">Reading Width</label>
+<section class="reading-settings" aria-label="Reading width settings">
+	<input id="reading-range" class="reading-range" type="range" min="0" max="100" step="1" value="50" aria-label="Reading width level">
 	<div class="reading-scale" aria-hidden="true">
 		<span>Compact</span>
 		<span>Balanced</span>
 		<span>Comfort</span>
 	</div>
-	<p class="reading-value" id="reading-value" aria-live="polite">Reading: Balanced (50)</p>
 </section>
