@@ -1,10 +1,45 @@
+@font-face {
+	font-family: "Iosevka";
+	src: url("/fonts/iosevka-400.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Iosevka";
+	src: url("/fonts/iosevka-700.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Noto Sans Arabic";
+	src: url("/fonts/noto-sans-arabic-400.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Noto Sans Arabic";
+	src: url("/fonts/noto-sans-arabic-700.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
 /* Defaults */
 :root {
-	--font-family: -apple-system, system-ui, sans-serif;
+	--font-family: "Iosevka", "Noto Sans Arabic", "Iosevka Web",
+		"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Monaco,
+		monospace;
 	--font-family-monospace:
-		Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console,
-		Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono,
-		Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+		"Iosevka", "Iosevka Web", "SFMono-Regular", Consolas, Menlo, Monaco,
+		Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter,
+		DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono,
+		Nimbus Mono L, Courier New, Courier, monospace;
 	--reading-font-size: 1rem;
 	--reading-line-height: 1.5;
 	--reading-max-width: 40em;
@@ -130,6 +165,19 @@ html {
 body {
 	max-width: var(--reading-max-width);
 	font-size: var(--reading-font-size);
+}
+
+:where(main, footer) :lang(ar) {
+	font-family: "Noto Sans Arabic", var(--font-family);
+}
+
+:where(main, footer) :is(p, li, blockquote, figcaption, td, th, h1, h2, h3, h4, h5, h6) {
+	unicode-bidi: plaintext;
+}
+
+:where(main, footer) [dir="rtl"] {
+	direction: rtl;
+	text-align: start;
 }
 
 ::selection {
