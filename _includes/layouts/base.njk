@@ -282,6 +282,7 @@
 				function updateReadingUI(value) {
 					if (readingRange) {
 						readingRange.value = String(value);
+						readingRange.setAttribute("aria-valuetext", readingLabel(value) + " reading mode, level " + value);
 					}
 					if (readingValueLabel) {
 						readingValueLabel.textContent = "Reading: " + readingLabel(value) + " (" + value + ")";
