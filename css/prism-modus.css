@@ -27,7 +27,7 @@ code[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: #dae5ec;
+	background: #ffffff;
 }
 
 .token.comment,
@@ -102,7 +102,7 @@ pre[class*="language-"] {
 
 	:root:not([data-theme="light"]) :not(pre) > code[class*="language-"],
 	:root:not([data-theme="light"]) pre[class*="language-"] {
-		background: #2f3849;
+		background: #000000;
 	}
 
 	:root:not([data-theme="light"]) .token.comment,
@@ -168,7 +168,7 @@ pre[class*="language-"] {
 
 :root[data-theme="dark"] :not(pre) > code[class*="language-"],
 :root[data-theme="dark"] pre[class*="language-"] {
-	background: #2f3849;
+	background: #000000;
 }
 
 :root[data-theme="dark"] .token.comment,
