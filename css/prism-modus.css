@@ -1,6 +1,6 @@
 code[class*="language-"],
 pre[class*="language-"] {
-	color: #22262d;
+	color: #000000;
 }
 
 pre[class*="language-"] {
@@ -27,18 +27,18 @@ code[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: #e2e1df;
+	background: #dae5ec;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: #6d6d69;
+	color: #595959;
 }
 
 .token.punctuation {
-	color: #6d6d69;
+	color: #595959;
 }
 
 .token.property,
@@ -48,7 +48,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: #b35b79;
+	color: #a60000;
 }
 
 .token.selector,
@@ -57,7 +57,7 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: #6f894e;
+	color: #006800;
 }
 
 .token.operator,
@@ -65,24 +65,24 @@ pre[class*="language-"] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-	color: #5c6068;
+	color: #005e8b;
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-	color: #624c83;
+	color: #721045;
 }
 
 .token.function,
 .token.class-name {
-	color: #4d699b;
+	color: #0031a9;
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-	color: #cc6d00;
+	color: #884900;
 }
 
 .token.bold,
@@ -97,23 +97,23 @@ pre[class*="language-"] {
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) code[class*="language-"],
 	:root:not([data-theme="light"]) pre[class*="language-"] {
-		color: #c5c9c7;
+		color: #ffffff;
 	}
 
 	:root:not([data-theme="light"]) :not(pre) > code[class*="language-"],
 	:root:not([data-theme="light"]) pre[class*="language-"] {
-		background: #1c1e25;
+		background: #2f3849;
 	}
 
 	:root:not([data-theme="light"]) .token.comment,
 	:root:not([data-theme="light"]) .token.prolog,
 	:root:not([data-theme="light"]) .token.doctype,
 	:root:not([data-theme="light"]) .token.cdata {
-		color: #75797f;
+		color: #595959;
 	}
 
 	:root:not([data-theme="light"]) .token.punctuation {
-		color: #909398;
+		color: #a6a6a6;
 	}
 
 	:root:not([data-theme="light"]) .token.property,
@@ -123,7 +123,7 @@ pre[class*="language-"] {
 	:root:not([data-theme="light"]) .token.constant,
 	:root:not([data-theme="light"]) .token.symbol,
 	:root:not([data-theme="light"]) .token.deleted {
-		color: #a292a3;
+		color: #ff5f59;
 	}
 
 	:root:not([data-theme="light"]) .token.selector,
@@ -132,7 +132,7 @@ pre[class*="language-"] {
 	:root:not([data-theme="light"]) .token.char,
 	:root:not([data-theme="light"]) .token.builtin,
 	:root:not([data-theme="light"]) .token.inserted {
-		color: #8a9a7b;
+		color: #44bc44;
 	}
 
 	:root:not([data-theme="light"]) .token.operator,
@@ -140,46 +140,46 @@ pre[class*="language-"] {
 	:root:not([data-theme="light"]) .token.url,
 	:root:not([data-theme="light"]) .language-css .token.string,
 	:root:not([data-theme="light"]) .style .token.string {
-		color: #909398;
+		color: #00d3d0;
 	}
 
 	:root:not([data-theme="light"]) .token.atrule,
 	:root:not([data-theme="light"]) .token.attr-value,
 	:root:not([data-theme="light"]) .token.keyword {
-		color: #8992a7;
+		color: #feacd0;
 	}
 
 	:root:not([data-theme="light"]) .token.function,
 	:root:not([data-theme="light"]) .token.class-name {
-		color: #8ba4b0;
+		color: #2fafff;
 	}
 
 	:root:not([data-theme="light"]) .token.regex,
 	:root:not([data-theme="light"]) .token.important,
 	:root:not([data-theme="light"]) .token.variable {
-		color: #b6927b;
+		color: #fec43f;
 	}
 }
 
 :root[data-theme="dark"] code[class*="language-"],
 :root[data-theme="dark"] pre[class*="language-"] {
-	color: #c5c9c7;
+	color: #ffffff;
 }
 
 :root[data-theme="dark"] :not(pre) > code[class*="language-"],
 :root[data-theme="dark"] pre[class*="language-"] {
-	background: #1c1e25;
+	background: #2f3849;
 }
 
 :root[data-theme="dark"] .token.comment,
 :root[data-theme="dark"] .token.prolog,
 :root[data-theme="dark"] .token.doctype,
 :root[data-theme="dark"] .token.cdata {
-	color: #75797f;
+	color: #595959;
 }
 
 :root[data-theme="dark"] .token.punctuation {
-	color: #909398;
+	color: #a6a6a6;
 }
 
 :root[data-theme="dark"] .token.property,
@@ -189,7 +189,7 @@ pre[class*="language-"] {
 :root[data-theme="dark"] .token.constant,
 :root[data-theme="dark"] .token.symbol,
 :root[data-theme="dark"] .token.deleted {
-	color: #a292a3;
+	color: #ff5f59;
 }
 
 :root[data-theme="dark"] .token.selector,
@@ -198,7 +198,7 @@ pre[class*="language-"] {
 :root[data-theme="dark"] .token.char,
 :root[data-theme="dark"] .token.builtin,
 :root[data-theme="dark"] .token.inserted {
-	color: #8a9a7b;
+	color: #44bc44;
 }
 
 :root[data-theme="dark"] .token.operator,
@@ -206,22 +206,22 @@ pre[class*="language-"] {
 :root[data-theme="dark"] .token.url,
 :root[data-theme="dark"] .language-css .token.string,
 :root[data-theme="dark"] .style .token.string {
-	color: #909398;
+	color: #00d3d0;
 }
 
 :root[data-theme="dark"] .token.atrule,
 :root[data-theme="dark"] .token.attr-value,
 :root[data-theme="dark"] .token.keyword {
-	color: #8992a7;
+	color: #feacd0;
 }
 
 :root[data-theme="dark"] .token.function,
 :root[data-theme="dark"] .token.class-name {
-	color: #8ba4b0;
+	color: #2fafff;
 }
 
 :root[data-theme="dark"] .token.regex,
 :root[data-theme="dark"] .token.important,
 :root[data-theme="dark"] .token.variable {
-	color: #b6927b;
+	color: #fec43f;
 }
