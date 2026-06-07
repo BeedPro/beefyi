@@ -9,6 +9,7 @@ import pluginNavigation from "@11ty/eleventy-navigation";
 import mathjaxPlugin from "eleventy-plugin-mathjax";
 import embeds from "eleventy-plugin-embed-everything";
 import markdownIt from "markdown-it";
+import markdownItFootnote from "markdown-it-footnote";
 import markdownItGitHubAlerts from "markdown-it-github-alerts";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 
@@ -131,30 +132,45 @@ export default async function (eleventyConfig) {
 		linkify: true,
 	};
 
-	const md = markdownIt(mdOptions).use(markdownItGitHubAlerts, {
-		markers: ["TIP", "NOTE", "IMPORTANT", "WARNING", "CAUTION"],
+	const md = markdownIt(mdOptions)
+		.use(markdownItFootnote)
+		.use(markdownItGitHubAlerts, {
+			markers: ["TIP", "NOTE", "IMPORTANT", "WARNING", "CAUTION"],
 
-		matchCaseSensitive: false,
+			matchCaseSensitive: false,
 
-		icons: {
-			note: "",
-			tip: "",
-			important: "",
-			warning: "",
-			caution: "",
-		},
+			icons: {
+				note: "",
+				tip: "",
+				important: "",
+				warning: "",
+				caution: "",
+			},
 
-		titles: {
-			note: "Note",
-			tip: "Tip",
-			important: "Important",
-			warning: "Warning",
-			caution: "Caution",
-		},
+			titles: {
+				note: "Note",
+				tip: "Tip",
+				important: "Important",
+				warning: "Warning",
+				caution: "Caution",
+			},
 
-		// ✅ Class prefix for styling
-		classPrefix: "markdown-alert",
-	});
+			classPrefix: "markdown-alert",
+		});
+
+	md.renderer.rules.footnote_open = (tokens, idx, options, env, slf) => {
+		let id = slf.rules.footnote_anchor_name(tokens, idx, options, env, slf);
+		let caption = id;
+
+		if (tokens[idx].meta.subId > 0) {
+			id += `:${tokens[idx].meta.subId}`;
+			caption = id;
+		}
+
+		return `<li id="fn${id}" class="footnote-item"><span class="footnote-label"><a href="#fnref${id}" class="footnote-backref">${caption}</a>.</span> `;
+	};
+
+	md.renderer.rules.footnote_anchor = () => "";
 
 	eleventyConfig.setLibrary("md", md);
 	// Features to make your build faster (when you need them)

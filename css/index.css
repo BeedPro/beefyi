@@ -637,6 +637,23 @@ header nav {
 	color: var(--color-caution);
 }
 
+.footnotes-list {
+	list-style: none;
+	padding-left: 0;
+}
+
+.footnote-item {
+	margin-bottom: 0.75rem;
+}
+
+.footnote-item p {
+	display: inline;
+}
+
+.footnote-label {
+	margin-right: 0.25rem;
+}
+
 /* Table styling */
 table {
 	width: 100%;
