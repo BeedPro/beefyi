@@ -326,6 +326,11 @@ pre:not([class*="language-"]) {
 code {
 	word-break: break-all;
 }
+:not(pre) > code {
+	background-color: var(--color-surface);
+	padding: 0.1em 0.35em;
+	border-radius: 0.2em;
+}
 
 /* Header */
 header {
