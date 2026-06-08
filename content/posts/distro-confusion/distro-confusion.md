@@ -2,7 +2,7 @@
 title: Distro Confusion? The Only 3 Linux Distros That Matter
 description: Struggling with Linux distro choice paralysis? The truth is, almost every distribution boils down to three core options. This post outlines those base distros that most people should just use.
 date: 2025-08-18
-tags: ["linux", "beginner", "setup"]
+tags: ["linux", "guides"]
 ---
 
 Linux comes in countless flavours, known as distributions (or distros for short). At its core, Linux is just the kernel - the low-level program that manages hardware and system resources. What most people call "Linux" is technically GNU/Linux: the kernel combined with the GNU project's free software tools that make it a complete operating system. In everyday conversation though, we simply call it Linux.

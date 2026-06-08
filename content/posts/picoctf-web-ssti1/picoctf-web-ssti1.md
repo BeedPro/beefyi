@@ -2,7 +2,7 @@
 title: picoCTF - Web | SSTI1
 description: A writeup of picoCTF's Web Exploitation SSTI1 Challenge
 date: 2025-08-30
-tags: ["ctf", "writeup", "web"]
+tags: ["security", "web"]
 ---
 
 > [!NOTE] Problem - SST1

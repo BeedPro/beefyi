@@ -2,7 +2,7 @@
 title: ROS1 Cheatsheet
 description: A space for updates, reflections, and snippets from beed. This is beefyi — Beed For Your Info.
 date: 2026-03-15
-tags: ["cheatsheet"]
+tags: ["reference", "programming", "linux"]
 ---
 
 # ROS Noetic Cheatsheet

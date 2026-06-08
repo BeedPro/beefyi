@@ -2,7 +2,7 @@
 title: picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???
 description: A writeup of picoCTF's Cryptography EVEN RSA CAN BE BROKEN??? Challenge
 date: 2025-08-31
-tags: ["ctf", "writeup", "cryptography"]
+tags: ["security", "programming"]
 ---
 
 Picking up from the last blog, I had a go at the [EVEN RSA CAN BE BROKEN??](https://play.picoctf.org/practice/challenge/470?category=2&difficulty=1&page=1) cryptography challenge. To be honest, it felt more like an exercise in RSA than a proper puzzle, but it's a good way to dip your toes into crypto. Think of RSA as the "hello world" of cryptography - simple, classic, and a solid starting point. The challenge kicks off by asking us to connect via netcat, where we're handed an encrypted message `c`, and its public key `(N, e)`.

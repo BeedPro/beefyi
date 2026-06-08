@@ -2,7 +2,7 @@
 title: picoCTF - Reverse Engineering | Flag Hunters
 description: A writeup of picoCTF's Reeverse Engineering Flag Hunters Challenge
 date: 2025-08-31
-tags: ["ctf", "writeup", "reverse-engineering"]
+tags: ["security", "programming"]
 ---
 
 [Flag Hunters](https://play.picoctf.org/practice/challenge/472?category=3&difficulty=1&page=1) is a reverse engineering challenge. The idea with these is straightforward: figure out what the program is doing, then twist that to your advantage. In this case, though, we're given the source code – so it feels less like breaking into a black box and more like an coding dry-run exercise. The code's written in Python, and our mission is to print out the flag that the program does not show us.
