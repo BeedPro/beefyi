@@ -3,7 +3,6 @@ title: Using Typst locally
 description: How to use Typst locally without typst.app
 date: 2026-06-07
 tags: ["guides", "tools", "writing"]
-draft: true
 ---
 
 Typst is a typesetting system. Think LaTeX if you're a STEM nerd, or Markdown
