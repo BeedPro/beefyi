@@ -27,37 +27,42 @@
 	</url>
 	
 	<url>
-		<loc>https://blog.beed.org.uk/about/</loc>
-		<lastmod>2026-01-12</lastmod>
-	</url>
-	
-	<url>
-		<loc>https://blog.beed.org.uk/</loc>
-		<lastmod>2026-01-12</lastmod>
-	</url>
-	
-	<url>
-		<loc>https://blog.beed.org.uk/posts/</loc>
-		<lastmod>2026-01-12</lastmod>
-	</url>
-	
-	<url>
-		<loc>https://blog.beed.org.uk/tags/</loc>
-		<lastmod>2026-01-12</lastmod>
-	</url>
-	
-	<url>
 		<loc>https://blog.beed.org.uk/posts/ros1-cheatsheet/</loc>
 		<lastmod>2026-03-15</lastmod>
 	</url>
 	
 	<url>
+		<loc>https://blog.beed.org.uk/posts/using-typst-for-non-devs/</loc>
+		<lastmod>2026-06-07</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://blog.beed.org.uk/about/</loc>
+		<lastmod>2026-06-08</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://blog.beed.org.uk/</loc>
+		<lastmod>2026-06-08</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://blog.beed.org.uk/posts/</loc>
+		<lastmod>2026-06-08</lastmod>
+	</url>
+	
+	<url>
 		<loc>https://blog.beed.org.uk/settings/</loc>
-		<lastmod>2026-04-03</lastmod>
+		<lastmod>2026-06-08</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://blog.beed.org.uk/tags/</loc>
+		<lastmod>2026-06-08</lastmod>
 	</url>
 	
 	<url>
 		<loc>https://blog.beed.org.uk/feed/feed.xml</loc>
-		<lastmod>2026-04-03</lastmod>
+		<lastmod>2026-06-08</lastmod>
 	</url>
 </urlset>

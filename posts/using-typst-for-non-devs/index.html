@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</title>
-		<meta name="description" content="A writeup of picoCTF&#39;s Cryptography EVEN RSA CAN BE BROKEN??? Challenge">
+		<title>Using Typst locally</title>
+		<meta name="description" content="How to use Typst locally without typst.app">
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="beefyi">
 		<link rel="icon" href="/favicon/favicon.ico" sizes="any">
 		
@@ -1184,145 +1184,7 @@ pre[class*="language-diff-"] {
 	color: inherit; /* override del, ins, mark defaults */
 }</style>
 		
-	<style id="MJX-SVG-styles">
-mjx-container[jax="SVG"] {
-  direction: ltr;
-}
-
-mjx-container[jax="SVG"] > svg {
-  overflow: visible;
-  min-height: 1px;
-  min-width: 1px;
-}
-
-mjx-container[jax="SVG"] > svg a {
-  fill: blue;
-  stroke: blue;
-}
-
-mjx-assistive-mml {
-  position: absolute !important;
-  top: 0px;
-  left: 0px;
-  clip: rect(1px, 1px, 1px, 1px);
-  padding: 1px 0px 0px 0px !important;
-  border: 0px !important;
-  display: block !important;
-  width: auto !important;
-  overflow: hidden !important;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-mjx-assistive-mml[display="block"] {
-  width: 100% !important;
-}
-
-mjx-container[jax="SVG"][display="true"] {
-  display: block;
-  text-align: center;
-  margin: 1em 0;
-}
-
-mjx-container[jax="SVG"][display="true"][width="full"] {
-  display: flex;
-}
-
-mjx-container[jax="SVG"][justify="left"] {
-  text-align: left;
-}
-
-mjx-container[jax="SVG"][justify="right"] {
-  text-align: right;
-}
-
-g[data-mml-node="merror"] > g {
-  fill: red;
-  stroke: red;
-}
-
-g[data-mml-node="merror"] > rect[data-background] {
-  fill: yellow;
-  stroke: none;
-}
-
-g[data-mml-node="mtable"] > line[data-line], svg[data-table] > g > line[data-line] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > rect[data-frame], svg[data-table] > g > rect[data-frame] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > .mjx-dashed, svg[data-table] > g > .mjx-dashed {
-  stroke-dasharray: 140;
-}
-
-g[data-mml-node="mtable"] > .mjx-dotted, svg[data-table] > g > .mjx-dotted {
-  stroke-linecap: round;
-  stroke-dasharray: 0,140;
-}
-
-g[data-mml-node="mtable"] > g > svg {
-  overflow: visible;
-}
-
-[jax="SVG"] mjx-tool {
-  display: inline-block;
-  position: relative;
-  width: 0;
-  height: 0;
-}
-
-[jax="SVG"] mjx-tool > mjx-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-mjx-tool > mjx-tip {
-  display: inline-block;
-  padding: .2em;
-  border: 1px solid #888;
-  font-size: 70%;
-  background-color: #F8F8F8;
-  color: black;
-  box-shadow: 2px 2px 5px #AAAAAA;
-}
-
-g[data-mml-node="maction"][data-toggle] {
-  cursor: pointer;
-}
-
-mjx-status {
-  display: block;
-  position: fixed;
-  left: 1em;
-  bottom: 1em;
-  min-width: 25%;
-  padding: .2em .4em;
-  border: 1px solid #888;
-  font-size: 90%;
-  background-color: #F8F8F8;
-  color: black;
-}
-
-foreignObject[data-mjx-xml] {
-  font-family: initial;
-  line-height: normal;
-  overflow: visible;
-}
-
-mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
-  stroke-width: 3;
-}
-</style></head>
+	</head>
 	<body>
 		<a href="#main" id="skip-link" class="visually-hidden">Skip to main content</a>
 
@@ -1345,47 +1207,131 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 				
 
 
-<h1 id="picoctf-cryptography-even-rsa-can-be-broken">picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</h1>
+<h1 id="using-typst-locally">Using Typst locally</h1>
 
 <ul class="post-metadata">
-	<li><time datetime="2025-08-31">31 August 2025</time></li>
-	<li><a href="/tags/ctf/" class="post-tag">ctf</a>, </li>
-	<li><a href="/tags/writeup/" class="post-tag">writeup</a>, </li>
-	<li><a href="/tags/cryptography/" class="post-tag">cryptography</a></li>
+	<li><time datetime="2026-06-07">07 June 2026</time></li>
+	<li><a href="/tags/tutorial/" class="post-tag">tutorial</a>, </li>
+	<li><a href="/tags/draft/" class="post-tag">draft</a></li>
 </ul>
 
-<p>Picking up from the last blog, I had a go at the <a href="https://play.picoctf.org/practice/challenge/470?category=2&amp;difficulty=1&amp;page=1">EVEN RSA CAN BE BROKEN??</a> cryptography challenge. To be honest, it felt more like an exercise in RSA than a proper puzzle, but it's a good way to dip your toes into crypto. Think of RSA as the "hello world" of cryptography - simple, classic, and a solid starting point. The challenge kicks off by asking us to connect via netcat, where we're handed an encrypted message <code>c</code>, and its public key <code>(N, e)</code>.</p>
-<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token operator">&gt;</span> <span class="token function">nc</span> verbal-sleep.picoctf.net <span class="token number">56957</span>
+<p>Typst is a typesetting system. Think LaTeX if you're a STEM nerd, or Markdown
+if you're a Discord moderator. Unlike those other markup languages, Typst was
+designed to be easier to write, faster to compile, and more
+beginner-friendly. Technically, Markdown also fits these criteria, except for
+the fact that it does not compile, so we are really comparing Typst with
+LaTeX here.</p>
+<p>Personally, it's also a replacement for word processors, with the great feature
+of being plain text. There's no need for fancy, bloated, and often proprietary
+applications just to read some basic text. Unfortunately, Typst does have its
+own version of this: <a href="https://typst.app/">typst.app</a>. Which as you guessed by
+the link, requires the <strong>INTERNET!</strong> This is really bad when I want to write my blog<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>
+under four metres of solid lead, or access my journal up in the clouds<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+<p>I want a local environment where I can work on my Typst documents, use Git for
+version control, and collaborate with others. For me, this problem is easily
+solved through the use of my favourite text editor, and the only good option,
+Neovim<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. However, Neovim has a learning curve, and most people
+will not go out of their way to learn it. Very sad indeed, since Vim has the
+best motions for writing, whether that is for prose or code.</p>
+<p>But alas, normies exist in this world, looking at you, writers at GameDev, and
+they would rather stick to their mouse for navigation than learn elite motions.
+Thus, I had to explore solutions for them. I landed on Mueez Khan’s video and
+decided to adapt it into written form.</p>
+<div style="text-align: center;">
+	<iframe src="https://www.youtube.com/embed/S04WFNtNy7k" title="Getting started with Typst locally - Typing with Typst" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+	</iframe>
+</div>
+<p><em>Source video: <a href="https://www.youtube.com/watch?v=S04WFNtNy7k">Getting started with Typst locally - Typing with Typst</a>.</em></p>
+<h2 id="the-bits-you-actually-need">The bits you actually need</h2>
+<p>You only need two things:</p>
+<ol>
+<li><a href="https://vscodium.com/">VS Codium</a>, which is the telemetry-free sibling of
+VS Code.</li>
+<li>The <a href="https://myriad-dreamin.github.io/tinymist/frontend/vscode.html">Tiny Mist Typst</a> extension by Myriad Dream, which gives you syntax
+highlighting and a live preview.</li>
+</ol>
+<p>If you already have a preferred editor and know what you are doing, you can
+probably stop reading now. Honesty, I don't even know why you are reading this<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>.</p>
+<h2 id="step-1-install-vs-codium">Step 1: Install VS Codium</h2>
+<p>Head over to <a href="https://vscodium.com/">vscodium.com</a>.</p>
+<div style="text-align: center;">
+	<picture><source type="image/avif" srcset="/posts/using-typst-for-non-devs/3R6e15M0XX-1028.avif 1028w"><source type="image/webp" srcset="/posts/using-typst-for-non-devs/3R6e15M0XX-1028.webp 1028w"><img loading="lazy" decoding="async" src="/posts/using-typst-for-non-devs/3R6e15M0XX-1028.png" alt="Screenshot of the VSCodium homepage" width="1028" height="799"></picture>
+</div>
+<p>From there, you have two sensible options:</p>
+<ol>
+<li>Click the giant <strong>Download latest release</strong> button and grab the installer
+for your operating system and CPU architecture.</li>
+<li>Use a package manager if that is more your style<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>.</li>
+</ol>
+<p>Examples:</p>
+<ul>
+<li>macOS with Homebrew: <code>brew install --cask vscodium</code></li>
+<li>Windows with Winget: <code>winget install vscodium</code></li>
+<li>Windows with Chocolatey: <code>choco install vscodium</code></li>
+<li>Windows with Scoop: <code>scoop install vscodium</code></li>
+</ul>
+<p>If you are on Windows, make sure you download the right installer. If you are
+on a newer Apple machine, that usually means the ARM build. If you choose the
+wrong one, your computer will not explode, but it will be annoying.</p>
+<h2 id="step-2-install-the-tiny-mist-typst-extension">Step 2: Install the Tiny Mist Typst extension</h2>
+<p>Open VS Codium, then click the <strong>Extensions</strong> tab in the left-hand sidebar.
+Search for <code>Tiny Mist Typst</code> and install the one published by <strong>Myriad Dream</strong>.</p>
+<p>If search fails for whatever reason, the extension page is here:
+<a href="https://open-vsx.org/extension/myriad-dreamin/tinymist">Tiny Mist Typst on Open VSX</a>.</p>
+<p>This extension is the bit that makes the whole thing pleasant. Without it, you
+are basically just staring at raw text and pretending to be productive<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>. It uses
+a standard called LSP (Language Server Protocol) in order to communicate with your
+editor (VSCodium).</p>
+<h2 id="step-3-make-a-folder-for-your-typst-files">Step 3: Make a folder for your Typst files</h2>
+<p>Click the <strong>Explorer</strong> tab at the top of the left sidebar and choose <strong>Open
+Folder</strong>. Pick an existing folder or create one just for your Typst files. A
+name like <code>typst-examples</code> is perfectly fine. You do not need to overthink this.</p>
+<p>Once the folder is open, click <strong>New File</strong> and a file ending in <code>.typ</code>. For
+example: <code>main.typ</code>.</p>
+<h2 id="step-4-open-the-preview-and-start-typing">Step 4: Open the preview and start typing</h2>
+<p>With your new <code>.typ</code> file open, click the <strong>Typst Preview</strong> button (it's the magnifying-glass-style button on the right side or near
+the upper-right corner with a vertical split).</p>
+<p>That opens a live preview panel beside your editor. As you type, your document
+renders immediately, which is the main reason Typst feels so much less painful
+than LaTeX for normal human beings.</p>
+<p>Try this:</p>
+<pre class="language-typst" tabindex="0"><code class="language-typst">I showed you my source code, pls respond</code></pre>
+<p>You should see the rendered output appear on the right almost instantly.</p>
+<h2 id="step-5-save-your-work-like-a-responsible-adult">Step 5: Save your work like a responsible adult</h2>
+<p>You still need to save the file yourself:</p>
+<ul>
+<li>Windows/Linux: <code>Ctrl + S</code></li>
+<li>macOS: <code>Cmd + S</code></li>
+</ul>
+<p>If there is a little white dot next to the file name, it means the file has
+unsaved changes. When the dot disappears, your work is actually on disk instead
+of living dangerously in RAM.</p>
+<h2 id="that-is-basically-it">That is basically it</h2>
+<p>At this point you have a local, telemetry-free Typst setup that is much nicer
+than being trapped in a browser tab. You can write documents offline, keep them
+in Git, sync them however you like, and generally behave like someone with good
+taste.</p>
+<p>If all you wanted was a simple local Typst workflow without touching Neovim,
+this is probably the most painless route.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><span class="footnote-label"><a href="#fnref1" class="footnote-backref">1</a>.</span> <p>I don't use Typst for this blog at all, instead I use Markdown that gets compiled using <a href="https://www.11ty.dev/">11ty</a>!</p>
+</li>
+<li id="fn2" class="footnote-item"><span class="footnote-label"><a href="#fnref2" class="footnote-backref">2</a>.</span> <p>I meant actual clouds, as in flying. Not the mystery "cloud" these big-tech companies offer.</p>
+</li>
+<li id="fn3" class="footnote-item"><span class="footnote-label"><a href="#fnref3" class="footnote-backref">3</a>.</span> <p>Yes, I see you <a href="https://www.gnu.org/software/emacs/">GNU Emacs</a> users. Don't worry, I also use Emacs, so stay tuned for that post.</p>
+</li>
+<li id="fn4" class="footnote-item"><span class="footnote-label"><a href="#fnref4" class="footnote-backref">4</a>.</span> <p>Hmm, maybe your name is Kutay? If so, thank you for reading. If not, well what's your name then?</p>
+</li>
+<li id="fn5" class="footnote-item"><span class="footnote-label"><a href="#fnref5" class="footnote-backref">5</a>.</span> <p>If you know this, why are you here? Regardless thank you for reading my blog.</p>
+</li>
+<li id="fn6" class="footnote-item"><span class="footnote-label"><a href="#fnref6" class="footnote-backref">6</a>.</span> <p>Not true, ask <a href="https://www.youtube.com/@Tsoding">rexim</a>.</p>
+</li>
+</ol>
+</section>
 
-N: <span class="token number">22715301090244944555782064618276252525023771968883364484388038636123683358976283740304327683722247637952999616864052130853477842537404917091331688687558122</span>
-e: <span class="token number">65537</span>
-cyphertext: <span class="token number">14293253600340155854054831280856936574632994961947887972916917485609072959383679102282010013872401143755895229136463678205587523830693631363813380495455347</span></code></pre>
-<p>I won't go into how RSA works here - that's left to some <a href="https://en.wikipedia.org/wiki/RSA_cryptosystem">further reading</a>. But the short version (TL;DR) is this: RSA relies on a pair of keys - one public and one private. Together, they're what let us encrypt and decrypt ciphertext (term for encrypted text). As you can see we only got the public key, and so this challenge is to find the private key and then decrypt the message.</p>
-<p>The catch that allows us to find the private key is to notice that <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.009ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 888 683" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-TEX-I-1D441"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>N</mi></math></mjx-assistive-mml></mjx-container> is <em>even</em>. Typically <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.009ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 888 683" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-TEX-I-1D441"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>N</mi></math></mjx-assistive-mml></mjx-container> is the product of two <strong>large primes</strong> - but it is always a product of primes. If it's even, that means one of those primes must be <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.131ex" height="1.507ex" role="img" focusable="false" viewBox="0 -666 500 666" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn></math></mjx-assistive-mml></mjx-container>.</p>
-<p>So we set <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: -0.439ex;" xmlns="http://www.w3.org/2000/svg" width="5.286ex" height="1.946ex" role="img" focusable="false" viewBox="0 -666 2336.6 860" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45D" xlink:href="#MJX-TEX-I-1D45D"></use></g><g data-mml-node="mo" transform="translate(780.8,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(1836.6,0)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>p</mi><mo>=</mo><mn>2</mn></math></mjx-assistive-mml></mjx-container>, and then grab the other prime by dividing: <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="8.336ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3684.6 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45E" xlink:href="#MJX-TEX-I-1D45E"></use></g><g data-mml-node="mo" transform="translate(737.8,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mi" transform="translate(1793.6,0)"><use data-c="1D441" xlink:href="#MJX-TEX-I-1D441"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(2681.6,0)"><g data-mml-node="mo"><use data-c="2F" xlink:href="#MJX-TEX-N-2F"></use></g></g><g data-mml-node="mi" transform="translate(3181.6,0)"><use data-c="1D45D" xlink:href="#MJX-TEX-I-1D45D"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>q</mi><mo>=</mo><mi>N</mi><mrow data-mjx-texclass="ORD"><mo>/</mo></mrow><mi>p</mi></math></mjx-assistive-mml></mjx-container>. From there, we calculate Euler’s totient, <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="17.858ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 7893.4 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D719" xlink:href="#MJX-TEX-I-1D719"></use></g><g data-mml-node="mo" transform="translate(873.8,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mo" transform="translate(1929.6,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(2318.6,0)"><use data-c="1D45D" xlink:href="#MJX-TEX-I-1D45D"></use></g><g data-mml-node="mo" transform="translate(3043.8,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(4044,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(4544,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(4933,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(5322,0)"><use data-c="1D45E" xlink:href="#MJX-TEX-I-1D45E"></use></g><g data-mml-node="mo" transform="translate(6004.2,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(7004.4,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(7504.4,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>ϕ</mi><mo>=</mo><mo stretchy="false">(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>q</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></math></mjx-assistive-mml></mjx-container>.</p>
-<p>Next step: finding the private key exponent <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="1.176ex" height="1.593ex" role="img" focusable="false" viewBox="0 -694 520 704" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D451" xlink:href="#MJX-TEX-I-1D451"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>d</mi></math></mjx-assistive-mml></mjx-container>. This is just the modular inverse of <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.054ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 466 453" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D452" xlink:href="#MJX-TEX-I-1D452"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>e</mi></math></mjx-assistive-mml></mjx-container> with respect to <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: -0.464ex;" xmlns="http://www.w3.org/2000/svg" width="1.348ex" height="2.034ex" role="img" focusable="false" viewBox="0 -694 596 899" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D719" xlink:href="#MJX-TEX-I-1D719"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>ϕ</mi></math></mjx-assistive-mml></mjx-container>. We can calculate this using Python's <code>pow(e, -1, phi)</code>.</p>
-<p>With <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="1.176ex" height="1.593ex" role="img" focusable="false" viewBox="0 -694 520 704" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D451" xlink:href="#MJX-TEX-I-1D451"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>d</mi></math></mjx-assistive-mml></mjx-container> in hand, we can finally decrypt: <code>m = pow(c, d, N)</code>. That gives us the message, but in integer form. To make sense of it, we work out how many bytes long it should be, convert it with <code>to_bytes</code>, and then decode to ASCII.</p>
-<p>And that's really all there is to it. Merging all the steps together, the full script looks like this:</p>
-<pre class="language-python" tabindex="0"><code class="language-python">N <span class="token operator">=</span> <span class="token number">22715301090244944555782064618276252525023771968883364484388038636123683358976283740304327683722247637952999616864052130853477842537404917091331688687558122</span>
-e <span class="token operator">=</span> <span class="token number">65537</span>
-c <span class="token operator">=</span> <span class="token number">14293253600340155854054831280856936574632994961947887972916917485609072959383679102282010013872401143755895229136463678205587523830693631363813380495455347</span>
-p <span class="token operator">=</span> <span class="token number">2</span>
-q <span class="token operator">=</span> N <span class="token operator">//</span> p
-phi <span class="token operator">=</span> <span class="token punctuation">(</span>p <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>q <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-d <span class="token operator">=</span> <span class="token builtin">pow</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> phi<span class="token punctuation">)</span>
-m <span class="token operator">=</span> <span class="token builtin">pow</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> d<span class="token punctuation">,</span> N<span class="token punctuation">)</span>
-byte_len <span class="token operator">=</span> <span class="token punctuation">(</span>m<span class="token punctuation">.</span>bit_length<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">7</span><span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">8</span>
-pt_bytes <span class="token operator">=</span> m<span class="token punctuation">.</span>to_bytes<span class="token punctuation">(</span>byte_len<span class="token punctuation">,</span> <span class="token string">"big"</span><span class="token punctuation">)</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"d ="</span><span class="token punctuation">,</span> d<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"m (int) ="</span><span class="token punctuation">,</span> m<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"m (hex) ="</span><span class="token punctuation">,</span> pt_bytes<span class="token punctuation">.</span><span class="token builtin">hex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"m (ascii) ="</span><span class="token punctuation">,</span> pt_bytes<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
-<p>Giving us the decrypted message:</p>
-<pre><code>picoCTF{tw0_1$_pr!m3df98b648}
-</code></pre>
-
-<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/posts/picoctf-web-ssti1/">picoCTF - Web | SSTI1</a></li><li class="links-nextprev-next">Next →<br><a href="/posts/picoctf-reverse-engineering-flag-hunters/">picoCTF - Reverse Engineering | Flag Hunters</a></li>
+<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/posts/ros1-cheatsheet/">ROS1 Cheatsheet</a></li>
 </ul>
 
 			</heading-anchors>
@@ -1397,7 +1343,7 @@ pt_bytes <span class="token operator">=</span> m<span class="token punctuation">
 			</p>
 		</footer>
 
-		<!-- This page `/posts/picoctf-cryptography-even-rsa-can-be-broken/` was built on 2026-06-08T00:08:09.511Z -->
+		<!-- This page `/posts/using-typst-for-non-devs/` was built on 2026-06-08T00:08:09.511Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";
@@ -1648,5 +1594,5 @@ pt_bytes <span class="token operator">=</span> m<span class="token punctuation">
 			})();
 		</script>
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
-	<svg style="display: none;" id="MJX-SVG-global-cache"><defs><path id="MJX-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path><path id="MJX-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-TEX-I-1D45E" d="M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path><path id="MJX-TEX-N-2F" d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z"></path><path id="MJX-TEX-I-1D719" d="M409 688Q413 694 421 694H429H442Q448 688 448 686Q448 679 418 563Q411 535 404 504T392 458L388 442Q388 441 397 441T429 435T477 418Q521 397 550 357T579 260T548 151T471 65T374 11T279 -10H275L251 -105Q245 -128 238 -160Q230 -192 227 -198T215 -205H209Q189 -205 189 -198Q189 -193 211 -103L234 -11Q234 -10 226 -10Q221 -10 206 -8T161 6T107 36T62 89T43 171Q43 231 76 284T157 370T254 422T342 441Q347 441 348 445L378 567Q409 686 409 688ZM122 150Q122 116 134 91T167 53T203 35T237 27H244L337 404Q333 404 326 403T297 395T255 379T211 350T170 304Q152 276 137 237Q122 191 122 150ZM500 282Q500 320 484 347T444 385T405 400T381 404H378L332 217L284 29Q284 27 285 27Q293 27 317 33T357 47Q400 66 431 100T475 170T494 234T500 282Z"></path><path id="MJX-TEX-N-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path id="MJX-TEX-N-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path><path id="MJX-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-TEX-N-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path><path id="MJX-TEX-I-1D451" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path><path id="MJX-TEX-I-1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></defs></svg></body>
+	</body>
 </html>

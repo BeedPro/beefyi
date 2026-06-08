@@ -11,6 +11,7 @@
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";
+				var fontSizeStorageKey = "font-size";
 				var readingValueStorageKey = "reading-value";
 				var legacyReadingStorageKey = "reading-preference";
 
@@ -45,18 +46,29 @@
 
 				function applyReading(value) {
 					var vars = readingVars(value);
-					document.documentElement.style.setProperty("--reading-font-size", vars.fontSize.toFixed(3).replace(/\.0+$/, "") + "rem");
+					document.documentElement.style.setProperty("--reading-font-scale", vars.fontSize.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-line-height", vars.lineHeight.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-max-width", vars.maxWidth.toFixed(3).replace(/\.0+$/, "") + "em");
 					document.documentElement.setAttribute("data-reading-value", String(Math.round(value)));
 				}
 
+				function applyFontSize(value) {
+					var rounded = Math.round(clamp(value, 75, 200));
+					document.documentElement.style.setProperty("--site-font-size", rounded / 100 + "rem");
+					document.documentElement.setAttribute("data-font-size", String(rounded));
+				}
+
 				var preference = "system";
+				var fontSize = 100;
 				var readingValue = 50;
 				try {
 					var stored = localStorage.getItem(themeStorageKey);
 					if (stored === "light" || stored === "dark" || stored === "system") {
 						preference = stored;
+					}
+					var storedFontSize = localStorage.getItem(fontSizeStorageKey);
+					if (storedFontSize !== null && !Number.isNaN(Number(storedFontSize))) {
+						fontSize = clamp(Number(storedFontSize), 75, 200);
 					}
 					var storedReadingValue = localStorage.getItem(readingValueStorageKey);
 					if (storedReadingValue !== null && !Number.isNaN(Number(storedReadingValue))) {
@@ -74,119 +86,156 @@
 				var resolved = preference === "system" ? (isDark ? "dark" : "light") : preference;
 				document.documentElement.setAttribute("data-theme", resolved);
 				document.documentElement.setAttribute("data-theme-preference", preference);
+				applyFontSize(fontSize);
 				applyReading(readingValue);
 			})();
 		</script>
 		
 		
 		<style>/* This is an arbitrary CSS string added to the bundle */
+@font-face {
+	font-family: "Iosevka";
+	src: url("/fonts/iosevka-400.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Iosevka";
+	src: url("/fonts/iosevka-700.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Noto Sans Arabic";
+	src: url("/fonts/noto-sans-arabic-400.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Noto Sans Arabic";
+	src: url("/fonts/noto-sans-arabic-700.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
 /* Defaults */
 :root {
-	--font-family: -apple-system, system-ui, sans-serif;
+	--font-family: "Iosevka", "Noto Sans Arabic", "Iosevka Web",
+		"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Monaco,
+		monospace;
 	--font-family-monospace:
-		Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console,
-		Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono,
-		Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
-	--reading-font-size: 1rem;
+		"Iosevka", "Iosevka Web", "SFMono-Regular", Consolas, Menlo, Monaco,
+		Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter,
+		DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono,
+		Nimbus Mono L, Courier New, Courier, monospace;
+	--site-font-size: 1rem;
+	--reading-font-scale: 1;
 	--reading-line-height: 1.5;
 	--reading-max-width: 40em;
 }
 
 /* Theme colors */
 :root {
-	--color-gray-20: #cacac7;
-	--color-gray-90: #22262d;
+	--color-gray-20: #a6a6a6;
+	--color-gray-90: #000000;
 
-	--background-color: #f2f1ef;
-	--color-surface: #e2e1df;
-	--table-head-bg: #dddddb;
-	--table-row-hover-bg: #c7d7e0;
+	--background-color: #ffffff;
+	--color-surface: #dae5ec;
+	--table-head-bg: #dae5ec;
+	--table-row-hover-bg: #dae5ec;
 
 	--text-color: var(--color-gray-90);
-	--text-color-link: #4d699b;
-	--text-color-link-active: #5d57a3;
-	--text-color-link-visited: #624c83;
-	--selection-bg: #5d57a3;
-	--selection-text: #f2f1ef;
+	--text-color-link: #0031a9;
+	--text-color-link-active: #0000ff;
+	--text-color-link-visited: #721045;
+	--selection-bg: #dae5ec;
+	--selection-text: #000000;
 
-	--color-note: #5a7785;
-	--color-tip: #6f894e;
-	--color-important: #c84053;
-	--color-warning: #e98a00;
-	--color-caution: #836f4a;
+	--color-note: #005e8b;
+	--color-tip: #006800;
+	--color-important: #a60000;
+	--color-warning: #6f5500;
+	--color-caution: #884900;
 
 	--syntax-tab-size: 2;
 }
 
 :root[data-theme="light"] {
-	--color-gray-20: #cacac7;
-	--color-gray-90: #22262d;
+	--color-gray-20: #a6a6a6;
+	--color-gray-90: #000000;
 
-	--background-color: #f2f1ef;
-	--color-surface: #e2e1df;
-	--table-head-bg: #dddddb;
-	--table-row-hover-bg: #c7d7e0;
+	--background-color: #ffffff;
+	--color-surface: #dae5ec;
+	--table-head-bg: #dae5ec;
+	--table-row-hover-bg: #dae5ec;
 
 	--text-color: var(--color-gray-90);
-	--text-color-link: #4d699b;
-	--text-color-link-active: #5d57a3;
-	--text-color-link-visited: #624c83;
-	--selection-bg: #5d57a3;
-	--selection-text: #f2f1ef;
+	--text-color-link: #0031a9;
+	--text-color-link-active: #0000ff;
+	--text-color-link-visited: #721045;
+	--selection-bg: #dae5ec;
+	--selection-text: #000000;
 
-	--color-note: #5a7785;
-	--color-tip: #6f894e;
-	--color-important: #c84053;
-	--color-warning: #e98a00;
-	--color-caution: #836f4a;
+	--color-note: #005e8b;
+	--color-tip: #006800;
+	--color-important: #a60000;
+	--color-warning: #6f5500;
+	--color-caution: #884900;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) {
-		--color-gray-20: #393b44;
-		--color-gray-90: #c5c9c7;
+		--color-gray-20: #595959;
+		--color-gray-90: #ffffff;
 
-		--background-color: #090e13;
-		--color-surface: #1c1e25;
-		--table-head-bg: #1c1e25;
-		--table-row-hover-bg: #22262d;
+		--background-color: #000000;
+		--color-surface: #2f3849;
+		--table-head-bg: #2f3849;
+		--table-row-hover-bg: #595959;
 
 		--text-color: var(--color-gray-90);
-		--text-color-link: #7fb4ca;
-		--text-color-link-active: #8ba4b0;
-		--text-color-link-visited: #938aa9;
-		--selection-bg: #658594;
-		--selection-text: #090e13;
+		--text-color-link: #2fafff;
+		--text-color-link-active: #338fff;
+		--text-color-link-visited: #feacd0;
+		--selection-bg: #2f3849;
+		--selection-text: #ffffff;
 
-		--color-note: #658594;
-		--color-tip: #98bb6c;
-		--color-important: #c34043;
-		--color-warning: #dca561;
-		--color-caution: #b6927b;
+		--color-note: #00d3d0;
+		--color-tip: #44bc44;
+		--color-important: #ff5f59;
+		--color-warning: #d0bc00;
+		--color-caution: #fec43f;
 	}
 }
 
 :root[data-theme="dark"] {
-	--color-gray-20: #393b44;
-	--color-gray-90: #c5c9c7;
+	--color-gray-20: #595959;
+	--color-gray-90: #ffffff;
 
-	--background-color: #090e13;
-	--color-surface: #1c1e25;
-	--table-head-bg: #1c1e25;
-	--table-row-hover-bg: #22262d;
+	--background-color: #000000;
+	--color-surface: #2f3849;
+	--table-head-bg: #2f3849;
+	--table-row-hover-bg: #595959;
 
 	--text-color: var(--color-gray-90);
-	--text-color-link: #7fb4ca;
-	--text-color-link-active: #8ba4b0;
-	--text-color-link-visited: #938aa9;
-	--selection-bg: #658594;
-	--selection-text: #090e13;
+	--text-color-link: #2fafff;
+	--text-color-link-active: #338fff;
+	--text-color-link-visited: #feacd0;
+	--selection-bg: #2f3849;
+	--selection-text: #ffffff;
 
-	--color-note: #658594;
-	--color-tip: #98bb6c;
-	--color-important: #c34043;
-	--color-warning: #dca561;
-	--color-caution: #b6927b;
+	--color-note: #00d3d0;
+	--color-tip: #44bc44;
+	--color-important: #ff5f59;
+	--color-warning: #d0bc00;
+	--color-caution: #fec43f;
 }
 
 /* Global stylesheet */
@@ -207,11 +256,25 @@ body {
 	background-color: var(--background-color);
 }
 html {
+	font-size: var(--site-font-size);
 	overflow-y: scroll;
 }
 body {
 	max-width: var(--reading-max-width);
-	font-size: var(--reading-font-size);
+	font-size: calc(1rem * var(--reading-font-scale));
+}
+
+:where(main, footer) :lang(ar) {
+	font-family: "Noto Sans Arabic", var(--font-family);
+}
+
+:where(main, footer) :is(p, li, blockquote, figcaption, td, th, h1, h2, h3, h4, h5, h6) {
+	unicode-bidi: plaintext;
+}
+
+:where(main, footer) [dir="rtl"] {
+	direction: rtl;
+	text-align: start;
 }
 
 ::selection {
@@ -358,6 +421,11 @@ pre:not([class*="language-"]) {
 code {
 	word-break: break-all;
 }
+:not(pre) > code {
+	background-color: var(--color-surface);
+	padding: 0.1em 0.35em;
+	border-radius: 0.2em;
+}
 
 /* Header */
 header {
@@ -423,7 +491,7 @@ header nav {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0.65rem;
 	padding: 0;
-	margin: 0;
+	margin: 0 0 1.25rem;
 	border: 0;
 }
 
@@ -431,10 +499,14 @@ header nav {
 	display: block;
 	border: 1px solid var(--color-gray-20);
 	border-radius: 0;
-	padding: 0.7rem 0.9rem;
+	padding: 0.85rem 1rem;
 	background-color: var(--color-surface);
+	color: var(--text-color);
 	cursor: pointer;
-	transition: border-color 120ms ease, background-color 120ms ease;
+	transition:
+		border-color 120ms ease,
+		background-color 120ms ease,
+		box-shadow 120ms ease;
 }
 
 .theme-option input {
@@ -446,6 +518,7 @@ header nav {
 .theme-option-title {
 	display: block;
 	font-weight: 700;
+	line-height: 1.3;
 }
 
 .theme-preview {
@@ -456,7 +529,7 @@ header nav {
 
 .theme-preview span {
 	display: block;
-	height: 0.5rem;
+	height: 0.6rem;
 	border: 1px solid var(--color-gray-20);
 }
 
@@ -465,15 +538,15 @@ header nav {
 }
 
 .theme-preview-dark span:nth-child(1) {
-	background: #090e13;
+	background: #000000;
 }
 
 .theme-preview-dark span:nth-child(2) {
-	background: #1c1e25;
+	background: #2f3849;
 }
 
 .theme-preview-dark span:nth-child(3) {
-	background: #8ba4b0;
+	background: #2fafff;
 }
 
 .theme-preview-light {
@@ -481,77 +554,119 @@ header nav {
 }
 
 .theme-preview-light span:nth-child(1) {
-	background: #f2f1ef;
+	background: #ffffff;
 }
 
 .theme-preview-light span:nth-child(2) {
-	background: #e2e1df;
+	background: #dae5ec;
 }
 
 .theme-preview-light span:nth-child(3) {
-	background: #5d57a3;
+	background: #0031a9;
 }
 
 .theme-option-desc {
 	display: block;
-	margin-top: 0.15rem;
-	font-size: 0.85rem;
-	color: var(--text-color-link-active);
+	margin-top: 0.3rem;
+	font-size: 0.9rem;
+	line-height: 1.4;
+	color: var(--text-color);
 }
 
 .theme-option:hover,
 .theme-option:focus-within {
-	border-color: var(--text-color-link-active);
+	border-color: var(--text-color-link);
+	background-color: var(--background-color);
 }
 
 .theme-option.is-selected {
 	border-color: var(--text-color-link-active);
-	background-color: var(--table-row-hover-bg);
+	background-color: var(--background-color);
+	box-shadow: inset 0 0 0 2px var(--text-color-link-active);
+}
+
+.theme-option:focus-within {
+	box-shadow: inset 0 0 0 2px var(--text-color-link);
 }
 
 .reading-settings {
 	padding: 0;
 }
 
-.reading-preset-grid {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 0.5rem;
-	margin-bottom: 0.75rem;
+.font-size-settings {
+	padding: 0;
+	margin-bottom: 1.25rem;
 }
 
-.reading-preset {
+.font-size-select {
+	width: 100%;
 	border: 1px solid var(--color-gray-20);
-	background-color: var(--background-color);
+	border-radius: 0;
+	padding: 0.75rem 2.5rem 0.75rem 0.9rem;
+	background-color: var(--color-surface);
 	color: var(--text-color);
-	padding: 0.45rem 0.55rem;
 	font: inherit;
-	cursor: pointer;
 }
 
-.reading-preset:hover,
-.reading-preset:focus-visible {
-	border-color: var(--text-color-link-active);
-	outline: none;
-}
-
-.reading-preset.is-selected {
-	border-color: var(--text-color-link-active);
-	background-color: var(--table-row-hover-bg);
+.font-size-select:hover,
+.font-size-select:focus-visible {
+	border-color: var(--text-color-link);
+	background-color: var(--background-color);
+	outline: 2px solid var(--text-color-link);
+	outline-offset: 0.15rem;
 }
 
 .reading-range {
 	width: 100%;
-	margin: 0;
+	margin: 0.15rem 0 0;
+	height: 1.6rem;
+	background: transparent;
 	accent-color: var(--text-color-link-active);
+}
+
+.reading-range:focus-visible {
+	outline: 2px solid var(--text-color-link-active);
+	outline-offset: 0.15rem;
+}
+
+.reading-range::-webkit-slider-runnable-track {
+	height: 0.3rem;
+	border-radius: 999px;
+	background: var(--color-gray-20);
+}
+
+.reading-range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 1rem;
+	height: 1rem;
+	margin-top: -0.35rem;
+	border: 2px solid var(--text-color-link-active);
+	border-radius: 50%;
+	background: var(--background-color);
+}
+
+.reading-range::-moz-range-track {
+	height: 0.3rem;
+	border: 0;
+	border-radius: 999px;
+	background: var(--color-gray-20);
+}
+
+.reading-range::-moz-range-thumb {
+	width: 1rem;
+	height: 1rem;
+	border: 2px solid var(--text-color-link-active);
+	border-radius: 50%;
+	background: var(--background-color);
 }
 
 .reading-scale {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	font-size: 0.8rem;
-	margin-top: 0.3rem;
-	color: var(--text-color-link-active);
+	font-size: 0.9rem;
+	margin-top: 0.45rem;
+	color: var(--text-color);
 }
 
 .reading-scale span:nth-child(2) {
@@ -562,14 +677,13 @@ header nav {
 	text-align: right;
 }
 
-.reading-value {
+.settings-value {
 	margin-top: 0.6rem;
-	font-size: 0.9rem;
+	font-size: 1rem;
 }
 
 @media (max-width: 640px) {
 	.theme-options,
-	.reading-preset-grid,
 	.reading-scale {
 		grid-template-columns: 1fr;
 	}
@@ -719,6 +833,23 @@ header nav {
 	color: var(--color-caution);
 }
 
+.footnotes-list {
+	list-style: none;
+	padding-left: 0;
+}
+
+.footnote-item {
+	margin-bottom: 0.75rem;
+}
+
+.footnote-item p {
+	display: inline;
+}
+
+.footnote-label {
+	margin-right: 0.25rem;
+}
+
 /* Table styling */
 table {
 	width: 100%;
@@ -782,7 +913,7 @@ tbody tr th[data-type="caution"] {
 }
 code[class*="language-"],
 pre[class*="language-"] {
-	color: #22262d;
+	color: #000000;
 }
 
 pre[class*="language-"] {
@@ -809,18 +940,18 @@ code[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: #e2e1df;
+	background: #ffffff;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: #6d6d69;
+	color: #595959;
 }
 
 .token.punctuation {
-	color: #6d6d69;
+	color: #595959;
 }
 
 .token.property,
@@ -830,7 +961,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: #b35b79;
+	color: #a60000;
 }
 
 .token.selector,
@@ -839,7 +970,7 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: #6f894e;
+	color: #006800;
 }
 
 .token.operator,
@@ -847,24 +978,24 @@ pre[class*="language-"] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-	color: #5c6068;
+	color: #005e8b;
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-	color: #624c83;
+	color: #721045;
 }
 
 .token.function,
 .token.class-name {
-	color: #4d699b;
+	color: #0031a9;
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-	color: #cc6d00;
+	color: #884900;
 }
 
 .token.bold,
@@ -879,23 +1010,23 @@ pre[class*="language-"] {
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) code[class*="language-"],
 	:root:not([data-theme="light"]) pre[class*="language-"] {
-		color: #c5c9c7;
+		color: #ffffff;
 	}
 
 	:root:not([data-theme="light"]) :not(pre) > code[class*="language-"],
 	:root:not([data-theme="light"]) pre[class*="language-"] {
-		background: #1c1e25;
+		background: #000000;
 	}
 
 	:root:not([data-theme="light"]) .token.comment,
 	:root:not([data-theme="light"]) .token.prolog,
 	:root:not([data-theme="light"]) .token.doctype,
 	:root:not([data-theme="light"]) .token.cdata {
-		color: #75797f;
+		color: #595959;
 	}
 
 	:root:not([data-theme="light"]) .token.punctuation {
-		color: #909398;
+		color: #a6a6a6;
 	}
 
 	:root:not([data-theme="light"]) .token.property,
@@ -905,7 +1036,7 @@ pre[class*="language-"] {
 	:root:not([data-theme="light"]) .token.constant,
 	:root:not([data-theme="light"]) .token.symbol,
 	:root:not([data-theme="light"]) .token.deleted {
-		color: #a292a3;
+		color: #ff5f59;
 	}
 
 	:root:not([data-theme="light"]) .token.selector,
@@ -914,7 +1045,7 @@ pre[class*="language-"] {
 	:root:not([data-theme="light"]) .token.char,
 	:root:not([data-theme="light"]) .token.builtin,
 	:root:not([data-theme="light"]) .token.inserted {
-		color: #8a9a7b;
+		color: #44bc44;
 	}
 
 	:root:not([data-theme="light"]) .token.operator,
@@ -922,46 +1053,46 @@ pre[class*="language-"] {
 	:root:not([data-theme="light"]) .token.url,
 	:root:not([data-theme="light"]) .language-css .token.string,
 	:root:not([data-theme="light"]) .style .token.string {
-		color: #909398;
+		color: #00d3d0;
 	}
 
 	:root:not([data-theme="light"]) .token.atrule,
 	:root:not([data-theme="light"]) .token.attr-value,
 	:root:not([data-theme="light"]) .token.keyword {
-		color: #8992a7;
+		color: #feacd0;
 	}
 
 	:root:not([data-theme="light"]) .token.function,
 	:root:not([data-theme="light"]) .token.class-name {
-		color: #8ba4b0;
+		color: #2fafff;
 	}
 
 	:root:not([data-theme="light"]) .token.regex,
 	:root:not([data-theme="light"]) .token.important,
 	:root:not([data-theme="light"]) .token.variable {
-		color: #b6927b;
+		color: #fec43f;
 	}
 }
 
 :root[data-theme="dark"] code[class*="language-"],
 :root[data-theme="dark"] pre[class*="language-"] {
-	color: #c5c9c7;
+	color: #ffffff;
 }
 
 :root[data-theme="dark"] :not(pre) > code[class*="language-"],
 :root[data-theme="dark"] pre[class*="language-"] {
-	background: #1c1e25;
+	background: #000000;
 }
 
 :root[data-theme="dark"] .token.comment,
 :root[data-theme="dark"] .token.prolog,
 :root[data-theme="dark"] .token.doctype,
 :root[data-theme="dark"] .token.cdata {
-	color: #75797f;
+	color: #595959;
 }
 
 :root[data-theme="dark"] .token.punctuation {
-	color: #909398;
+	color: #a6a6a6;
 }
 
 :root[data-theme="dark"] .token.property,
@@ -971,7 +1102,7 @@ pre[class*="language-"] {
 :root[data-theme="dark"] .token.constant,
 :root[data-theme="dark"] .token.symbol,
 :root[data-theme="dark"] .token.deleted {
-	color: #a292a3;
+	color: #ff5f59;
 }
 
 :root[data-theme="dark"] .token.selector,
@@ -980,7 +1111,7 @@ pre[class*="language-"] {
 :root[data-theme="dark"] .token.char,
 :root[data-theme="dark"] .token.builtin,
 :root[data-theme="dark"] .token.inserted {
-	color: #8a9a7b;
+	color: #44bc44;
 }
 
 :root[data-theme="dark"] .token.operator,
@@ -988,24 +1119,24 @@ pre[class*="language-"] {
 :root[data-theme="dark"] .token.url,
 :root[data-theme="dark"] .language-css .token.string,
 :root[data-theme="dark"] .style .token.string {
-	color: #909398;
+	color: #00d3d0;
 }
 
 :root[data-theme="dark"] .token.atrule,
 :root[data-theme="dark"] .token.attr-value,
 :root[data-theme="dark"] .token.keyword {
-	color: #8992a7;
+	color: #feacd0;
 }
 
 :root[data-theme="dark"] .token.function,
 :root[data-theme="dark"] .token.class-name {
-	color: #8ba4b0;
+	color: #2fafff;
 }
 
 :root[data-theme="dark"] .token.regex,
 :root[data-theme="dark"] .token.important,
 :root[data-theme="dark"] .token.variable {
-	color: #b6927b;
+	color: #fec43f;
 }
 /*
  * New diff- syntax
@@ -1488,7 +1619,7 @@ rospy<span class="token punctuation">.</span>logerr<span class="token punctuatio
 </tbody>
 </table>
 
-<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/posts/picoctf-reverse-engineering-flag-hunters/">picoCTF - Reverse Engineering | Flag Hunters</a></li>
+<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/posts/picoctf-reverse-engineering-flag-hunters/">picoCTF - Reverse Engineering | Flag Hunters</a></li><li class="links-nextprev-next">Next →<br><a href="/posts/using-typst-for-non-devs/">Using Typst locally</a></li>
 </ul>
 
 			</heading-anchors>
@@ -1500,18 +1631,18 @@ rospy<span class="token punctuation">.</span>logerr<span class="token punctuatio
 			</p>
 		</footer>
 
-		<!-- This page `/posts/ros1-cheatsheet/` was built on 2026-04-03T22:50:04.984Z -->
+		<!-- This page `/posts/ros1-cheatsheet/` was built on 2026-06-08T00:08:09.511Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";
+				var fontSizeStorageKey = "font-size";
 				var readingValueStorageKey = "reading-value";
 				var legacyReadingStorageKey = "reading-preference";
 				var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name="theme-select"]'));
 				var systemToggle = document.getElementById("theme-system-toggle");
+				var fontSizeRange = document.getElementById("font-size-range");
 				var readingRange = document.getElementById("reading-range");
-				var readingValueLabel = document.getElementById("reading-value");
-				var readingPresets = Array.prototype.slice.call(document.querySelectorAll("[data-reading-preset]"));
-				if (inputs.length === 0 && !systemToggle && !readingRange) {
+				if (inputs.length === 0 && !systemToggle && !fontSizeRange && !readingRange) {
 					return;
 				}
 
@@ -1547,10 +1678,17 @@ rospy<span class="token punctuation">.</span>logerr<span class="token punctuatio
 				function applyReading(value) {
 					var rounded = Math.round(clamp(value, 0, 100));
 					var vars = readingVars(rounded);
-					document.documentElement.style.setProperty("--reading-font-size", vars.fontSize.toFixed(3).replace(/\.0+$/, "") + "rem");
+					document.documentElement.style.setProperty("--reading-font-scale", vars.fontSize.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-line-height", vars.lineHeight.toFixed(3).replace(/\.0+$/, ""));
 					document.documentElement.style.setProperty("--reading-max-width", vars.maxWidth.toFixed(3).replace(/\.0+$/, "") + "em");
 					document.documentElement.setAttribute("data-reading-value", String(rounded));
+					return rounded;
+				}
+
+				function applyFontSize(value) {
+					var rounded = Math.round(clamp(value, 75, 200));
+					document.documentElement.style.setProperty("--site-font-size", rounded / 100 + "rem");
+					document.documentElement.setAttribute("data-font-size", String(rounded));
 					return rounded;
 				}
 
@@ -1565,6 +1703,18 @@ rospy<span class="token punctuation">.</span>logerr<span class="token punctuatio
 						return "Comfort";
 					}
 					return "Custom";
+				}
+
+				function snapReadingValue(value) {
+					var rounded = Math.round(clamp(value, 0, 100));
+					var snapTargets = [0, 50, 100];
+					var snapDistance = 8;
+					for (var i = 0; i < snapTargets.length; i++) {
+						if (Math.abs(rounded - snapTargets[i]) <= snapDistance) {
+							return snapTargets[i];
+						}
+					}
+					return rounded;
 				}
 
 				function getStoredPreference() {
@@ -1615,8 +1765,32 @@ rospy<span class="token punctuation">.</span>logerr<span class="token punctuatio
 					return 50;
 				}
 
+				function getStoredFontSize() {
+					var dataValue = Number(document.documentElement.getAttribute("data-font-size"));
+					if (!Number.isNaN(dataValue)) {
+						return clamp(dataValue, 75, 200);
+					}
+					try {
+						var stored = localStorage.getItem(fontSizeStorageKey);
+						if (stored !== null && !Number.isNaN(Number(stored))) {
+							return clamp(Number(stored), 75, 200);
+						}
+					} catch (e) {}
+					return 100;
+				}
+
+				function setFontSize(value, persist) {
+					var applied = applyFontSize(value);
+					if (persist !== false) {
+						try {
+							localStorage.setItem(fontSizeStorageKey, String(applied));
+						} catch (e) {}
+					}
+					updateFontSizeUI(applied);
+				}
+
 				function setReading(value, persist) {
-					var applied = applyReading(Math.round(clamp(value, 0, 100)));
+					var applied = applyReading(snapReadingValue(value));
 					if (persist !== false) {
 						try {
 							localStorage.setItem(readingValueStorageKey, String(applied));
@@ -1644,16 +1818,15 @@ rospy<span class="token punctuation">.</span>logerr<span class="token punctuatio
 				function updateReadingUI(value) {
 					if (readingRange) {
 						readingRange.value = String(value);
+						readingRange.setAttribute("aria-valuetext", readingLabel(value) + " reading width, level " + value);
 					}
-					if (readingValueLabel) {
-						readingValueLabel.textContent = "Reading: " + readingLabel(value) + " (" + value + ")";
+				}
+
+				function updateFontSizeUI(value) {
+					if (fontSizeRange) {
+						fontSizeRange.value = String(value);
+						fontSizeRange.setAttribute("aria-valuetext", value + "%");
 					}
-					readingPresets.forEach(function (presetButton) {
-						var presetValue = Number(presetButton.getAttribute("data-reading-preset"));
-						var selected = presetValue === value;
-						presetButton.classList.toggle("is-selected", selected);
-						presetButton.setAttribute("aria-pressed", selected ? "true" : "false");
-					});
 				}
 
 				inputs.forEach(function (input) {
@@ -1677,20 +1850,21 @@ rospy<span class="token punctuation">.</span>logerr<span class="token punctuatio
 					});
 				}
 
+				if (fontSizeRange) {
+					fontSizeRange.addEventListener("change", function () {
+						setFontSize(Number(fontSizeRange.value), true);
+					});
+				}
+
 				if (readingRange) {
 					readingRange.addEventListener("input", function () {
 						setReading(Number(readingRange.value), true);
 					});
 				}
 
-				readingPresets.forEach(function (presetButton) {
-					presetButton.addEventListener("click", function () {
-						setReading(Number(presetButton.getAttribute("data-reading-preset")), true);
-					});
-				});
-
 				var initialPreference = getStoredPreference();
 				setPreference(initialPreference, false);
+				setFontSize(getStoredFontSize(), false);
 				setReading(getStoredReadingValue(), false);
 
 				var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
