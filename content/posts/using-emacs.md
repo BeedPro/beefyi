@@ -1,9 +1,8 @@
 ---
 title: Using GNU Emacs
 description: Using vanilla GNU Emacs with vanilla keybinds
-date: 2025-07-30
-tags: ["tools", "writing"]
-draft: true
+date: 2026-06-08
+tags: ["draft", "tools", "writing"]
 ---
 
 # Why not neovim?
