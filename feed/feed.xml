@@ -5,11 +5,148 @@
   <subtitle>A place to store for all things beed</subtitle>
   <link href="https://blog.beed.org.uk/feed/feed.xml" rel="self" />
   <link href="https://blog.beed.org.uk/" />
-  <updated>2026-03-15T00:00:00Z</updated>
+  <updated>2026-06-08T00:00:00Z</updated>
   <id>https://blog.beed.org.uk/</id>
   <author>
     <name>Beed</name>
   </author>
+  <entry>
+    <title>Using GNU Emacs</title>
+    <link href="https://blog.beed.org.uk/posts/using-emacs/" />
+    <updated>2026-06-08T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/using-emacs/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;why-not-neovim&quot;&gt;Why not neovim?&lt;/h1&gt;
+&lt;p&gt;I do use neovim, I will be sticking to neovim for code production,
+however I recently started to learn some arabic and found that I
+really did need a bidi format. And Emacs solves this for me.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Using Typst locally</title>
+    <link href="https://blog.beed.org.uk/posts/using-typst-for-non-devs/" />
+    <updated>2026-06-07T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/using-typst-for-non-devs/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Typst is a typesetting system. Think LaTeX if you&#39;re a STEM nerd, or Markdown
+if you&#39;re a Discord moderator. Unlike those other markup languages, Typst was
+designed to be easier to write, faster to compile, and more
+beginner-friendly. Technically, Markdown also fits these criteria, except for
+the fact that it does not compile, so we are really comparing Typst with
+LaTeX here.&lt;/p&gt;
+&lt;p&gt;Personally, it&#39;s also a replacement for word processors, with the great feature
+of being plain text. There&#39;s no need for fancy, bloated, and often proprietary
+applications just to read some basic text. Unfortunately, Typst does have its
+own version of this: &lt;a href=&quot;https://typst.app/&quot;&gt;typst.app&lt;/a&gt;. Which as you guessed by
+the link, requires the &lt;strong&gt;INTERNET!&lt;/strong&gt; This is really bad when I want to write my blog&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fn1&quot; id=&quot;fnref1&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;
+under four metres of solid lead, or access my journal up in the clouds&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fn2&quot; id=&quot;fnref2&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;I want a local environment where I can work on my Typst documents, use Git for
+version control, and collaborate with others. For me, this problem is easily
+solved through the use of my favourite text editor, and the only good option,
+Neovim&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fn3&quot; id=&quot;fnref3&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt;. However, Neovim has a learning curve, and most people
+will not go out of their way to learn it. Very sad indeed, since Vim has the
+best motions for writing, whether that is for prose or code.&lt;/p&gt;
+&lt;p&gt;But alas, normies exist in this world, looking at you, writers at GameDev, and
+they would rather stick to their mouse for navigation than learn elite motions.
+Thus, I had to explore solutions for them. I landed on Mueez Khan’s video and
+decided to adapt it into written form.&lt;/p&gt;
+&lt;div style=&quot;text-align: center;&quot;&gt;
+	&lt;iframe src=&quot;https://www.youtube.com/embed/S04WFNtNy7k&quot; title=&quot;Getting started with Typst locally - Typing with Typst&quot; width=&quot;560&quot; height=&quot;315&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen=&quot;&quot;&gt;
+	&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Source video: &lt;a href=&quot;https://www.youtube.com/watch?v=S04WFNtNy7k&quot;&gt;Getting started with Typst locally - Typing with Typst&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;the-bits-you-actually-need&quot;&gt;The bits you actually need&lt;/h2&gt;
+&lt;p&gt;You only need two things:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://vscodium.com/&quot;&gt;VS Codium&lt;/a&gt;, which is the telemetry-free sibling of
+VS Code.&lt;/li&gt;
+&lt;li&gt;The &lt;a href=&quot;https://myriad-dreamin.github.io/tinymist/frontend/vscode.html&quot;&gt;Tiny Mist Typst&lt;/a&gt; extension by Myriad Dream, which gives you syntax
+highlighting and a live preview.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If you already have a preferred editor and know what you are doing, you can
+probably stop reading now. Honesty, I don&#39;t even know why you are reading this&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fn4&quot; id=&quot;fnref4&quot;&gt;[4]&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;step-1-install-vs-codium&quot;&gt;Step 1: Install VS Codium&lt;/h2&gt;
+&lt;p&gt;Head over to &lt;a href=&quot;https://vscodium.com/&quot;&gt;vscodium.com&lt;/a&gt;.&lt;/p&gt;
+&lt;div style=&quot;text-align: center;&quot;&gt;
+	&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/3R6e15M0XX-1028.avif 1028w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/3R6e15M0XX-1028.webp 1028w&quot;&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/3R6e15M0XX-1028.png&quot; alt=&quot;Screenshot of the VSCodium homepage&quot; width=&quot;1028&quot; height=&quot;799&quot;&gt;&lt;/picture&gt;
+&lt;/div&gt;
+&lt;p&gt;From there, you have two sensible options:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Click the giant &lt;strong&gt;Download latest release&lt;/strong&gt; button and grab the installer
+for your operating system and CPU architecture.&lt;/li&gt;
+&lt;li&gt;Use a package manager if that is more your style&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fn5&quot; id=&quot;fnref5&quot;&gt;[5]&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;macOS with Homebrew: &lt;code&gt;brew install --cask vscodium&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Windows with Winget: &lt;code&gt;winget install vscodium&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Windows with Chocolatey: &lt;code&gt;choco install vscodium&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Windows with Scoop: &lt;code&gt;scoop install vscodium&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you are on Windows, make sure you download the right installer. If you are
+on a newer Apple machine, that usually means the ARM build. If you choose the
+wrong one, your computer will not explode, but it will be annoying.&lt;/p&gt;
+&lt;h2 id=&quot;step-2-install-the-tiny-mist-typst-extension&quot;&gt;Step 2: Install the Tiny Mist Typst extension&lt;/h2&gt;
+&lt;p&gt;Open VS Codium, then click the &lt;strong&gt;Extensions&lt;/strong&gt; tab in the left-hand sidebar.
+Search for &lt;code&gt;Tiny Mist Typst&lt;/code&gt; and install the one published by &lt;strong&gt;Myriad Dream&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;If search fails for whatever reason, the extension page is here:
+&lt;a href=&quot;https://open-vsx.org/extension/myriad-dreamin/tinymist&quot;&gt;Tiny Mist Typst on Open VSX&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This extension is the bit that makes the whole thing pleasant. Without it, you
+are basically just staring at raw text and pretending to be productive&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fn6&quot; id=&quot;fnref6&quot;&gt;[6]&lt;/a&gt;&lt;/sup&gt;. It uses
+a standard called LSP (Language Server Protocol) in order to communicate with your
+editor (VSCodium).&lt;/p&gt;
+&lt;h2 id=&quot;step-3-make-a-folder-for-your-typst-files&quot;&gt;Step 3: Make a folder for your Typst files&lt;/h2&gt;
+&lt;p&gt;Click the &lt;strong&gt;Explorer&lt;/strong&gt; tab at the top of the left sidebar and choose &lt;strong&gt;Open
+Folder&lt;/strong&gt;. Pick an existing folder or create one just for your Typst files. A
+name like &lt;code&gt;typst-examples&lt;/code&gt; is perfectly fine. You do not need to overthink this.&lt;/p&gt;
+&lt;p&gt;Once the folder is open, click &lt;strong&gt;New File&lt;/strong&gt; and a file ending in &lt;code&gt;.typ&lt;/code&gt;. For
+example: &lt;code&gt;main.typ&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;step-4-open-the-preview-and-start-typing&quot;&gt;Step 4: Open the preview and start typing&lt;/h2&gt;
+&lt;p&gt;With your new &lt;code&gt;.typ&lt;/code&gt; file open, click the &lt;strong&gt;Typst Preview&lt;/strong&gt; button (it&#39;s the magnifying-glass-style button on the right side or near
+the upper-right corner with a vertical split).&lt;/p&gt;
+&lt;p&gt;That opens a live preview panel beside your editor. As you type, your document
+renders immediately, which is the main reason Typst feels so much less painful
+than LaTeX for normal human beings.&lt;/p&gt;
+&lt;p&gt;Try this:&lt;/p&gt;
+&lt;pre class=&quot;language-typst&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-typst&quot;&gt;I showed you my source code, pls respond&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You should see the rendered output appear on the right almost instantly.&lt;/p&gt;
+&lt;h2 id=&quot;step-5-save-your-work-like-a-responsible-adult&quot;&gt;Step 5: Save your work like a responsible adult&lt;/h2&gt;
+&lt;p&gt;You still need to save the file yourself:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows/Linux: &lt;code&gt;Ctrl + S&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;macOS: &lt;code&gt;Cmd + S&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If there is a little white dot next to the file name, it means the file has
+unsaved changes. When the dot disappears, your work is actually on disk instead
+of living dangerously in RAM.&lt;/p&gt;
+&lt;h2 id=&quot;that-is-basically-it&quot;&gt;That is basically it&lt;/h2&gt;
+&lt;p&gt;At this point you have a local, telemetry-free Typst setup that is much nicer
+than being trapped in a browser tab. You can write documents offline, keep them
+in Git, sync them however you like, and generally behave like someone with good
+taste.&lt;/p&gt;
+&lt;p&gt;If all you wanted was a simple local Typst workflow without touching Neovim,
+this is probably the most painless route.&lt;/p&gt;
+&lt;hr class=&quot;footnotes-sep&quot;&gt;
+&lt;section class=&quot;footnotes&quot;&gt;
+&lt;ol class=&quot;footnotes-list&quot;&gt;
+&lt;li id=&quot;fn1&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fnref1&quot; class=&quot;footnote-backref&quot;&gt;1&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;I don&#39;t use Typst for this blog at all, instead I use Markdown that gets compiled using &lt;a href=&quot;https://www.11ty.dev/&quot;&gt;11ty&lt;/a&gt;!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn2&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fnref2&quot; class=&quot;footnote-backref&quot;&gt;2&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;I meant actual clouds, as in flying. Not the mystery &quot;cloud&quot; these big-tech companies offer.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn3&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fnref3&quot; class=&quot;footnote-backref&quot;&gt;3&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;Yes, I see you &lt;a href=&quot;https://www.gnu.org/software/emacs/&quot;&gt;GNU Emacs&lt;/a&gt; users. Don&#39;t worry, I also use Emacs, so stay tuned for that post.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn4&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fnref4&quot; class=&quot;footnote-backref&quot;&gt;4&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;Hmm, maybe your name is Kutay? If so, thank you for reading. If not, well what&#39;s your name then?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn5&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fnref5&quot; class=&quot;footnote-backref&quot;&gt;5&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;If you know this, why are you here? Regardless thank you for reading my blog.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn6&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/using-typst-for-non-devs/#fnref6&quot; class=&quot;footnote-backref&quot;&gt;6&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;Not true, ask &lt;a href=&quot;https://www.youtube.com/@Tsoding&quot;&gt;rexim&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
   <entry>
     <title>ROS1 Cheatsheet</title>
     <link href="https://blog.beed.org.uk/posts/ros1-cheatsheet/" />
