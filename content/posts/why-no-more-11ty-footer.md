@@ -2,7 +2,7 @@
 title: Why no more 11ty footer?
 description: I moved the Eleventy footer note into About because it looked cleaner
 date: 2026-06-10
-tags: [ "tools", "writing" ]
+tags: [ "announcements", "tools", "writing" ]
 ---
 
 ### Did you stop using Eleventy?
