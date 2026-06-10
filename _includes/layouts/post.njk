@@ -4,21 +4,15 @@ layout: layouts/base.njk
 {# Only include the syntax highlighter CSS on blog posts, included with the CSS per-page bundle #}
 <style>{% include "css/prism-modus.css" %}</style>
 <style>{% include "css/prism-diff.css" %}</style>
-<h1>{{ title }}</h1>
+<h1 class="post-title">{{ title }}</h1>
 
 {%- set postTags = tags | filterTagList %}
-{%- if postTags.length %}
-<ul class="post-title-tags">
-	{%- for tag in postTags %}
-	{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
-	<li><a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a></li>
-	{%- endfor %}
-</ul>
-{%- endif %}
-
 <ul class="post-metadata">
 	<li><time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time></li>
 	<li><span class="post-reading-time">{{ content | readingTime }}</span></li>
+	{%- if postTags.length %}
+	<li class="post-metadata-tags">{%- for tag in postTags %}{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}<a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{%- endfor %}</li>
+	{%- endif %}
 </ul>
 
 {{ content | safe }}
