@@ -22,4 +22,4 @@ npm run build
 ## Documentation
 
 - Local build details: [`BUILD.md`](./BUILD.md)
-- Forgejo Actions deployment: [`FORGEJO_ACTIONS_DEPLOY.md`](./FORGEJO_ACTIONS_DEPLOY.md)
+- Development and manual deployment: [`DEVELOPMENT.md`](./DEVELOPMENT.md)
