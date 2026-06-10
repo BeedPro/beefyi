@@ -32,13 +32,8 @@
 	</url>
 	
 	<url>
-		<loc>https://blog.beed.org.uk/posts/using-typst-for-non-devs/</loc>
+		<loc>https://blog.beed.org.uk/posts/using-typst-locally/</loc>
 		<lastmod>2026-06-07</lastmod>
-	</url>
-	
-	<url>
-		<loc>https://blog.beed.org.uk/posts/using-emacs/</loc>
-		<lastmod>2026-06-08</lastmod>
 	</url>
 	
 	<url>
@@ -67,7 +62,12 @@
 	</url>
 	
 	<url>
+		<loc>https://blog.beed.org.uk/posts/i-use-emacs-btw/</loc>
+		<lastmod>2026-06-10</lastmod>
+	</url>
+	
+	<url>
 		<loc>https://blog.beed.org.uk/feed/feed.xml</loc>
-		<lastmod>2026-06-08</lastmod>
+		<lastmod>2026-06-10</lastmod>
 	</url>
 </urlset>

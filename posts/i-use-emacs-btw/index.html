@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>beefyi</title>
-		<meta name="description" content="A place to store for all things beed">
+		<title>I use Emacs BTW</title>
+		<meta name="description" content="Using vanilla GNU Emacs with vanilla keybinds">
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="beefyi">
 		<link rel="icon" href="/favicon/favicon.ico" sizes="any">
 		
@@ -921,6 +921,278 @@ tbody tr th[data-type="warning"] {
 }
 tbody tr th[data-type="caution"] {
 	border-left: 3px solid var(--color-caution);
+}
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #000000;
+}
+
+pre[class*="language-"] {
+	margin: 0.5em 0;
+	line-height: 1.375;
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	overflow-x: auto;
+}
+
+code[class*="language-"] {
+	word-break: normal;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #ffffff;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #595959;
+}
+
+.token.punctuation {
+	color: #595959;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #a60000;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #006800;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #005e8b;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #721045;
+}
+
+.token.function,
+.token.class-name {
+	color: #0031a9;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #884900;
+}
+
+.token.bold,
+.token.important {
+	font-weight: 700;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) code[class*="language-"],
+	:root:not([data-theme="light"]) pre[class*="language-"] {
+		color: #ffffff;
+	}
+
+	:root:not([data-theme="light"]) :not(pre) > code[class*="language-"],
+	:root:not([data-theme="light"]) pre[class*="language-"] {
+		background: #000000;
+	}
+
+	:root:not([data-theme="light"]) .token.comment,
+	:root:not([data-theme="light"]) .token.prolog,
+	:root:not([data-theme="light"]) .token.doctype,
+	:root:not([data-theme="light"]) .token.cdata {
+		color: #595959;
+	}
+
+	:root:not([data-theme="light"]) .token.punctuation {
+		color: #a6a6a6;
+	}
+
+	:root:not([data-theme="light"]) .token.property,
+	:root:not([data-theme="light"]) .token.tag,
+	:root:not([data-theme="light"]) .token.boolean,
+	:root:not([data-theme="light"]) .token.number,
+	:root:not([data-theme="light"]) .token.constant,
+	:root:not([data-theme="light"]) .token.symbol,
+	:root:not([data-theme="light"]) .token.deleted {
+		color: #ff5f59;
+	}
+
+	:root:not([data-theme="light"]) .token.selector,
+	:root:not([data-theme="light"]) .token.attr-name,
+	:root:not([data-theme="light"]) .token.string,
+	:root:not([data-theme="light"]) .token.char,
+	:root:not([data-theme="light"]) .token.builtin,
+	:root:not([data-theme="light"]) .token.inserted {
+		color: #44bc44;
+	}
+
+	:root:not([data-theme="light"]) .token.operator,
+	:root:not([data-theme="light"]) .token.entity,
+	:root:not([data-theme="light"]) .token.url,
+	:root:not([data-theme="light"]) .language-css .token.string,
+	:root:not([data-theme="light"]) .style .token.string {
+		color: #00d3d0;
+	}
+
+	:root:not([data-theme="light"]) .token.atrule,
+	:root:not([data-theme="light"]) .token.attr-value,
+	:root:not([data-theme="light"]) .token.keyword {
+		color: #feacd0;
+	}
+
+	:root:not([data-theme="light"]) .token.function,
+	:root:not([data-theme="light"]) .token.class-name {
+		color: #2fafff;
+	}
+
+	:root:not([data-theme="light"]) .token.regex,
+	:root:not([data-theme="light"]) .token.important,
+	:root:not([data-theme="light"]) .token.variable {
+		color: #fec43f;
+	}
+}
+
+:root[data-theme="dark"] code[class*="language-"],
+:root[data-theme="dark"] pre[class*="language-"] {
+	color: #ffffff;
+}
+
+:root[data-theme="dark"] :not(pre) > code[class*="language-"],
+:root[data-theme="dark"] pre[class*="language-"] {
+	background: #000000;
+}
+
+:root[data-theme="dark"] .token.comment,
+:root[data-theme="dark"] .token.prolog,
+:root[data-theme="dark"] .token.doctype,
+:root[data-theme="dark"] .token.cdata {
+	color: #595959;
+}
+
+:root[data-theme="dark"] .token.punctuation {
+	color: #a6a6a6;
+}
+
+:root[data-theme="dark"] .token.property,
+:root[data-theme="dark"] .token.tag,
+:root[data-theme="dark"] .token.boolean,
+:root[data-theme="dark"] .token.number,
+:root[data-theme="dark"] .token.constant,
+:root[data-theme="dark"] .token.symbol,
+:root[data-theme="dark"] .token.deleted {
+	color: #ff5f59;
+}
+
+:root[data-theme="dark"] .token.selector,
+:root[data-theme="dark"] .token.attr-name,
+:root[data-theme="dark"] .token.string,
+:root[data-theme="dark"] .token.char,
+:root[data-theme="dark"] .token.builtin,
+:root[data-theme="dark"] .token.inserted {
+	color: #44bc44;
+}
+
+:root[data-theme="dark"] .token.operator,
+:root[data-theme="dark"] .token.entity,
+:root[data-theme="dark"] .token.url,
+:root[data-theme="dark"] .language-css .token.string,
+:root[data-theme="dark"] .style .token.string {
+	color: #00d3d0;
+}
+
+:root[data-theme="dark"] .token.atrule,
+:root[data-theme="dark"] .token.attr-value,
+:root[data-theme="dark"] .token.keyword {
+	color: #feacd0;
+}
+
+:root[data-theme="dark"] .token.function,
+:root[data-theme="dark"] .token.class-name {
+	color: #2fafff;
+}
+
+:root[data-theme="dark"] .token.regex,
+:root[data-theme="dark"] .token.important,
+:root[data-theme="dark"] .token.variable {
+	color: #fec43f;
+}
+/*
+ * New diff- syntax
+ */
+
+pre[class*="language-diff-"] {
+	--eleventy-code-padding: 1.25em;
+	padding-left: var(--eleventy-code-padding);
+	padding-right: var(--eleventy-code-padding);
+}
+.token.deleted {
+	background-color: hsl(0, 51%, 37%);
+	color: inherit;
+}
+.token.inserted {
+	background-color: hsl(126, 31%, 39%);
+	color: inherit;
+}
+
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+	-webkit-user-select: none;
+	user-select: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+.token.prefix.inserted,
+.token.prefix.deleted {
+	width: var(--eleventy-code-padding);
+	background-color: rgba(0,0,0,.2);
+}
+
+/* Optional: full-width background color */
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+	display: block;
+	margin-left: calc(-1 * var(--eleventy-code-padding));
+	margin-right: calc(-1 * var(--eleventy-code-padding));
+	text-decoration: none; /* override del, ins, mark defaults */
+	color: inherit; /* override del, ins, mark defaults */
 }</style>
 		
 	</head>
@@ -936,7 +1208,7 @@ tbody tr th[data-type="caution"] {
 					<li class="nav-item"><a href="/tags/">Tags</a></li>
 					<li class="nav-item"><a href="/about/">About</a></li>
 					<li class="nav-item"><a href="/feed/feed.xml">Feed</a></li>
-					<li class="nav-item"><a href="/settings/" aria-current="page">Settings</a></li>
+					<li class="nav-item"><a href="/settings/">Settings</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -944,55 +1216,133 @@ tbody tr th[data-type="caution"] {
 		<main id="main">
 			<heading-anchors>
 				
-<h1 id="settings">Settings</h1>
 
-<p class="theme-label">Theme mode</p>
-<label class="theme-system-toggle" for="theme-system-toggle">
-	<input id="theme-system-toggle" type="checkbox" name="theme-system-toggle">
-	<span>Use system theme</span>
-</label>
 
-<fieldset class="theme-options" aria-label="Theme mode">
-	<label class="theme-option" for="theme-dark">
-		<input id="theme-dark" type="radio" name="theme-select" value="dark">
-		<span class="theme-preview theme-preview-dark" aria-hidden="true">
-			<span></span><span></span><span></span>
-		</span>
-		<span class="theme-option-title">Dark</span>
-		<span class="theme-option-desc">Always use Modus Vivendi</span>
-	</label>
-	<label class="theme-option" for="theme-light">
-		<input id="theme-light" type="radio" name="theme-select" value="light">
-		<span class="theme-preview theme-preview-light" aria-hidden="true">
-			<span></span><span></span><span></span>
-		</span>
-		<span class="theme-option-title">Light</span>
-		<span class="theme-option-desc">Always use Modus Operandi</span>
-	</label>
-</fieldset>
+<h1 id="i-use-emacs-btw">I use Emacs BTW</h1>
 
-<label class="theme-label" for="font-size-range">Font size</label>
-<section class="font-size-settings" aria-label="Font size settings">
-	<select id="font-size-range" class="font-size-select" name="font-size-range" aria-label="Site font size">
-		<option value="75">75%</option>
-		<option value="100">100%</option>
-		<option value="125">125%</option>
-		<option value="150">150%</option>
-		<option value="175">175%</option>
-		<option value="200">200%</option>
-	</select>
+<ul class="post-metadata">
+	<li><time datetime="2026-06-10">10 June 2026</time></li>
+	<li><span class="post-reading-time">read: 5 minutes, 42 seconds</span></li>
+	<li><a href="/tags/tools/" class="post-tag">tools</a>, </li>
+	<li><a href="/tags/writing/" class="post-tag">writing</a></li>
+</ul>
+
+<h3 id="i-thought-you-used-neovim">I thought you used neovim?</h3>
+<p>Yes, I do use Neovim, and I still intend to use it for all my coding and writing
+that does not involve non-English or non-Latin scripts. I am not abandoning the
+editor just because some UTF-8 font decided to have a nervous breakdown inside
+my terminal. For plain English, code, Markdown, Typst, and anything else that is
+supported, Neovim remains home. I do have some opinions about how computing is
+still painfully Eurocentric, and how we probably need better standards and
+tooling for languages that are not English wearing a fake moustache. But that is
+a political post for another day (don't worry, I am going to write a political
+post at some point in the future, so stay tuned!<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>).</p>
+<p>So the question becomes: what cursed niche problem was powerful enough to make
+me change editors?</p>
+<p>Arabic.</p>
+<p>I am learning Arabic, and because apparently learning vocabulary, grammar, and a
+new writing system was not enough, I also want to learn how to touch-type
+it. Since it is now the 21st century and everything has been reduced to typing
+into glowing rectangles, I figured I should probably learn how to type the
+language properly too.</p>
+<p>To be clear, I still barely know any vocabulary or grammar. This is not me
+claiming fluency. This is me adding another small, consistent habit to the pile,
+because language learning is mostly just doing tiny annoying things every day
+until your brain gives up and accepts them.</p>
+<p>Of course, I can still practise handwriting with good old paper and a nice
+pencil, like a civilised person. But we no longer live in the golden age of
+letters, notebooks, and pretending your handwriting is not slowly becoming worse.
+Most of what I will actually write will probably be typed.</p>
+<p>Unfortunately, Arabic needs proper font support, right-to-left behaviour, and a
+writing environment that does not make me want to debug my terminal for three
+hours. Which means I needed something with a GUI.</p>
+<p>Tragic, I know.</p>
+<h3 id="then-why-not-insert-name-editor">Then, why not [INSERT-NAME] editor?</h3>
+<p>The answer is simple: I need FLOSS<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> software, good keybindings, and
+proper customisability.</p>
+<p>The FLOSS part matters because I do not want my writing environment to be
+someone else's product strategy. I want software I can inspect, modify, share,
+and keep using without wondering when a company will decide that basic text
+editing now requires an account, telemetry, AI credits, or a monthly
+subscription called "Writer Pro Ultra Plus".</p>
+<p>The keybindings matter because I do not want to learn a completely isolated
+system that only works inside one application. I want bindings that are
+well-established, widely supported, and useful in other editors or environments.
+The whole point is to build muscle memory that travels well, not trap myself in
+a bespoke keyboard dungeon.</p>
+<p>And then there is customisability, which is where Emacs starts looking less like
+a weird old editor and more like a suspiciously powerful text-shaped operating
+system. I can change the behaviour, the fonts, the layout, the modes, the
+bindings, and all the tiny annoying details that usually make me abandon a tool
+after twenty minutes.</p>
+<p>So no, this is not about finding the prettiest editor, the newest editor, or the
+one with the cleanest landing page and the most tastefully animated screenshots.
+I need something free, open, keyboard-friendly, and deeply customisable.</p>
+<p>Unfortunately for everyone involved, that points rather directly at Emacs.</p>
+<h3 id="anything-else">Anything else?</h3>
+<p>Emacs is a very large rabbit hole. Not a cute little rabbit hole either. This is
+one of those suspicious holes in the ground with stairs, wiring, a mailing list,
+and someone at the bottom explaining why their configuration is actually a
+personal computing environment.</p>
+<p>But I am not trying to learn all of Emacs at once, because I still value the
+small amount of peace I have left. Emacs can be an editor, a file manager, a Git
+client, an email client, a terminal, a calendar, an IRC client, and probably a
+toaster if someone has written enough Elisp. That is far too much power to hand
+to a person who only wanted Arabic font rendering.</p>
+<p>So the particular hole I have chosen is writing and notes. That is the part of
+Emacs that actually interests me right now: prose, journalling, study notes,
+language practice, and anything else that benefits from being plain text but
+slightly more organised than a folder full of files called <code>notes-final-2.txt</code>.</p>
+<p>And once you start talking about writing and notes in Emacs, there is one thing
+you cannot avoid.</p>
+<p>Org mode.</p>
+<p>Org mode is the part of Emacs that everyone brings up with the same energy as a
+person trying to get you into a cult, except annoyingly, they may have a point.
+It is used for notes, outlines, TODO lists, documents, agendas, literate
+programming, exporting, planning, journalling, and probably remembering where you
+left your keys.</p>
+<p>For my use case, the appeal is simple: I want plain-text notes that can grow
+with me. Something simple enough for quick Arabic practice, but powerful enough
+that I can later organise lessons, vocabulary, grammar notes, writing exercises,
+blog ideas, and whatever other nonsense I convince myself is productivity.</p>
+<p>I am not going to fully explain Org mode here, because that deserves its own
+post, and because any attempt to explain Org mode briefly is how you accidentally
+write a book. I will probably make a separate post about how I use it for notes,
+writing, language learning, and pretending my life is more organised than it
+actually is.</p>
+<h3 id="vanilla-keybinds">Vanilla keybinds???</h3>
+<p>Yes, I use the vanilla keybindings. No Evil mode, no Vim emulation, no attempt
+to turn Emacs into Neovim wearing a trench coat. Just normal, traditional,
+pinkie-threatening Emacs bindings, as the elders intended.</p>
+<p>There is a reason for this beyond self-inflicted suffering. Emacs-style
+keybindings show up in more places than people realise. You can find them in
+terminals, shells, readline-based prompts, minibuffers, text fields, and random
+programs that quietly decided <code>C-a</code> and <code>C-e</code> were good ideas. Learning the
+default bindings means the muscle memory is not trapped inside one editor. It
+travels.</p>
+<p>Also, it is not quite as painful as it sounds. I use home-row mods and a split
+keyboard<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>, so pressing <code>Control</code> and <code>Meta</code> is not the same
+hand-contorting ritual it would be on a normal keyboard made by someone who
+apparently hates fingers. My layout does a lot of the ergonomic heavy lifting,
+which makes vanilla Emacs bindings feel much more reasonable.</p>
+<p>So yes, I am using the default bindings on purpose. Partly for portability,
+partly for consistency, and partly because once your keyboard is weird enough,
+Emacs starts seeming normal.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><span class="footnote-label"><a href="#fnref1" class="footnote-backref">1</a>.</span> <p>Not into politics? congratulations, that is politics.</p>
+</li>
+<li id="fn2" class="footnote-item"><span class="footnote-label"><a href="#fnref2" class="footnote-backref">2</a>.</span> <p>Free, Libre and Open Source Software.</p>
+</li>
+<li id="fn3" class="footnote-item"><span class="footnote-label"><a href="#fnref3" class="footnote-backref">3</a>.</span> <p>No, I did not literally cut my keyboard in half. I will
+write more about my hardware setup later.</p>
+</li>
+</ol>
 </section>
 
-<label class="theme-label" for="reading-range">Reading Width</label>
-<section class="reading-settings" aria-label="Reading width settings">
-	<input id="reading-range" class="reading-range" type="range" min="0" max="100" step="1" value="50" aria-label="Reading width level">
-	<div class="reading-scale" aria-hidden="true">
-		<span>Compact</span>
-		<span>Balanced</span>
-		<span>Comfort</span>
-	</div>
-</section>
-
+<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/posts/using-typst-locally/">Using Typst locally</a></li>
+</ul>
 
 			</heading-anchors>
 		</main>
@@ -1003,7 +1353,7 @@ tbody tr th[data-type="caution"] {
 			</p>
 		</footer>
 
-		<!-- This page `/settings/` was built on 2026-06-10T20:25:30.087Z -->
+		<!-- This page `/posts/i-use-emacs-btw/` was built on 2026-06-10T20:25:30.086Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";

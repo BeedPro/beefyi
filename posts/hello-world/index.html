@@ -764,6 +764,17 @@ header nav {
 .post-metadata time {
 	margin-left: auto;
 }
+.post-reading-time {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.15rem 0.45rem;
+	border: 1px solid currentColor;
+	background: var(--color-surface);
+	font-size: 0.85em;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	box-shadow: 2px 2px 0 currentColor;
+}
 
 /* Base Alert Style */
 .markdown-alert {
@@ -1211,6 +1222,7 @@ pre[class*="language-diff-"] {
 
 <ul class="post-metadata">
 	<li><time datetime="2025-07-30">30 July 2025</time></li>
+	<li><span class="post-reading-time">read: 14 seconds</span></li>
 	<li><a href="/tags/announcements/" class="post-tag">announcements</a></li>
 </ul>
 
@@ -1228,7 +1240,7 @@ pre[class*="language-diff-"] {
 			</p>
 		</footer>
 
-		<!-- This page `/posts/hello-world/` was built on 2026-06-08T00:31:44.958Z -->
+		<!-- This page `/posts/hello-world/` was built on 2026-06-10T20:25:30.086Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";
