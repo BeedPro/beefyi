@@ -343,7 +343,7 @@ a[href]:active {
 
 main,
 footer {
-	padding: 1rem;
+	padding: 1rem 0;
 }
 main :first-child {
 	margin-top: 0;
@@ -434,7 +434,7 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	gap: 1rem;
-	padding: 1em;
+	padding: 1rem 0;
 }
 .home-link {
 	font-size: 1em; /* 16px /16 */
@@ -751,29 +751,43 @@ header nav {
 .postlist-item > .post-tag {
 	align-self: center;
 }
+.post-title {
+	margin: 0;
+}
 
 /* Tags list */
 .post-metadata {
-	display: inline-flex;
+	display: flex;
 	flex-wrap: wrap;
-	gap: 0.5em;
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	font-size: 0.95rem;
+	color: color-mix(in srgb, var(--text-color) 72%, transparent);
 }
-.post-metadata time {
-	margin-left: auto;
-}
-.post-reading-time {
+.post-metadata li {
 	display: inline-flex;
 	align-items: center;
-	padding: 0.15rem 0.45rem;
-	border: 1px solid currentColor;
-	background: var(--color-surface);
-	font-size: 0.85em;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
-	box-shadow: 2px 2px 0 currentColor;
+}
+.post-metadata li + li {
+	margin-left: 0.5em;
+}
+.post-reading-time {
+	font-size: 0.95em;
+}
+
+.post-metadata-tags {
+	margin-top: 0.2rem;
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag {
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag::before {
+	content: "#";
+}
+.post-metadata-tags .post-tag + .post-tag {
+	margin-left: 0.35em;
 }
 
 /* Base Alert Style */
@@ -1218,13 +1232,12 @@ pre[class*="language-diff-"] {
 				
 
 
-<h1 id="hello-world">Hello World!</h1>
-
+<h1 class="post-title" id="hello-world">Hello World!</h1>
 <ul class="post-metadata">
 	<li><time datetime="2025-07-30">30 July 2025</time></li>
-	<li><span class="post-reading-time">read: 14 seconds</span></li>
-	<li><a href="/tags/announcements/" class="post-tag">announcements</a></li>
+	<li><span class="post-reading-time">(1 min read)</span></li>
 </ul>
+<div class="post-metadata-tags"><a href="/tags/announcements/" class="post-tag">announcements</a></div>
 
 <p>Welcome to my blog! This is my first post, so there's not a whole lot here just yet - but hopefully that'll change soon. Feel free to check out the <a href="/about/">about</a> page to find out a bit more about me and what this blog's all about.</p>
 
@@ -1234,13 +1247,7 @@ pre[class*="language-diff-"] {
 			</heading-anchors>
 		</main>
 
-		<footer>
-			<p>
-				<em>Built with <a href="https://www.11ty.dev/">Eleventy v3.1.2</a></em>
-			</p>
-		</footer>
-
-		<!-- This page `/posts/hello-world/` was built on 2026-06-10T20:25:30.086Z -->
+		<!-- This page `/posts/hello-world/` was built on 2026-06-10T21:11:49.264Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";

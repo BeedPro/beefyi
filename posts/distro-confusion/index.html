@@ -343,7 +343,7 @@ a[href]:active {
 
 main,
 footer {
-	padding: 1rem;
+	padding: 1rem 0;
 }
 main :first-child {
 	margin-top: 0;
@@ -434,7 +434,7 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	gap: 1rem;
-	padding: 1em;
+	padding: 1rem 0;
 }
 .home-link {
 	font-size: 1em; /* 16px /16 */
@@ -751,29 +751,43 @@ header nav {
 .postlist-item > .post-tag {
 	align-self: center;
 }
+.post-title {
+	margin: 0;
+}
 
 /* Tags list */
 .post-metadata {
-	display: inline-flex;
+	display: flex;
 	flex-wrap: wrap;
-	gap: 0.5em;
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	font-size: 0.95rem;
+	color: color-mix(in srgb, var(--text-color) 72%, transparent);
 }
-.post-metadata time {
-	margin-left: auto;
-}
-.post-reading-time {
+.post-metadata li {
 	display: inline-flex;
 	align-items: center;
-	padding: 0.15rem 0.45rem;
-	border: 1px solid currentColor;
-	background: var(--color-surface);
-	font-size: 0.85em;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
-	box-shadow: 2px 2px 0 currentColor;
+}
+.post-metadata li + li {
+	margin-left: 0.5em;
+}
+.post-reading-time {
+	font-size: 0.95em;
+}
+
+.post-metadata-tags {
+	margin-top: 0.2rem;
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag {
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag::before {
+	content: "#";
+}
+.post-metadata-tags .post-tag + .post-tag {
+	margin-left: 0.35em;
 }
 
 /* Base Alert Style */
@@ -1218,14 +1232,12 @@ pre[class*="language-diff-"] {
 				
 
 
-<h1 id="distro-confusion-the-only-3-linux-distros-that-matter">Distro Confusion? The Only 3 Linux Distros That Matter</h1>
-
+<h1 class="post-title" id="distro-confusion-the-only-3-linux-distros-that-matter">Distro Confusion? The Only 3 Linux Distros That Matter</h1>
 <ul class="post-metadata">
 	<li><time datetime="2025-08-18">18 August 2025</time></li>
-	<li><span class="post-reading-time">read: 9 minutes, 1 second</span></li>
-	<li><a href="/tags/linux/" class="post-tag">linux</a>, </li>
-	<li><a href="/tags/guides/" class="post-tag">guides</a></li>
+	<li><span class="post-reading-time">(10 min read)</span></li>
 </ul>
+<div class="post-metadata-tags"><a href="/tags/linux/" class="post-tag">linux</a><a href="/tags/guides/" class="post-tag">guides</a></div>
 
 <p>Linux comes in countless flavours, known as distributions (or distros for short). At its core, Linux is just the kernel - the low-level program that manages hardware and system resources. What most people call "Linux" is technically GNU/Linux: the kernel combined with the GNU project's free software tools that make it a complete operating system. In everyday conversation though, we simply call it Linux.</p>
 <p>As you probably quickly find out, Linux comes in many different distros. But what does a distro get you? A distro is essentially a premade bundle built around the Linux kernel, but it doesn't stop there. It also includes the software that makes your computer actually usable: essential tools and libraries that let programmes run, a package manager, a desktop environment that gives your system its look and feel, are pre-installed to get you started. On top of that, each distro comes with its own community and support network to help in the event of something going wrong, and yes something <strong>will</strong> go wrong. In short, a distro is the complete operating system you can install, run, and enjoy.</p>
@@ -1268,13 +1280,7 @@ pre[class*="language-diff-"] {
 			</heading-anchors>
 		</main>
 
-		<footer>
-			<p>
-				<em>Built with <a href="https://www.11ty.dev/">Eleventy v3.1.2</a></em>
-			</p>
-		</footer>
-
-		<!-- This page `/posts/distro-confusion/` was built on 2026-06-10T20:25:30.086Z -->
+		<!-- This page `/posts/distro-confusion/` was built on 2026-06-10T21:11:49.264Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";

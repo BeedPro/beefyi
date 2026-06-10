@@ -343,7 +343,7 @@ a[href]:active {
 
 main,
 footer {
-	padding: 1rem;
+	padding: 1rem 0;
 }
 main :first-child {
 	margin-top: 0;
@@ -434,7 +434,7 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	gap: 1rem;
-	padding: 1em;
+	padding: 1rem 0;
 }
 .home-link {
 	font-size: 1em; /* 16px /16 */
@@ -751,29 +751,43 @@ header nav {
 .postlist-item > .post-tag {
 	align-self: center;
 }
+.post-title {
+	margin: 0;
+}
 
 /* Tags list */
 .post-metadata {
-	display: inline-flex;
+	display: flex;
 	flex-wrap: wrap;
-	gap: 0.5em;
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	font-size: 0.95rem;
+	color: color-mix(in srgb, var(--text-color) 72%, transparent);
 }
-.post-metadata time {
-	margin-left: auto;
-}
-.post-reading-time {
+.post-metadata li {
 	display: inline-flex;
 	align-items: center;
-	padding: 0.15rem 0.45rem;
-	border: 1px solid currentColor;
-	background: var(--color-surface);
-	font-size: 0.85em;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
-	box-shadow: 2px 2px 0 currentColor;
+}
+.post-metadata li + li {
+	margin-left: 0.5em;
+}
+.post-reading-time {
+	font-size: 0.95em;
+}
+
+.post-metadata-tags {
+	margin-top: 0.2rem;
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag {
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag::before {
+	content: "#";
+}
+.post-metadata-tags .post-tag + .post-tag {
+	margin-left: 0.35em;
 }
 
 /* Base Alert Style */
@@ -947,7 +961,11 @@ tbody tr th[data-type="caution"] {
 <h1 id="tagged-tools">Tagged “tools”</h1>
 
 
-<ol reversed="" class="postlist" style="--postlist-index: 3">
+<ol reversed="" class="postlist" style="--postlist-index: 4">
+	<li class="postlist-item">
+		<a href="/posts/why-no-more-11ty-footer/" class="postlist-link">Why no more 11ty footer?</a>
+		<time class="postlist-date" datetime="2026-06-10">June 2026</time>
+	</li>
 	<li class="postlist-item">
 		<a href="/posts/i-use-emacs-btw/" class="postlist-link">I use Emacs BTW</a>
 		<time class="postlist-date" datetime="2026-06-10">June 2026</time>
@@ -965,13 +983,7 @@ tbody tr th[data-type="caution"] {
 			</heading-anchors>
 		</main>
 
-		<footer>
-			<p>
-				<em>Built with <a href="https://www.11ty.dev/">Eleventy v3.1.2</a></em>
-			</p>
-		</footer>
-
-		<!-- This page `/tags/tools/` was built on 2026-06-10T20:25:30.169Z -->
+		<!-- This page `/tags/tools/` was built on 2026-06-10T21:11:49.364Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";

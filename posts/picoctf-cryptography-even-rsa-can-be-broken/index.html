@@ -343,7 +343,7 @@ a[href]:active {
 
 main,
 footer {
-	padding: 1rem;
+	padding: 1rem 0;
 }
 main :first-child {
 	margin-top: 0;
@@ -434,7 +434,7 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	gap: 1rem;
-	padding: 1em;
+	padding: 1rem 0;
 }
 .home-link {
 	font-size: 1em; /* 16px /16 */
@@ -751,29 +751,43 @@ header nav {
 .postlist-item > .post-tag {
 	align-self: center;
 }
+.post-title {
+	margin: 0;
+}
 
 /* Tags list */
 .post-metadata {
-	display: inline-flex;
+	display: flex;
 	flex-wrap: wrap;
-	gap: 0.5em;
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	font-size: 0.95rem;
+	color: color-mix(in srgb, var(--text-color) 72%, transparent);
 }
-.post-metadata time {
-	margin-left: auto;
-}
-.post-reading-time {
+.post-metadata li {
 	display: inline-flex;
 	align-items: center;
-	padding: 0.15rem 0.45rem;
-	border: 1px solid currentColor;
-	background: var(--color-surface);
-	font-size: 0.85em;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
-	box-shadow: 2px 2px 0 currentColor;
+}
+.post-metadata li + li {
+	margin-left: 0.5em;
+}
+.post-reading-time {
+	font-size: 0.95em;
+}
+
+.post-metadata-tags {
+	margin-top: 0.2rem;
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag {
+	color: var(--text-color-link);
+}
+.post-metadata-tags .post-tag::before {
+	content: "#";
+}
+.post-metadata-tags .post-tag + .post-tag {
+	margin-left: 0.35em;
 }
 
 /* Base Alert Style */
@@ -1356,14 +1370,12 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 				
 
 
-<h1 id="picoctf-cryptography-even-rsa-can-be-broken">picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</h1>
-
+<h1 class="post-title" id="picoctf-cryptography-even-rsa-can-be-broken">picoCTF - Cryptography | EVEN RSA CAN BE BROKEN???</h1>
 <ul class="post-metadata">
 	<li><time datetime="2025-08-31">31 August 2025</time></li>
-	<li><span class="post-reading-time">read: 1 minute, 39 seconds</span></li>
-	<li><a href="/tags/security/" class="post-tag">security</a>, </li>
-	<li><a href="/tags/programming/" class="post-tag">programming</a></li>
+	<li><span class="post-reading-time">(2 min read)</span></li>
 </ul>
+<div class="post-metadata-tags"><a href="/tags/security/" class="post-tag">security</a><a href="/tags/programming/" class="post-tag">programming</a></div>
 
 <p>Picking up from the last blog, I had a go at the <a href="https://play.picoctf.org/practice/challenge/470?category=2&amp;difficulty=1&amp;page=1">EVEN RSA CAN BE BROKEN??</a> cryptography challenge. To be honest, it felt more like an exercise in RSA than a proper puzzle, but it's a good way to dip your toes into crypto. Think of RSA as the "hello world" of cryptography - simple, classic, and a solid starting point. The challenge kicks off by asking us to connect via netcat, where we're handed an encrypted message <code>c</code>, and its public key <code>(N, e)</code>.</p>
 <pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token operator">&gt;</span> <span class="token function">nc</span> verbal-sleep.picoctf.net <span class="token number">56957</span>
@@ -1402,13 +1414,7 @@ pt_bytes <span class="token operator">=</span> m<span class="token punctuation">
 			</heading-anchors>
 		</main>
 
-		<footer>
-			<p>
-				<em>Built with <a href="https://www.11ty.dev/">Eleventy v3.1.2</a></em>
-			</p>
-		</footer>
-
-		<!-- This page `/posts/picoctf-cryptography-even-rsa-can-be-broken/` was built on 2026-06-10T20:25:30.086Z -->
+		<!-- This page `/posts/picoctf-cryptography-even-rsa-can-be-broken/` was built on 2026-06-10T21:11:49.264Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";

@@ -11,6 +11,38 @@
     <name>Beed</name>
   </author>
   <entry>
+    <title>Why no more 11ty footer?</title>
+    <link href="https://blog.beed.org.uk/posts/why-no-more-11ty-footer/" />
+    <updated>2026-06-10T00:00:00Z</updated>
+    <id>https://blog.beed.org.uk/posts/why-no-more-11ty-footer/</id>
+    <content type="html">
+&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h3 id=&quot;did-you-stop-using-eleventy&quot;&gt;Did you stop using Eleventy?&lt;/h3&gt;
+&lt;p&gt;No.&lt;/p&gt;
+&lt;p&gt;I am still using 11ty, and as of writing this, I am still using Eleventy v3.1.2
+and the site is being built by it. This is not a dramatic breakup post. There
+was no betrayal, no late night migration to some artisanal static site
+generator written by a sleep deprived wizard in a cave.&lt;/p&gt;
+&lt;p&gt;So if you noticed that the little &quot;Built with Eleventy&quot; line disappeared from
+the footer, the answer is not &quot;because I abandoned 11ty&quot;.&lt;/p&gt;
+&lt;p&gt;It is because I thought it looked cleaner without it.&lt;/p&gt;
+&lt;h3 id=&quot;so-where-did-the-eleventy-note-go&quot;&gt;So where did the Eleventy note go?&lt;/h3&gt;
+&lt;p&gt;I moved it into the &lt;a href=&quot;https://blog.beed.org.uk/about/&quot;&gt;About page&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;That felt like the most reasonable place for it. The About page is already the
+section where I explain what this site is, why it exists, and what I am doing
+with it. Mentioning the tooling there makes more sense than attaching the same
+badge-like sentence to every single page forever.&lt;/p&gt;
+&lt;h3 id=&quot;why-even-mention-this-at-all&quot;&gt;Why even mention this at all?&lt;/h3&gt;
+&lt;p&gt;Because if I quietly remove a small visible detail from a website, there is a
+non-zero chance that future me will look at it in six months and wonder whether
+I did that on purpose or whether I accidentally deleted it.&lt;/p&gt;
+&lt;p&gt;Also, I think tiny design decisions are interesting. Not because every one of
+them is profound, but because personal sites are made out of lots of little
+choices that are too small to justify a manifesto and too deliberate to be
+entirely random.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;
+</content>
+  </entry>
+  <entry>
     <title>I use Emacs BTW</title>
     <link href="https://blog.beed.org.uk/posts/i-use-emacs-btw/" />
     <updated>2026-06-10T00:00:00Z</updated>
