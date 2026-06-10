@@ -139,5 +139,5 @@ Emacs starts seeming normal.
 
 [^not-into-politics]: Not into politics? congratulations, that is politics.
 [^whats-FLOSS]: Free, Libre and Open Source Software.
-[^cutting-keyboards]: No, I did not cut my keyboard in half. I will show you
-    about my hardware setup later ;)
+[^cutting-keyboards]: No, I did not literally cut my keyboard in half. I will
+    write more about my hardware setup later.
