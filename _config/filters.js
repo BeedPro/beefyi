@@ -1,5 +1,24 @@
 import { DateTime } from "luxon";
 
+function formatReadingTime(totalMinutes) {
+	return `${totalMinutes} min read`;
+}
+
+function stripCodeBlocksAndHtml(html) {
+	return (html || "")
+		.replace(/<pre\b[^>]*>[\s\S]*?<\/pre>/gi, " ")
+		.replace(/<code\b[^>]*>[\s\S]*?<\/code>/gi, " ")
+		.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+		.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+		.replace(/<!--([\s\S]*?)-->/g, " ")
+		.replace(/<[^>]+>/g, " ")
+		.replace(/&nbsp;/gi, " ")
+		.replace(/&#160;/gi, " ")
+		.replace(/&[a-z0-9#]+;/gi, " ")
+		.replace(/\s+/g, " ")
+		.trim();
+}
+
 export default function(eleventyConfig) {
 	eleventyConfig.addFilter("readableDate", (dateObj, format, zone) => {
 		// Formatting tokens for Luxon: https://moment.github.io/luxon/#/formatting?id=table-of-tokens
@@ -40,4 +59,17 @@ export default function(eleventyConfig) {
 	eleventyConfig.addFilter("sortAlphabetically", strings =>
 		(strings || []).sort((b, a) => b.localeCompare(a))
 	);
+
+	eleventyConfig.addFilter("readingTime", html => {
+		const text = stripCodeBlocksAndHtml(html);
+
+		if(!text) {
+			return formatReadingTime(1);
+		}
+
+		const words = text.split(/\s+/).filter(Boolean).length;
+		const totalMinutes = Math.max(1, Math.ceil(words / 200));
+
+		return formatReadingTime(totalMinutes);
+	});
 };

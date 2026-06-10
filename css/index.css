@@ -656,18 +656,53 @@ header nav {
 .postlist-item > .post-tag {
 	align-self: center;
 }
+.post-title-tags {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	padding: 0;
+	margin: -0.4rem 0 0.5rem;
+	font-size: 0.95rem;
+}
+.post-title-tags .post-tag {
+	color: var(--text-color-link);
+}
+.post-title-tags li {
+	display: inline-flex;
+	align-items: center;
+	margin-right: 0.5em;
+}
+.post-title-tags li + li::before {
+	content: "\00b7";
+	margin-right: 0.5em;
+	color: color-mix(in srgb, var(--text-color) 45%, transparent);
+}
 
 /* Tags list */
 .post-metadata {
-	display: inline-flex;
+	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5em;
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	font-size: 0.95rem;
+	color: color-mix(in srgb, var(--text-color) 72%, transparent);
 }
-.post-metadata time {
-	margin-left: auto;
+.post-metadata li {
+	display: inline-flex;
+	align-items: center;
+}
+.post-metadata li + li::before {
+	content: "\00b7";
+	margin-right: 0.5em;
+	color: color-mix(in srgb, var(--text-color) 45%, transparent);
+}
+.post-reading-time {
+	font-size: 0.95em;
+}
+.post-metadata .post-tag {
+	color: inherit;
 }
 
 /* Base Alert Style */
