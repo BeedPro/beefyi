@@ -674,32 +674,25 @@ header nav {
 	display: inline-flex;
 	align-items: center;
 }
-.post-metadata li + li::before {
-	content: "\00b7";
-	margin-right: 0.5em;
-	color: color-mix(in srgb, var(--text-color) 45%, transparent);
+.post-metadata li + li {
+	margin-left: 0.5em;
 }
 .post-reading-time {
 	font-size: 0.95em;
 }
-.post-metadata .post-metadata-tags {
-	margin-left: auto;
-	gap: 0;
-}
-.post-metadata li + .post-metadata-tags::before {
-	content: " :";
-	margin-right: 0;
+
+.post-metadata-tags {
+	margin-top: 0.2rem;
 	color: var(--text-color-link);
 }
-.post-metadata .post-metadata-tags::before {
-	content: none;
+.post-metadata-tags .post-tag {
 	color: var(--text-color-link);
 }
-.post-metadata .post-metadata-tags .post-tag::after {
-	content: ":";
+.post-metadata-tags .post-tag::before {
+	content: "#";
 }
-.post-metadata .post-metadata-tags .post-tag {
-	color: var(--text-color-link);
+.post-metadata-tags .post-tag + .post-tag {
+	margin-left: 0.35em;
 }
 
 /* Base Alert Style */

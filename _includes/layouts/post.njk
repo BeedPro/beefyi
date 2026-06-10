@@ -9,11 +9,12 @@ layout: layouts/base.njk
 {%- set postTags = tags | filterTagList %}
 <ul class="post-metadata">
 	<li><time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time></li>
-	<li><span class="post-reading-time">{{ content | readingTime }}</span></li>
-	{%- if postTags.length %}
-	<li class="post-metadata-tags">{%- for tag in postTags %}{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}<a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{%- endfor %}</li>
-	{%- endif %}
+	<li><span class="post-reading-time">({{ content | readingTime }})</span></li>
 </ul>
+
+{%- if postTags.length %}
+<div class="post-metadata-tags">{%- for tag in postTags %}{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}<a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{%- endfor %}</div>
+{%- endif %}
 
 {{ content | safe }}
 
