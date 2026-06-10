@@ -13,4 +13,6 @@ So my main goal with beefyi is to be my own corner of the internet: a place to s
 
 I'm still quite new to blogging, but I hope you’ll find something here worth reading.
 
+This site is built with [Eleventy](https://www.11ty.dev/).
+
 Thanks for stopping by!

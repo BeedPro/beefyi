@@ -248,7 +248,7 @@ a[href]:active {
 
 main,
 footer {
-	padding: 1rem;
+	padding: 1rem 0;
 }
 main :first-child {
 	margin-top: 0;
@@ -339,7 +339,7 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	gap: 1rem;
-	padding: 1em;
+	padding: 1rem 0;
 }
 .home-link {
 	font-size: 1em; /* 16px /16 */
