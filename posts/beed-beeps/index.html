@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Tagged &#39;guides&#39;</title>
-		<meta name="description" content="A place to store for all things beed">
+		<title>Beed Beeps</title>
+		<meta name="description" content="Short posts now have a proper home, called Beeps">
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="beefyi">
 		<link rel="icon" href="/favicon/favicon.ico" sizes="any">
 		
@@ -935,6 +935,278 @@ tbody tr th[data-type="warning"] {
 }
 tbody tr th[data-type="caution"] {
 	border-left: 3px solid var(--color-caution);
+}
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #000000;
+}
+
+pre[class*="language-"] {
+	margin: 0.5em 0;
+	line-height: 1.375;
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	overflow-x: auto;
+}
+
+code[class*="language-"] {
+	word-break: normal;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #ffffff;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #595959;
+}
+
+.token.punctuation {
+	color: #595959;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #a60000;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #006800;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #005e8b;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #721045;
+}
+
+.token.function,
+.token.class-name {
+	color: #0031a9;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #884900;
+}
+
+.token.bold,
+.token.important {
+	font-weight: 700;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) code[class*="language-"],
+	:root:not([data-theme="light"]) pre[class*="language-"] {
+		color: #ffffff;
+	}
+
+	:root:not([data-theme="light"]) :not(pre) > code[class*="language-"],
+	:root:not([data-theme="light"]) pre[class*="language-"] {
+		background: #000000;
+	}
+
+	:root:not([data-theme="light"]) .token.comment,
+	:root:not([data-theme="light"]) .token.prolog,
+	:root:not([data-theme="light"]) .token.doctype,
+	:root:not([data-theme="light"]) .token.cdata {
+		color: #595959;
+	}
+
+	:root:not([data-theme="light"]) .token.punctuation {
+		color: #a6a6a6;
+	}
+
+	:root:not([data-theme="light"]) .token.property,
+	:root:not([data-theme="light"]) .token.tag,
+	:root:not([data-theme="light"]) .token.boolean,
+	:root:not([data-theme="light"]) .token.number,
+	:root:not([data-theme="light"]) .token.constant,
+	:root:not([data-theme="light"]) .token.symbol,
+	:root:not([data-theme="light"]) .token.deleted {
+		color: #ff5f59;
+	}
+
+	:root:not([data-theme="light"]) .token.selector,
+	:root:not([data-theme="light"]) .token.attr-name,
+	:root:not([data-theme="light"]) .token.string,
+	:root:not([data-theme="light"]) .token.char,
+	:root:not([data-theme="light"]) .token.builtin,
+	:root:not([data-theme="light"]) .token.inserted {
+		color: #44bc44;
+	}
+
+	:root:not([data-theme="light"]) .token.operator,
+	:root:not([data-theme="light"]) .token.entity,
+	:root:not([data-theme="light"]) .token.url,
+	:root:not([data-theme="light"]) .language-css .token.string,
+	:root:not([data-theme="light"]) .style .token.string {
+		color: #00d3d0;
+	}
+
+	:root:not([data-theme="light"]) .token.atrule,
+	:root:not([data-theme="light"]) .token.attr-value,
+	:root:not([data-theme="light"]) .token.keyword {
+		color: #feacd0;
+	}
+
+	:root:not([data-theme="light"]) .token.function,
+	:root:not([data-theme="light"]) .token.class-name {
+		color: #2fafff;
+	}
+
+	:root:not([data-theme="light"]) .token.regex,
+	:root:not([data-theme="light"]) .token.important,
+	:root:not([data-theme="light"]) .token.variable {
+		color: #fec43f;
+	}
+}
+
+:root[data-theme="dark"] code[class*="language-"],
+:root[data-theme="dark"] pre[class*="language-"] {
+	color: #ffffff;
+}
+
+:root[data-theme="dark"] :not(pre) > code[class*="language-"],
+:root[data-theme="dark"] pre[class*="language-"] {
+	background: #000000;
+}
+
+:root[data-theme="dark"] .token.comment,
+:root[data-theme="dark"] .token.prolog,
+:root[data-theme="dark"] .token.doctype,
+:root[data-theme="dark"] .token.cdata {
+	color: #595959;
+}
+
+:root[data-theme="dark"] .token.punctuation {
+	color: #a6a6a6;
+}
+
+:root[data-theme="dark"] .token.property,
+:root[data-theme="dark"] .token.tag,
+:root[data-theme="dark"] .token.boolean,
+:root[data-theme="dark"] .token.number,
+:root[data-theme="dark"] .token.constant,
+:root[data-theme="dark"] .token.symbol,
+:root[data-theme="dark"] .token.deleted {
+	color: #ff5f59;
+}
+
+:root[data-theme="dark"] .token.selector,
+:root[data-theme="dark"] .token.attr-name,
+:root[data-theme="dark"] .token.string,
+:root[data-theme="dark"] .token.char,
+:root[data-theme="dark"] .token.builtin,
+:root[data-theme="dark"] .token.inserted {
+	color: #44bc44;
+}
+
+:root[data-theme="dark"] .token.operator,
+:root[data-theme="dark"] .token.entity,
+:root[data-theme="dark"] .token.url,
+:root[data-theme="dark"] .language-css .token.string,
+:root[data-theme="dark"] .style .token.string {
+	color: #00d3d0;
+}
+
+:root[data-theme="dark"] .token.atrule,
+:root[data-theme="dark"] .token.attr-value,
+:root[data-theme="dark"] .token.keyword {
+	color: #feacd0;
+}
+
+:root[data-theme="dark"] .token.function,
+:root[data-theme="dark"] .token.class-name {
+	color: #2fafff;
+}
+
+:root[data-theme="dark"] .token.regex,
+:root[data-theme="dark"] .token.important,
+:root[data-theme="dark"] .token.variable {
+	color: #fec43f;
+}
+/*
+ * New diff- syntax
+ */
+
+pre[class*="language-diff-"] {
+	--eleventy-code-padding: 1.25em;
+	padding-left: var(--eleventy-code-padding);
+	padding-right: var(--eleventy-code-padding);
+}
+.token.deleted {
+	background-color: hsl(0, 51%, 37%);
+	color: inherit;
+}
+.token.inserted {
+	background-color: hsl(126, 31%, 39%);
+	color: inherit;
+}
+
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+	-webkit-user-select: none;
+	user-select: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+.token.prefix.inserted,
+.token.prefix.deleted {
+	width: var(--eleventy-code-padding);
+	background-color: rgba(0,0,0,.2);
+}
+
+/* Optional: full-width background color */
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+	display: block;
+	margin-left: calc(-1 * var(--eleventy-code-padding));
+	margin-right: calc(-1 * var(--eleventy-code-padding));
+	text-decoration: none; /* override del, ins, mark defaults */
+	color: inherit; /* override del, ins, mark defaults */
 }</style>
 		
 	</head>
@@ -958,28 +1230,28 @@ tbody tr th[data-type="caution"] {
 		<main id="main">
 			<heading-anchors>
 				
-<h1 id="tagged-guides">Tagged “guides”</h1>
 
 
-<ol reversed="" class="postlist" style="--postlist-index: 3">
-	<li class="postlist-item">
-		<a href="/posts/using-typst-locally/" class="postlist-link">Using Typst locally</a>
-		<time class="postlist-date" datetime="2026-06-07">June 2026</time>
-	</li>
-	<li class="postlist-item">
-		<a href="/posts/distro-confusion/" class="postlist-link">Distro Confusion? The Only 3 Linux Distros That Matter</a>
-		<time class="postlist-date" datetime="2025-08-18">August 2025</time>
-	</li>
-</ol>
+<h1 class="post-title" id="beed-beeps">Beed Beeps</h1>
+<ul class="post-metadata">
+	<li><time datetime="2026-06-13">13 June 2026</time></li>
+	<li><span class="post-reading-time">(1 min read)</span></li>
+</ul>
+<div class="post-metadata-tags"><a href="/tags/announcements/" class="post-tag">announcements</a><a href="/tags/beeps/" class="post-tag">beeps</a></div>
 
+<p>I now have a category for short-form posts on the site. Tiny updates, brief
+thoughts, small observations and whatever other compact pieces of internet
+debris I decide are worth sharing somewhere more stable than a social
+platform having a public identity crisis (yes, looking at you X <s>Twitter</s>).</p>
+<p>They are called <strong>Beeps</strong> and are tagged as "beeps" on the post.</p>
 
-<p>See <a href="/tags/">all tags</a>.</p>
-
+<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/posts/why-no-more-11ty-footer/">Why no more 11ty footer?</a></li>
+</ul>
 
 			</heading-anchors>
 		</main>
 
-		<!-- This page `/tags/guides/` was built on 2026-06-13T14:08:33.527Z -->
+		<!-- This page `/posts/beed-beeps/` was built on 2026-06-13T14:08:33.408Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";
