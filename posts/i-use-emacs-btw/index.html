@@ -94,16 +94,32 @@
 		
 		<style>/* This is an arbitrary CSS string added to the bundle */
 @font-face {
-	font-family: "Iosevka";
-	src: url("/fonts/iosevka-400.woff2") format("woff2");
+	font-family: "IosevkaTerm Nerd Font Mono";
+	src: url("/fonts/IosevkaTermNerdFontMono-Regular.ttf") format("truetype");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "Iosevka";
-	src: url("/fonts/iosevka-700.woff2") format("woff2");
+	font-family: "IosevkaTerm Nerd Font Mono";
+	src: url("/fonts/IosevkaTermNerdFontMono-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "NotoSansM Nerd Font Mono";
+	src: url("/fonts/NotoSansMNerdFontMono-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "NotoSansM Nerd Font Mono";
+	src: url("/fonts/NotoSansMNerdFontMono-Bold.ttf") format("truetype");
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -127,11 +143,10 @@
 
 /* Defaults */
 :root {
-	--font-family: "Iosevka", "Noto Sans Arabic", "Iosevka Web",
-		"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Monaco,
-		monospace;
+	--font-family: "NotoSansM Nerd Font Mono", "Noto Sans Arabic", monospace;
 	--font-family-monospace:
-		"Iosevka", "Iosevka Web", "SFMono-Regular", Consolas, Menlo, Monaco,
+		"IosevkaTerm Nerd Font Mono", "Iosevka", "Iosevka Web",
+		"SFMono-Regular", Consolas, Menlo, Monaco,
 		Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter,
 		DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono,
 		Nimbus Mono L, Courier New, Courier, monospace;
@@ -1235,7 +1250,7 @@ pre[class*="language-diff-"] {
 <h1 class="post-title" id="i-use-emacs-btw">I use Emacs BTW</h1>
 <ul class="post-metadata">
 	<li><time datetime="2026-06-10">10 June 2026</time></li>
-	<li><span class="post-reading-time">(6 min read)</span></li>
+	<li><span class="post-reading-time">(7 min read)</span></li>
 </ul>
 <div class="post-metadata-tags"><a href="/tags/tools/" class="post-tag">tools</a><a href="/tags/writing/" class="post-tag">writing</a></div>
 
@@ -1261,6 +1276,19 @@ language properly too.</p>
 claiming fluency. This is me adding another small, consistent habit to the pile,
 because language learning is mostly just doing tiny annoying things every day
 until your brain gives up and accepts them.</p>
+<p>For example, I have started saving little Arabic poems that I find interesting
+or in this case, funny.Here is one by Abu Hafs Ibn Umar al-Sulami
+al-Aghmati<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+<blockquote lang="ar" dir="rtl">
+<p>أبو حفص ابن عمر السُّلَمي الأغماتي</p>
+<p>مشت كالغصن يثنيه النسيمُ<br>
+ويعدوه النسيمُ فيستقيمُ</p>
+<p>لها رِدفٌ تعلّق في لطيفٍ<br>
+وذاك الرِدفُ لي ولها ظلومُ</p>
+<p>يعذّبني إذا فكّرتُ فيه<br>
+ويتعبها إذا راحت تقومُ</p>
+</blockquote>
+<p>Source: <a href="https://www.al-jazirah.com/2021/20210326/ar7.htm">Al-Jazirah</a>.</p>
 <p>Of course, I can still practise handwriting with good old paper and a nice
 pencil, like a civilised person. But we no longer live in the golden age of
 letters, notebooks, and pretending your handwriting is not slowly becoming worse.
@@ -1270,7 +1298,7 @@ writing environment that does not make me want to debug my terminal for three
 hours. Which means I needed something with a GUI.</p>
 <p>Tragic, I know.</p>
 <h3 id="then-why-not-insert-name-editor">Then, why not [INSERT-NAME] editor?</h3>
-<p>The answer is simple: I need FLOSS<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> software, good keybindings, and
+<p>The answer is simple: I need FLOSS<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> software, good keybindings, and
 proper customisability.</p>
 <p>The FLOSS part matters because I do not want my writing environment to be
 someone else's product strategy. I want software I can inspect, modify, share,
@@ -1333,7 +1361,7 @@ programs that quietly decided <code>C-a</code> and <code>C-e</code> were good id
 default bindings means the muscle memory is not trapped inside one editor. It
 travels.</p>
 <p>Also, it is not quite as painful as it sounds. I use home-row mods and a split
-keyboard<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>, so pressing <code>Control</code> and <code>Meta</code> is not the same
+keyboard<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>, so pressing <code>Control</code> and <code>Meta</code> is not the same
 hand-contorting ritual it would be on a normal keyboard made by someone who
 apparently hates fingers. My layout does a lot of the ergonomic heavy lifting,
 which makes vanilla Emacs bindings feel much more reasonable.</p>
@@ -1345,9 +1373,11 @@ Emacs starts seeming normal.</p>
 <ol class="footnotes-list">
 <li id="fn1" class="footnote-item"><span class="footnote-label"><a href="#fnref1" class="footnote-backref">1</a>.</span> <p>Not into politics? congratulations, that is politics.</p>
 </li>
-<li id="fn2" class="footnote-item"><span class="footnote-label"><a href="#fnref2" class="footnote-backref">2</a>.</span> <p>Free, Libre and Open Source Software.</p>
+<li id="fn2" class="footnote-item"><span class="footnote-label"><a href="#fnref2" class="footnote-backref">2</a>.</span> <p>Yes, you probably have seen this one on X.</p>
 </li>
-<li id="fn3" class="footnote-item"><span class="footnote-label"><a href="#fnref3" class="footnote-backref">3</a>.</span> <p>No, I did not literally cut my keyboard in half. I will
+<li id="fn3" class="footnote-item"><span class="footnote-label"><a href="#fnref3" class="footnote-backref">3</a>.</span> <p>Free, Libre and Open Source Software.</p>
+</li>
+<li id="fn4" class="footnote-item"><span class="footnote-label"><a href="#fnref4" class="footnote-backref">4</a>.</span> <p>No, I did not literally cut my keyboard in half. I will
 write more about my hardware setup later.</p>
 </li>
 </ol>
@@ -1359,7 +1389,7 @@ write more about my hardware setup later.</p>
 			</heading-anchors>
 		</main>
 
-		<!-- This page `/posts/i-use-emacs-btw/` was built on 2026-06-13T14:08:33.409Z -->
+		<!-- This page `/posts/i-use-emacs-btw/` was built on 2026-07-02T21:26:40.253Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";

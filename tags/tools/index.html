@@ -94,16 +94,32 @@
 		
 		<style>/* This is an arbitrary CSS string added to the bundle */
 @font-face {
-	font-family: "Iosevka";
-	src: url("/fonts/iosevka-400.woff2") format("woff2");
+	font-family: "IosevkaTerm Nerd Font Mono";
+	src: url("/fonts/IosevkaTermNerdFontMono-Regular.ttf") format("truetype");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "Iosevka";
-	src: url("/fonts/iosevka-700.woff2") format("woff2");
+	font-family: "IosevkaTerm Nerd Font Mono";
+	src: url("/fonts/IosevkaTermNerdFontMono-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "NotoSansM Nerd Font Mono";
+	src: url("/fonts/NotoSansMNerdFontMono-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "NotoSansM Nerd Font Mono";
+	src: url("/fonts/NotoSansMNerdFontMono-Bold.ttf") format("truetype");
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -127,11 +143,10 @@
 
 /* Defaults */
 :root {
-	--font-family: "Iosevka", "Noto Sans Arabic", "Iosevka Web",
-		"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Monaco,
-		monospace;
+	--font-family: "NotoSansM Nerd Font Mono", "Noto Sans Arabic", monospace;
 	--font-family-monospace:
-		"Iosevka", "Iosevka Web", "SFMono-Regular", Consolas, Menlo, Monaco,
+		"IosevkaTerm Nerd Font Mono", "Iosevka", "Iosevka Web",
+		"SFMono-Regular", Consolas, Menlo, Monaco,
 		Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter,
 		DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono,
 		Nimbus Mono L, Courier New, Courier, monospace;
@@ -983,7 +998,7 @@ tbody tr th[data-type="caution"] {
 			</heading-anchors>
 		</main>
 
-		<!-- This page `/tags/tools/` was built on 2026-06-13T14:08:33.507Z -->
+		<!-- This page `/tags/tools/` was built on 2026-07-02T21:26:40.424Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";

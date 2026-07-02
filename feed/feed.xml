@@ -84,6 +84,19 @@ language properly too.&lt;/p&gt;
 claiming fluency. This is me adding another small, consistent habit to the pile,
 because language learning is mostly just doing tiny annoying things every day
 until your brain gives up and accepts them.&lt;/p&gt;
+&lt;p&gt;For example, I have started saving little Arabic poems that I find interesting
+or in this case, funny.Here is one by Abu Hafs Ibn Umar al-Sulami
+al-Aghmati&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fn2&quot; id=&quot;fnref2&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;blockquote lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;
+&lt;p&gt;أبو حفص ابن عمر السُّلَمي الأغماتي&lt;/p&gt;
+&lt;p&gt;مشت كالغصن يثنيه النسيمُ&lt;br&gt;
+ويعدوه النسيمُ فيستقيمُ&lt;/p&gt;
+&lt;p&gt;لها رِدفٌ تعلّق في لطيفٍ&lt;br&gt;
+وذاك الرِدفُ لي ولها ظلومُ&lt;/p&gt;
+&lt;p&gt;يعذّبني إذا فكّرتُ فيه&lt;br&gt;
+ويتعبها إذا راحت تقومُ&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Source: &lt;a href=&quot;https://www.al-jazirah.com/2021/20210326/ar7.htm&quot;&gt;Al-Jazirah&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Of course, I can still practise handwriting with good old paper and a nice
 pencil, like a civilised person. But we no longer live in the golden age of
 letters, notebooks, and pretending your handwriting is not slowly becoming worse.
@@ -93,7 +106,7 @@ writing environment that does not make me want to debug my terminal for three
 hours. Which means I needed something with a GUI.&lt;/p&gt;
 &lt;p&gt;Tragic, I know.&lt;/p&gt;
 &lt;h3 id=&quot;then-why-not-insert-name-editor&quot;&gt;Then, why not [INSERT-NAME] editor?&lt;/h3&gt;
-&lt;p&gt;The answer is simple: I need FLOSS&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fn2&quot; id=&quot;fnref2&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt; software, good keybindings, and
+&lt;p&gt;The answer is simple: I need FLOSS&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fn3&quot; id=&quot;fnref3&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt; software, good keybindings, and
 proper customisability.&lt;/p&gt;
 &lt;p&gt;The FLOSS part matters because I do not want my writing environment to be
 someone else&#39;s product strategy. I want software I can inspect, modify, share,
@@ -156,7 +169,7 @@ programs that quietly decided &lt;code&gt;C-a&lt;/code&gt; and &lt;code&gt;C-e&l
 default bindings means the muscle memory is not trapped inside one editor. It
 travels.&lt;/p&gt;
 &lt;p&gt;Also, it is not quite as painful as it sounds. I use home-row mods and a split
-keyboard&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fn3&quot; id=&quot;fnref3&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt;, so pressing &lt;code&gt;Control&lt;/code&gt; and &lt;code&gt;Meta&lt;/code&gt; is not the same
+keyboard&lt;sup class=&quot;footnote-ref&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fn4&quot; id=&quot;fnref4&quot;&gt;[4]&lt;/a&gt;&lt;/sup&gt;, so pressing &lt;code&gt;Control&lt;/code&gt; and &lt;code&gt;Meta&lt;/code&gt; is not the same
 hand-contorting ritual it would be on a normal keyboard made by someone who
 apparently hates fingers. My layout does a lot of the ergonomic heavy lifting,
 which makes vanilla Emacs bindings feel much more reasonable.&lt;/p&gt;
@@ -168,9 +181,11 @@ Emacs starts seeming normal.&lt;/p&gt;
 &lt;ol class=&quot;footnotes-list&quot;&gt;
 &lt;li id=&quot;fn1&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fnref1&quot; class=&quot;footnote-backref&quot;&gt;1&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;Not into politics? congratulations, that is politics.&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&quot;fn2&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fnref2&quot; class=&quot;footnote-backref&quot;&gt;2&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;Free, Libre and Open Source Software.&lt;/p&gt;
+&lt;li id=&quot;fn2&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fnref2&quot; class=&quot;footnote-backref&quot;&gt;2&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;Yes, you probably have seen this one on X.&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&quot;fn3&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fnref3&quot; class=&quot;footnote-backref&quot;&gt;3&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;No, I did not literally cut my keyboard in half. I will
+&lt;li id=&quot;fn3&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fnref3&quot; class=&quot;footnote-backref&quot;&gt;3&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;Free, Libre and Open Source Software.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn4&quot; class=&quot;footnote-item&quot;&gt;&lt;span class=&quot;footnote-label&quot;&gt;&lt;a href=&quot;https://blog.beed.org.uk/posts/i-use-emacs-btw/#fnref4&quot; class=&quot;footnote-backref&quot;&gt;4&lt;/a&gt;.&lt;/span&gt; &lt;p&gt;No, I did not literally cut my keyboard in half. I will
 write more about my hardware setup later.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
