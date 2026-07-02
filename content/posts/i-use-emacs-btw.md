@@ -33,6 +33,25 @@ claiming fluency. This is me adding another small, consistent habit to the pile,
 because language learning is mostly just doing tiny annoying things every day
 until your brain gives up and accepts them.
 
+For example, I have started saving little Arabic poems that I find interesting
+or in this case, funny.Here is one by Abu Hafs Ibn Umar al-Sulami
+al-Aghmati[^isnt-this-on-x].
+
+<blockquote lang="ar" dir="rtl">
+<p>أبو حفص ابن عمر السُّلَمي الأغماتي</p>
+
+<p>مشت كالغصن يثنيه النسيمُ<br>
+ويعدوه النسيمُ فيستقيمُ</p>
+
+<p>لها رِدفٌ تعلّق في لطيفٍ<br>
+وذاك الرِدفُ لي ولها ظلومُ</p>
+
+<p>يعذّبني إذا فكّرتُ فيه<br>
+ويتعبها إذا راحت تقومُ</p>
+</blockquote>
+
+Source: [Al-Jazirah](https://www.al-jazirah.com/2021/20210326/ar7.htm).
+
 Of course, I can still practise handwriting with good old paper and a nice
 pencil, like a civilised person. But we no longer live in the golden age of
 letters, notebooks, and pretending your handwriting is not slowly becoming worse.
@@ -138,6 +157,7 @@ Emacs starts seeming normal.
 
 
 [^not-into-politics]: Not into politics? congratulations, that is politics.
+[^isnt-this-on-x]: Yes, you probably have seen this one on X.
 [^whats-FLOSS]: Free, Libre and Open Source Software.
 [^cutting-keyboards]: No, I did not literally cut my keyboard in half. I will
     write more about my hardware setup later.
