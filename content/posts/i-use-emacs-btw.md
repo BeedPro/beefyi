@@ -34,7 +34,7 @@ because language learning is mostly just doing tiny annoying things every day
 until your brain gives up and accepts them.
 
 For example, I have started saving little Arabic poems that I find interesting
-or in this case, funny.Here is one by Abu Hafs Ibn Umar al-Sulami
+or in this case, funny. Here is one by Abu Hafs Ibn Umar al-Sulami
 al-Aghmati[^isnt-this-on-x].
 
 <blockquote lang="ar" dir="rtl">
