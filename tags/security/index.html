@@ -110,32 +110,16 @@
 }
 
 @font-face {
-	font-family: "NotoSansM Nerd Font Mono";
-	src: url("/fonts/NotoSansMNerdFontMono-Regular.ttf") format("truetype");
+	font-family: "IBM Plex Sans Arabic";
+	src: url("/fonts/ibm-plex-sans-arabic-400.woff2") format("woff2");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "NotoSansM Nerd Font Mono";
-	src: url("/fonts/NotoSansMNerdFontMono-Bold.ttf") format("truetype");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Noto Sans Arabic";
-	src: url("/fonts/noto-sans-arabic-400.woff2") format("woff2");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Noto Sans Arabic";
-	src: url("/fonts/noto-sans-arabic-700.woff2") format("woff2");
+	font-family: "IBM Plex Sans Arabic";
+	src: url("/fonts/ibm-plex-sans-arabic-700.woff2") format("woff2");
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -143,10 +127,9 @@
 
 /* Defaults */
 :root {
-	--font-family: "NotoSansM Nerd Font Mono", "Noto Sans Arabic", monospace;
+	--font-family: "IosevkaTerm Nerd Font Mono", monospace;
 	--font-family-monospace:
-		"IosevkaTerm Nerd Font Mono", "Iosevka", "Iosevka Web",
-		"SFMono-Regular", Consolas, Menlo, Monaco,
+		"IosevkaTerm Nerd Font Mono", "SFMono-Regular", Consolas, Menlo, Monaco,
 		Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter,
 		DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono,
 		Nimbus Mono L, Courier New, Courier, monospace;
@@ -280,7 +263,7 @@ body {
 }
 
 :where(main, footer) :lang(ar) {
-	font-family: "Noto Sans Arabic", var(--font-family);
+	font-family: "IBM Plex Sans Arabic", var(--font-family);
 }
 
 :where(main, footer) :is(p, li, blockquote, figcaption, td, th, h1, h2, h3, h4, h5, h6) {
@@ -998,7 +981,7 @@ tbody tr th[data-type="caution"] {
 			</heading-anchors>
 		</main>
 
-		<!-- This page `/tags/security/` was built on 2026-07-02T21:26:40.436Z -->
+		<!-- This page `/tags/security/` was built on 2026-07-02T22:28:35.350Z -->
 		<script>
 			(function () {
 				var themeStorageKey = "theme-preference";
